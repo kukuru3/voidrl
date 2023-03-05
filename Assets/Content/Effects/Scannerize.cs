@@ -19,5 +19,5 @@ namespace Scanner {
             // sheet.properties.SetFloat("_fadeAmount", settings.fadeAmount);
             context.command.BlitFullscreenTriangle(context.source, context.destination, sheet, 0);
         }
-    }  
+    }
 }

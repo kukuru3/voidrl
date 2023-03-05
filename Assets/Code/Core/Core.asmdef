@@ -1,7 +1,9 @@
 {
     "name": "Core",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "K3.Core"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
