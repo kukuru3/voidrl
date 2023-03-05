@@ -1,0 +1,58 @@
+day 1
+day 2
+day 3
+
+
+- scanner aesthetics imported from Scanner project
+- set up libraries, dependencies
+- project scaffolding (boring stuff, context, session, main menu logic, game states transition)
+
+- Game "Screens":
+    - main menu
+    - "new game" screen: enter ship name, select options - can be merrged with main menu
+    - galactic map (long range scanner) - you roam between the systems
+    - ship status - displays colony ship
+    - system map - move between planets inside a star system (or deep space locations)
+    - a bunch of contextual menus (how do you send harvesters to harvest something? how do they know what to prioritize, etc.)
+
+- logic:
+    - "galaxy" class, seed, random generator
+    - "galactic location" class - usually star system
+    - procedural generator of galactic locations.
+    - inside a galactic location: entities
+    - do we have an abstraction level below galactic location? NO
+
+    - large ship
+    - small "space" unit (harvester, robot fighter, alien)
+    - system feature - planets, rings, asteroids, etc.
+    - 
+
+
+Core loop (no aliens):
+    - inspect neighbourhood select star system within jump range
+    - start warp jump
+    - generate system , enter system view
+    - inspect system, see features
+    - colony ship resource management;
+    - Population
+        - eat food, drink water
+
+Resource system: 
+    - primary resources: water, organic matter, construction materials, rare minerals
+    (manufacturing into processed resources comes later)
+    - stockpile resources
+    - what happens if limited stockpile and we want to add to it? are resources lost?
+    - are stockpiles global or localized? 
+    - what happens if we run out of food or  water?
+
+
+building ship structures and units
+ - build stockpile
+ - build residential
+ - build Guardian unit 
+ 
+ (reactor, engines, armor, etc. are implied but will be added later)
+    
+- scanner camera shows star system
+
+
