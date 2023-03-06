@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Core;
 using K3.Modules;
+using Scanner.ScannerView;
 
 namespace Scanner.AppContext {
     public class CoreSegment : BaseSegment {
@@ -18,7 +19,19 @@ namespace Scanner.AppContext {
         
     }
 
+    public class GameReferences {
+        public CameraController3D scannerCamera;
+    }
+
     class GameModule : BaseModule {
-         
+        public GameReferences gameRefs;
+
+        protected override void Launch() {
+            gameRefs = new GameReferences();
+            CollectReferences();
+        }
+        private void CollectReferences() {
+            gameRefs.scannerCamera = CustomTag.Find(ObjectTags.ScannerCamera).GetComponent<CameraController3D>();
+        }
     }
 }

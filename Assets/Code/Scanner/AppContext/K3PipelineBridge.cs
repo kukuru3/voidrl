@@ -12,6 +12,7 @@ namespace Scanner.AppContext {
             var gameManager = new GameManager();
             context.InstallModule(gameManager);            
             gameManager.AddSegment(new CoreSegment());
+            gameManager.AddSegment(new GameSegment());
         }
     }
 }

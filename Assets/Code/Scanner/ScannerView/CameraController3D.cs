@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using Core;
 
-namespace OldScanner {
-    
+namespace Scanner.ScannerView {
+
+    [DefaultExecutionOrder(-10)] // so the billboards and whatnot can catch up
     public class CameraController3D : MonoBehaviour {
         [SerializeField] Camera cameraProper;
         [SerializeField] Transform pivotPoint;
@@ -16,6 +17,8 @@ namespace OldScanner {
 
         [SerializeField] float minZoom;
         [SerializeField] float maxZoom;
+
+        const float ZOOM_MUL = 0.001f;
 
         const float minZoomRaw = 1.0f;
         const float maxZoomRaw = 10.0f;
@@ -33,6 +36,8 @@ namespace OldScanner {
         SmoothFloat x;
         SmoothFloat y;
 
+        public float Zoom { get; private set; }
+
         [SerializeField] float smoothingFactor;
 
         private void Start() {
@@ -48,9 +53,12 @@ namespace OldScanner {
         }
 
         private void LateUpdate() {
-            var pos = Input.mousePosition;
-            mouseDelta = pos - prevMouse;
-            prevMouse = pos;
+            //var pos = Input.mousePosition;
+            //Debug.Log($"PM: {(int)prevMouse.x}, {(int)prevMouse.y}");
+            //mouseDelta = pos - prevMouse;
+            //prevMouse = pos;
+
+            mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
 
             if (Input.GetMouseButton(1)) {
                 theta.target += mouseDelta.x * mouseThetaMultiplier;
@@ -69,7 +77,9 @@ namespace OldScanner {
 
             var zoomT = (zoomRaw.SmoothValue - minZoomRaw) / (maxZoomRaw - minZoomRaw);
             zoomT = Mathf.Pow(zoomT, zoomPower);
-            var zoom = Mathf.Lerp(minZoom, maxZoom, zoomT);
+            var zoom = Mathf.Lerp(minZoom, maxZoom, zoomT) * ZOOM_MUL;
+
+            Zoom = zoom;
 
             ApplyZoom(zoom);
 
