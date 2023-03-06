@@ -7,11 +7,10 @@ namespace Scanner.AppContext {
         IModuleContainer container;
 
         protected override void InitializeApplication(IModuleContainer context) {
-            this.container = context;
+            container = context;
             Core.AppContext.ModuleHelper.Writer.InjectContainer(context);
             var gameManager = new GameManager();
-            context.InstallModule(gameManager);
-            
+            context.InstallModule(gameManager);            
             gameManager.AddSegment(new CoreSegment());
         }
     }

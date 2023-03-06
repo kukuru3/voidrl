@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Scripting;
 
-namespace Scanner { 
+namespace OldScanner { 
     [Serializable]
     [PostProcess(typeof(ScannerizeRenderer), PostProcessEvent.AfterStack, "Scanner/Scannerize")]
     public class Scannerize : PostProcessEffectSettings {

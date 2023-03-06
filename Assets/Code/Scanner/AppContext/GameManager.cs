@@ -4,7 +4,7 @@ using K3.Modules;
 namespace Scanner.AppContext {
     class GameManager : BaseModule {
 
-        List<BaseGameSegment> activeSegments = new();
+        List<BaseSegment> activeSegments = new();
         
         protected override void Launch() {
             
@@ -14,13 +14,13 @@ namespace Scanner.AppContext {
             CleanupRemainingSegments(); 
         }
                 
-        public void AddSegment(BaseGameSegment segment) {
+        public void AddSegment(BaseSegment segment) {
             if (activeSegments.Contains(segment)) return;
             activeSegments.Add(segment);
             segment.Inject();    
         }
 
-        public void RemoveSegment(BaseGameSegment segment) {
+        public void RemoveSegment(BaseSegment segment) {
             if (!activeSegments.Contains(segment)) return;
             segment.Cleanup();
             activeSegments.Remove(segment);

@@ -2,15 +2,23 @@
 using K3.Modules;
 
 namespace Scanner.AppContext {
-    public class CoreSegment : BaseGameSegment {
-        protected override IEnumerable<BaseModule> CreateModules() {
-            var mainModule = new MainModule();
-            Install(mainModule);
-            yield return mainModule;
+    public class CoreSegment : BaseSegment {
+        protected override void CreateModules() {
+            Install(new MainModule());
+        }
+    }
+
+    public class GameSegment : BaseSegment {
+        protected override void CreateModules() {
+            Install(new GameModule());
         }
     }
 
     class MainModule : BaseModule {
         
+    }
+
+    class GameModule : BaseModule {
+         
     }
 }

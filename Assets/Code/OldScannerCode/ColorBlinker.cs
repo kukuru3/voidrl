@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scanner {
+namespace OldScanner {
 
     public abstract class Blinker : MonoBehaviour {
         public int framesOn;

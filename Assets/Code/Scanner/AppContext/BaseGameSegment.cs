@@ -5,22 +5,24 @@ using K3.Modules;
 namespace Scanner.AppContext {
     // layer such as main menu, etc.
 
-    public abstract class BaseGameSegment {        
+    public abstract class BaseSegment {        
 
         List<BaseModule> modules = new();
 
         internal void Inject() { 
-            modules = CreateModules().ToList();
+            CreateModules();
         }
+        
         internal void Cleanup() { 
             modules.Reverse();
             foreach (var module in modules) Core.AppContext.ModuleHelper.RemoveModule(module);
             modules.Clear();
         }
 
-        protected abstract IEnumerable<BaseModule> CreateModules();
+        protected abstract void CreateModules();
 
         protected void Install(BaseModule module) {
+            modules.Add(module);
             Core.AppContext.ModuleHelper.InstallModule(module);
         }
     }

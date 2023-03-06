@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scanner {
+namespace OldScanner {
     [DefaultExecutionOrder(999)]
     public class ScannerDisc : OldScanItem {
         Shapes.Disc disc;

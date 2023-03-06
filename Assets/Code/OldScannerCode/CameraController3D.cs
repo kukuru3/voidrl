@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Core;
 
-namespace Scanner {
+namespace OldScanner {
     
     public class CameraController3D : MonoBehaviour {
         [SerializeField] Camera cameraProper;
@@ -64,7 +64,7 @@ namespace Scanner {
             var p = phi.SmoothValue;
 
             if (lockTheta) t = 0;
-            if (lockPhi) p = 0;
+            if (lockPhi) p = 90;
             pivotPoint.transform.rotation = Quaternion.Euler(p, t, 0);
 
             var zoomT = (zoomRaw.SmoothValue - minZoomRaw) / (maxZoomRaw - minZoomRaw);

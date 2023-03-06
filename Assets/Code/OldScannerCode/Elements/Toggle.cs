@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scanner {
+namespace OldScanner {
     class Toggle : Element {
         [SerializeField] GameObject[] checkmarks;
         [SerializeField] GameObject activeCheckbox;

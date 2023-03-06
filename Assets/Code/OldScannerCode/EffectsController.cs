@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scanner {
+namespace OldScanner {
 
     public class EffectsController : MonoBehaviour
     {

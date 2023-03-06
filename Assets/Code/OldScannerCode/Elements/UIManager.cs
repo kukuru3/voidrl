@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scanner {
+namespace OldScanner {
     class UIManager : MonoBehaviour {
         [SerializeField] Camera uiCamera;
         [SerializeField] bool hideCursor;

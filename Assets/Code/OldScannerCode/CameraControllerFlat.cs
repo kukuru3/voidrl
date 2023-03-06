@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Core;
 
-namespace Scanner {
+namespace OldScanner {
     public class CameraControllerFlat : MonoBehaviour {
         [SerializeField] Camera cameraProper;
         [SerializeField] Transform pivotPoint;
