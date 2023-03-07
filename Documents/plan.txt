@@ -1,6 +1,12 @@
 day 1
-day 2
-day 3
+day 2 
+day 3 colony ship declarations, colony ship construction management - hud
+day 4 tactical entities, accel, decel, rendezvous, issuing commands - hud
+day 5 yields, outputs, labor, population
+day 6 
+day 7 hud effects, audio polish
+(day 8)
+
 
 
 - scanner aesthetics imported from Scanner project

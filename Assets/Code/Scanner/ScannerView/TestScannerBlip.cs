@@ -21,7 +21,7 @@ namespace Scanner.ScannerView {
 
         static CameraController3D scanCam;
 
-        private void LateUpdate() {
+        private void LateUpdate() { 
             if (scanCam == null) scanCam = App.Module<GameModule>().gameRefs.scannerCamera;
             
             UpdateFacing(display, scanCam);
