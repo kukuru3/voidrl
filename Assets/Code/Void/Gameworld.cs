@@ -1,7 +1,10 @@
-namespace VoidRL.Logic {
+namespace Void {
     public class Gameworld {
-        void DoSomething() {
-            
-        }
+
+    }
+
+    public class GeneralTester {
+        public static string ReturnFoo() => "foo";
+        public static string ReturnBar() => "bar";
     }
 }
