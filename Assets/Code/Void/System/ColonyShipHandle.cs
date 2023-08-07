@@ -3,7 +3,7 @@
         public string name;
     }
     
-    public class ColonyShipSystemHandle : TacticalEntity {
+    public class ColonyShipTacticalHandle : TacticalEntity {
               
     }
 

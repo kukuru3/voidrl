@@ -19,10 +19,13 @@ namespace Scanner.ScannerView {
 
         [SerializeField] Transform worldspaceFacingTarget;
 
-        static CameraController3D scanCam;
+        // static CameraController3D scanCam;
+
+        CameraController3D scanCam;
 
         private void LateUpdate() { 
-            if (scanCam == null) scanCam = App.Module<GameModule>().gameRefs.scannerCamera;
+            if (scanCam == null) scanCam = Void.App.Context.SceneReferences.Find<CameraController3D>();
+            // scanCam ??= ;
             
             UpdateFacing(display, scanCam);
             

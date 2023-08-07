@@ -9,13 +9,13 @@
       }
     },
     "com.k3.core": {
-      "version": "file:Q:/Dev/Lib/K3.Core",
+      "version": "file:D:/Dev/Lib/K3.Core",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.kukuru3.haxxor": {
-      "version": "file:Q:/Dev/Lib/Haxxor",
+      "version": "file:D:/Dev/Lib/Haxxor",
       "depth": 0,
       "source": "local",
       "dependencies": {}

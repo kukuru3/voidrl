@@ -25,7 +25,8 @@ namespace Void {
         public GalacticSector  GetSectorAt(Vector3Int coords) {
             RegenerateLookupIfNecessary();
             if (_lookup.TryGetValue(coords, out var result)) return result;
-            var sector = App.Module<SectorGenerator>().GenerateNewSector(coords);
+
+            var sector = App.Context.SectorGenerator.GenerateNewSector(coords);
             AddSector(sector);
             return sector;
         }
