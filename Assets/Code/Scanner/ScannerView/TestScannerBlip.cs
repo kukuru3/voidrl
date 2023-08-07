@@ -24,6 +24,7 @@ namespace Scanner.ScannerView {
         CameraController3D scanCam;
 
         private void LateUpdate() { 
+            return;
             if (scanCam == null) scanCam = Void.App.Context.SceneReferences.Find<CameraController3D>();
             // scanCam ??= ;
             

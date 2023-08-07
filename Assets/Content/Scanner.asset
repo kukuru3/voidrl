@@ -18,7 +18,7 @@ MonoBehaviour:
     - {fileID: 0}
     _enabled: 1
     pattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
-    magnetude: -0.3
+    magnetude: 0.025
     scale: {x: 4, y: 2}
   _compositeFilter:
     _foldout: 1
@@ -26,22 +26,22 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     _enabled: 1
-    lineCount: 800
-    distortion: 0.2
-    artifact: 0.1
-    fringing: 0.89
-    bleeding: 0.59
+    lineCount: 120
+    distortion: 0
+    artifact: 0
+    fringing: 0
+    bleeding: 0.437
   _staticFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
     _enabled: 1
     staticPattern: {fileID: 2800000, guid: 43a04c1efe2bb194e936e6b500cc884d, type: 3}
-    staticMagnitude: 0.03
-    staticScale: 1.13
-    staticOffset: 1047.7947
+    staticMagnitude: 0.099
+    staticScale: 2.29
+    staticOffset: 1165.4343
     dirtPattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
-    dirtMagnitude: 0.04
+    dirtMagnitude: 0.225
   _televisionFilter:
     _foldout: 1
     materials:
@@ -52,28 +52,28 @@ MonoBehaviour:
     brightness: 0
     contrast: 0.3
     saturation: 0.5
-    sharpness: 0.15
+    sharpness: 0.12
   _chromaticAberrationFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 1
-    pattern: {fileID: 2800000, guid: 739cbb7d52294184593ce6b7676a510b, type: 3}
-    magnetude: 0.02
+    _enabled: 0
+    pattern: {fileID: 0}
+    magnetude: 0.026
   _scanlineFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
     _enabled: 1
-    pattern: {fileID: 2800000, guid: a1dbf24ae6b15204d865e07f735d09aa, type: 3}
-    lineCount: 218
-    magnetude: 0.501
+    pattern: {fileID: 2800000, guid: 24d5fb0f704c92b42ba56fcd05f73a54, type: 3}
+    lineCount: 192
+    magnetude: 0.629
   _tubeFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 0
+    _enabled: 1
     maskPattern: {fileID: 2800000, guid: 740e2a6166d12b5479fbc50eb9a1fc83, type: 3}
     reflexPattern: {fileID: 0}
-    distortionMagnitude: -0.12
-    reflexMagnitude: 0
+    distortionMagnitude: 0.326
+    reflexMagnitude: 0.195
