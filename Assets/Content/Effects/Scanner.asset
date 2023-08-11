@@ -29,13 +29,13 @@ MonoBehaviour:
     overrideState: 0
     value: 65472
   diffusion:
-    overrideState: 0
+    overrideState: 1
     value: 7
   anamorphicRatio:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 0.47
   color:
-    overrideState: 0
+    overrideState: 1
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
     overrideState: 0
@@ -82,6 +82,35 @@ MonoBehaviour:
   - {fileID: 4281082538547010851}
   - {fileID: -1163149045473861626}
   - {fileID: -4294143289838708391}
+  - {fileID: 3388777275798549740}
+--- !u!114 &3388777275798549740
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be63ae363566e6499172fd933c404a2, type: 3}
+  m_Name: CRT
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  chromaticAberration:
+    overrideState: 1
+    value: 0.9
+  scanlineRepeat:
+    overrideState: 1
+    value: 3
+  dotMatrixRepeat:
+    overrideState: 1
+    value: 4
+  greenify:
+    overrideState: 1
+    value: 0.15
 --- !u!114 &4281082538547010851
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -106,10 +135,10 @@ MonoBehaviour:
     value: {fileID: 0}
     defaultState: 1
   tonemapper:
-    overrideState: 0
+    overrideState: 1
     value: 0
   toneCurveToeStrength:
-    overrideState: 0
+    overrideState: 1
     value: 0
   toneCurveToeLength:
     overrideState: 0
@@ -121,7 +150,7 @@ MonoBehaviour:
     overrideState: 0
     value: 0.5
   toneCurveShoulderAngle:
-    overrideState: 0
+    overrideState: 1
     value: 0
   toneCurveGamma:
     overrideState: 0
@@ -135,16 +164,16 @@ MonoBehaviour:
     value: 1
   temperature:
     overrideState: 0
-    value: 0
+    value: -3
   tint:
     overrideState: 0
-    value: 0
+    value: -87.7
   colorFilter:
     overrideState: 0
-    value: {r: 1.8450041, g: 2.2873735, b: 2.2638204, a: 1}
+    value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     overrideState: 0
-    value: 0
+    value: -180
   saturation:
     overrideState: 0
     value: 0

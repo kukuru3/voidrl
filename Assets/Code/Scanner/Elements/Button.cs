@@ -45,7 +45,7 @@ namespace OldScanner {
             }
 
             if (IsHighlighted) {
-                if (framesHL < 5) {
+                if (framesHL < 7) {
                     return framesHL % 2 == 0;
                 }
                 return true;

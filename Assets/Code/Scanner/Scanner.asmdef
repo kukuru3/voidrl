@@ -6,7 +6,9 @@
         "Haxxor",
         "ShapesRuntime",
         "Void",
-        "Core"
+        "Core",
+        "OldTVFilter3.Runtime",
+        "Unity.Postprocessing.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
