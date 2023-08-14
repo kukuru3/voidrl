@@ -18,10 +18,10 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 2
+    value: 2.2
   threshold:
     overrideState: 1
-    value: 0.5
+    value: 0.4
   softKnee:
     overrideState: 0
     value: 0.5
@@ -33,10 +33,10 @@ MonoBehaviour:
     value: 7
   anamorphicRatio:
     overrideState: 1
-    value: 0.47
+    value: 0.35
   color:
-    overrideState: 1
-    value: {r: 1, g: 1, b: 1, a: 1}
+    overrideState: 0
+    value: {r: 0.688, g: 0.709, b: 0.688, a: 1}
   fastMode:
     overrideState: 0
     value: 0
@@ -101,16 +101,31 @@ MonoBehaviour:
     value: 1
   chromaticAberration:
     overrideState: 1
-    value: 0.9
-  scanlineRepeat:
-    overrideState: 1
-    value: 3
-  dotMatrixRepeat:
-    overrideState: 1
-    value: 4
+    value: 1.08
   greenify:
     overrideState: 1
-    value: 0.15
+    value: 0.231
+  flickerIntensity:
+    overrideState: 1
+    value: 0.038
+  dotMatrixRepeat:
+    overrideState: 1
+    value: 3
+  scanlineRepeat:
+    overrideState: 1
+    value: 4
+  scanlineSpeed:
+    overrideState: 1
+    value: 8
+  scanlineDark:
+    overrideState: 1
+    value: 0.55
+  scanlineLight:
+    overrideState: 1
+    value: 1.6
+  colorCurve:
+    overrideState: 1
+    value: 0.142
 --- !u!114 &4281082538547010851
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -136,7 +151,7 @@ MonoBehaviour:
     defaultState: 1
   tonemapper:
     overrideState: 1
-    value: 0
+    value: 1
   toneCurveToeStrength:
     overrideState: 1
     value: 0

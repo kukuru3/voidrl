@@ -2,8 +2,8 @@
 using Void;
 
 namespace Scanner.AppContext {
-    class TestUtil {
-        void TestProfile(decimal speedInC, decimal accelInG) {
+    public class TestUtil {
+        static void TestProfile(decimal speedInC, decimal accelInG) {
             var profile = SpaceMath.GetProfile(speedInC, accelInG);
             var d = SpaceMath.FormatDistance(profile.distanceOfFullAcceleration);
             var t = SpaceMath.FormatTime(profile.timeToFullAcceleration);
@@ -17,11 +17,13 @@ namespace Scanner.AppContext {
             );
         }
 
-        public void RunTestsOnLaunch() {
-            TestProfile(0.05m, 1m);
-            TestProfile(0.1m, 1m);
-            TestProfile(0.1m, 5m);
-            TestProfile(0.2m, 5m);
+
+        [UnityEditor.MenuItem("Void/SPACE MATH")]
+        static public void RunTestsOnLaunch() {
+            TestProfile(0.1m, 0.0001m);
+            TestProfile(0.1m, 0.001m);
+            TestProfile(0.1m, 0.01m);
+            TestProfile(0.1m, 0.1m);
         }
     }
 }

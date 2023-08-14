@@ -7,12 +7,13 @@ Shader "Scanner/CRT"
     TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
 
     float _ChromAbbDistance;
-
-    float _ScanlineRepeat;
-
     float _DotMatrixRepeat;
-
     float _Greenify;
+    float _ColorCurve;
+
+    float4 _ScanlineProps; // repeat, speed, dark, light
+
+    float _FlickerIntensity;
     
     float2 curve(float2 uv)
     {
@@ -26,6 +27,7 @@ Shader "Scanner/CRT"
         uv =  uv *0.92 + 0.04;
         return uv;
     }
+
     float4 maintex(float2 uv) {
         return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
     }
@@ -48,8 +50,6 @@ Shader "Scanner/CRT"
 
         float3 colorBalance = float3(1.0 - _Greenify, 1.0 + _Greenify, 1.0 - _Greenify);
 
-        const float colorCurve = 0.4;
-
         float time = _Time.y;
 
         float3 col = (0);
@@ -61,17 +61,26 @@ Shader "Scanner/CRT"
         
 
         // // "x" is a series of horizontal noise lines that disappear and appear.
-        float x = 0.0;
+        float noisex = 0.0;
     
         if (useNoiseLines) 
-	        x = sin(0.3*time+uv.y*21.0)*sin(0.7*time+uv.y*29.0)*sin(0.3+0.33*time+uv.y*31.0)*0.0017; 
+	        noisex = 
+                sin( 0.3 * time + uv.y * 21.0)
+                *sin( 0.7 * time + uv.y * 29.0)
+                *sin(0.3+0.33*time+uv.y*31.0); //*0.0017; 
+
+        noisex = saturate((noisex - 0.5) * 2.0);
+        // return float4(noisex, noisex, noisex, 1.0);
 
         if (useCurve) uv = curve(uv);
 
         // todo: "x-factor" was used here somewhere
-        col.r = maintex(uv + offsetR / screen * _ChromAbbDistance).x;
-        col.g = maintex(uv + offsetG / screen * _ChromAbbDistance).y;
-        col.b = maintex(uv + offsetB / screen * _ChromAbbDistance).z;
+
+        float2 noisemul = float2(0.0017, 0.0);
+
+        col.r = maintex(uv + offsetR / screen * _ChromAbbDistance + noisemul * noisex).x;
+        col.g = maintex(uv + offsetG / screen * _ChromAbbDistance + noisemul * noisex).y;
+        col.b = maintex(uv + offsetB / screen * _ChromAbbDistance + noisemul * noisex).z;
 
         if (useBleeding) {
             col.r += 0.08 * maintex(0.75 * float2(0.025, -0.027) + uv).r;
@@ -80,7 +89,7 @@ Shader "Scanner/CRT"
         }
 
         // subtle color curve:
-        col = clamp(col*(1.0 - colorCurve) + colorCurve*col*col ,0.0 ,1.0);
+        col = saturate(col*(1.0 - _ColorCurve) + _ColorCurve*col*col);
 
         // vignette:
         if (useVignette) {
@@ -89,19 +98,33 @@ Shader "Scanner/CRT"
         }
 
         if (useScanlines) {
-            col *= 2.8; // to compensate for the sinewave, probably
-            float scans = clamp( 0.35+0.35*sin(2*time + uv.y*screen.y * 2 * PI / _ScanlineRepeat ), 0.0, 1.0);	
+
+            float scanlineRepeat = _ScanlineProps.x;
+            float scanlineSpeed = _ScanlineProps.y;
+            float scanlineDark = _ScanlineProps.z;
+            float scanlineLight = _ScanlineProps.w;
 
             // scans will always be in the range of 0 - 0.7
+            float scanlineFactor = 0.5 + 0.5 * sin(scanlineSpeed * time + uv.y * screen.y * 2 * PI / scanlineRepeat );
 
-            float s = pow(scans,1.7); // and this will remap them even further to the range of 0-0.54
-            col = col * (0.4 + 0.7*s); // color is multiplied by 0.4 where there are no scanlines, and by 0.78 where the scanlines are full 
+            scanlineFactor = lerp(scanlineDark, scanlineLight, pow(scanlineFactor, 1.7));
+
+            // scanlineFactor = 0.7 * scanlineFactor;        
+            // scanlineFactor = pow(scanlineFactor,1.7); // and this will remap them even further to the range of 0-0.54
+            // scanlineFactor = 0.4 + scanlineFactor * 0.7;
+            // scanlineFactor *= 2.8;
+
+            // s = 0.4 + pow(0.7 * s, 1.7) * 0.7;
+            // col *= 2.8; // to compensate for the sinewave, probably. 2 * sqrt(2). 
+            col *= scanlineFactor; // color is multiplied by 0.4 where there are no scanlines, and by 0.78 where the scanlines are full 
         }
+
+        //col *= 1.4;
 
         col *= colorBalance;
 
         // add a very slight flicker
-        col *= 1.0+0.02*sin(110.0*time);
+        col *= 1.0 + _FlickerIntensity*sin(110.0*time) ;
 
         if (uv.x < 0.0 || uv.x > 1.0) col *= 0.0;
 	    if (uv.y < 0.0 || uv.y > 1.0) col *= 0.0;
@@ -110,10 +133,10 @@ Shader "Scanner/CRT"
 
             float m = i.texcoord.x * screen.x;
 
-            m = saturate(sin(m * 2 * PI / _DotMatrixRepeat));
+            m = sin(m * 2 * PI / _DotMatrixRepeat);
 
             // m = saturate(  (fmod(m, 12.0)-6.0) / 6.0 * 0.4 );
-            col.rgb *= 1.3 - 0.65 * m;
+            col.rgb *= 1 + 0.12 * m;
             // col.rgb = m;
 
             // "horizontal" component of the scanlining aka dotmatrixing
@@ -122,6 +145,7 @@ Shader "Scanner/CRT"
 
 
         // float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
+        
         return float4(col, 1.0);
         
 
