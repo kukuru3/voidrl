@@ -3,16 +3,18 @@ Shader "Scanner/CRT"
     HLSLINCLUDE
 
     #include "Packages/com.unity.postprocessing/PostProcessing/Shaders/StdLib.hlsl"
-
+    
     TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
 
+    sampler2D _LastCameraDepthTexture ;
+    
     float _ChromAbbDistance;
     float _DotMatrixRepeat;
     float _Greenify;
     float _ColorCurve;
 
     half3 _ShadowBaseline;
-    float _ShadowCutofff;
+    float _ShadowCutoff;
 
     float4 _ScanlineProps; // repeat, speed, dark, light
 
@@ -93,10 +95,20 @@ Shader "Scanner/CRT"
             col.g += 0.05 * maintex(0.75 * float2(-0.022, -0.02) + uv).g;
             col.b += 0.08 * maintex(0.75 * float2(-0.02, -0.018) + uv).b;
         }
-        col += _ShadowBaseline;
+        
+        half lum = dot(col, float3(0.299f, 0.587f, 0.114f));
+
+        // for pixels whose luminosity is lower than cutoff, make their luminosity as high as the cutoff.
+
+        float adder = 1.0; //saturate(remap(lum, 0, _ShadowCutoff, 1, 0));
+
+        col += _ShadowBaseline * adder;
+
+        // half addition = saturate(remap(lum, _ShadowCutofff/2, _ShadowCutofff, 0.0, 1.0));
+        // half addition = 1;
+        // col += _ShadowBaseline * addition;
         // subtle color curve:
 
-        // half lum = dot(col, float3(0.299f, 0.587f, 0.114f));
 
         // half shadows = saturate(remap(lum, _ShadowCutofff, _ShadowCutofff + 0.01, 0, 1));
         // // if lum = 0.3, shadows are blank.

@@ -101,13 +101,19 @@ MonoBehaviour:
     value: 1
   chromaticAberration:
     overrideState: 1
-    value: 1.5
+    value: 1.18
+  shadowColor:
+    overrideState: 1
+    value: {r: 0, g: 0.199, b: 0.234, a: 1}
+  shadowCutoff:
+    overrideState: 1
+    value: 0.352
   greenify:
     overrideState: 1
-    value: 0.114
+    value: 0.182
   flickerIntensity:
     overrideState: 1
-    value: 0.0001
+    value: 0.0374
   dotMatrixRepeat:
     overrideState: 1
     value: 3
@@ -125,7 +131,7 @@ MonoBehaviour:
     value: 1.6
   colorCurve:
     overrideState: 1
-    value: 0.128
+    value: 0.1
 --- !u!114 &4281082538547010851
 MonoBehaviour:
   m_ObjectHideFlags: 3

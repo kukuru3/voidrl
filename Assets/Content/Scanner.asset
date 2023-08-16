@@ -59,7 +59,7 @@ MonoBehaviour:
     - {fileID: 0}
     _enabled: 1
     pattern: {fileID: 0}
-    magnetude: 0.035
+    magnetude: 0
   _scanlineFilter:
     _foldout: 1
     materials:
