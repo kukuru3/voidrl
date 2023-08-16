@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Void;
 
 namespace Scanner.AppContext {
@@ -9,12 +10,15 @@ namespace Scanner.AppContext {
             var t = SpaceMath.FormatTime(profile.timeToFullAcceleration);
             var distanceToAlphaCentauriLY = SpaceMath.LightYearsToMeters(4.1m);
             var speedInMetersPerSecond = speedInC * SpaceMath.c;
-            var timeToReachACDisregardingAccel =distanceToAlphaCentauriLY / speedInMetersPerSecond;
+            var timeToReachACDisregardingAccel = distanceToAlphaCentauriLY / speedInMetersPerSecond;
 
             Debug.Log($"at {speedInC}c max speed and at {accelInG}g acceleration, "
                 + $", it will take {t} to fully accelerate or decelerate, which will take {d}, "
                 + $" reaching Alpha Centauri would take {SpaceMath.FormatTime(timeToReachACDisregardingAccel)}"
             );
+
+            List<string> a;
+
         }
 
 

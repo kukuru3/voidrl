@@ -11,6 +11,9 @@ Shader "Scanner/CRT"
     float _Greenify;
     float _ColorCurve;
 
+    half3 _ShadowBaseline;
+    float _ShadowCutofff;
+
     float4 _ScanlineProps; // repeat, speed, dark, light
 
     float _FlickerIntensity;
@@ -30,6 +33,11 @@ Shader "Scanner/CRT"
 
     float4 maintex(float2 uv) {
         return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
+    }
+
+    float remap(float value, float from, float to, float targetFrom, float targetTo) {
+        float t = (to - value) / (to - from);
+        return lerp(targetFrom, targetTo, t);
     }
 
     float4 Frag(VaryingsDefault i) : SV_Target
@@ -58,8 +66,6 @@ Shader "Scanner/CRT"
         float2 offsetG = float2(1,0);
         float2 offsetB = (0); //float2(-2,0);
 
-        
-
         // // "x" is a series of horizontal noise lines that disappear and appear.
         float noisex = 0.0;
     
@@ -87,8 +93,21 @@ Shader "Scanner/CRT"
             col.g += 0.05 * maintex(0.75 * float2(-0.022, -0.02) + uv).g;
             col.b += 0.08 * maintex(0.75 * float2(-0.02, -0.018) + uv).b;
         }
-
+        col += _ShadowBaseline;
         // subtle color curve:
+
+        // half lum = dot(col, float3(0.299f, 0.587f, 0.114f));
+
+        // half shadows = saturate(remap(lum, _ShadowCutofff, _ShadowCutofff + 0.01, 0, 1));
+        // // if lum = 0.3, shadows are blank.
+        // // if lum = 0.0, shadows are full
+        // // half shadows = saturate((_ShadowCutofff - lum) / _ShadowCutofff);
+        
+        // col = lerp(col, _ShadowBaseline, shadows);
+
+
+
+
         col = saturate(col*(1.0 - _ColorCurve) + _ColorCurve*col*col);
 
         // vignette:

@@ -6,10 +6,13 @@ namespace Scanner.PostEffects {
     [Serializable]
     [PostProcess(typeof(CRTRenderer), PostProcessEvent.AfterStack, "Scanner/CRT-ize", true)]
     internal class CRT : PostProcessEffectSettings {
+        [Header("Chromatics")]
         [Range(0f,3f)]
         public FloatParameter chromaticAberration = new() { value = 0.0f };
-
+        public ColorParameter shadowColor = new() { value = Color.black };
+        [Range(0f, 0.4f)] public FloatParameter shadowCutoff = new() { value = 0.0f };
         [Range(0f, 0.4f)] public FloatParameter greenify = new() { value = 0.05f};
+
         [Range(0f, 0.2f)] public FloatParameter flickerIntensity = new() { value = 0.02f };
 
         [Header("Scanlines")]
@@ -35,6 +38,9 @@ namespace Scanner.PostEffects {
             sheet.properties.SetFloat("_FlickerIntensity", settings.flickerIntensity);
             //sheet.properties.SetFloat("_ScanlineSpeed", settings.scanlineSpeed);
             sheet.properties.SetVector("_ScanlineProps", new Vector4(settings.scanlineRepeat, settings.scanlineSpeed, settings.scanlineLight, settings.scanlineDark));
+
+            sheet.properties.SetColor("_ShadowBaseline", settings.shadowColor);
+            sheet.properties.SetFloat("_ShadowCutofff", settings.shadowCutoff);
 
             context.command.BlitFullscreenTriangle(context.source, context.destination, sheet, 0);
         }
