@@ -4,6 +4,7 @@ Shader "Void/Space Sharp"
     {
         _Color ("Color", Color) = (1,1,1,1)
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _Emission("Emission", 2D) = "black" {}
         _Cutoff("Cutoff", Range(-1.0, 1.0)) = 0.5
         // _Normals("Normals", 2D) = "bump" {}
     }
@@ -20,7 +21,8 @@ Shader "Void/Space Sharp"
         #pragma target 3.0
 
         sampler2D _MainTex;
-        sampler2D _Normals;
+        //sampler2D _Normals;
+        sampler2D _Emission;
 
         struct Input
         {
@@ -94,6 +96,7 @@ Shader "Void/Space Sharp"
             // o.Normal = UnpackNormal(tex2D(_Normals, IN.uv_MainTex));
             // o.Metallic = 0;
             // o.Smoothness = 0;
+            o.Emission = tex2D (_Emission, IN.uv_MainTex);
             o.Alpha = c.a;
         }
         ENDCG
