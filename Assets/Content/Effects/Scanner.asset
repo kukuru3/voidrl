@@ -126,18 +126,21 @@ MonoBehaviour:
   enabled:
     overrideState: 1
     value: 1
+  finalMix:
+    overrideState: 1
+    value: 0.806
   chromaticAberration:
     overrideState: 1
-    value: 1.18
+    value: 1.074
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.199, b: 0.234, a: 1}
-  shadowCutoff:
+  shadowEnhancer:
     overrideState: 1
-    value: 0.723
+    value: 0.0031
   greenify:
     overrideState: 1
-    value: 0.171
+    value: 0.128
   flickerIntensity:
     overrideState: 1
     value: 0.079
@@ -149,7 +152,7 @@ MonoBehaviour:
     value: 4
   scanlineSpeed:
     overrideState: 1
-    value: 11.1
+    value: 0
   scanlineDark:
     overrideState: 1
     value: 0.2

@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Core {
+
     public enum ObjectTags {
         None,
         ScannerCamera,

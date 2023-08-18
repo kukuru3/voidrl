@@ -19,6 +19,8 @@ Shader "Scanner/CRT"
     float4 _ScanlineProps; // repeat, speed, dark, light
 
     float _FlickerIntensity;
+
+    float _FinalMix;
     
     float2 curve(float2 uv)
     {
@@ -85,6 +87,8 @@ Shader "Scanner/CRT"
         // todo: "x-factor" was used here somewhere
 
         float2 noisemul = float2(0.0017, 0.0);
+
+        float3 originalColor = maintex(uv + noisemul * noisex);
 
         col.r = maintex(uv + offsetR / screen * _ChromAbbDistance + noisemul * noisex).x;
         col.g = maintex(uv + offsetG / screen * _ChromAbbDistance + noisemul * noisex).y;
@@ -177,6 +181,7 @@ Shader "Scanner/CRT"
 
         // float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
         
+        col = lerp(originalColor, col, _FinalMix);
         return float4(col, 1.0);
         
 
