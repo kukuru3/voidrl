@@ -5,11 +5,13 @@ namespace OldScanner {
 
     abstract class Element : MonoBehaviour {
         public bool IsHighlighted { get; private set; }
-        internal void OnLostHilite() {
+        public Vector2 LastCursorLocalPos { get; internal set; }
+
+        protected internal virtual void OnLostHilite() {
             this.IsHighlighted = false;
         }
 
-        internal void OnGainedHilite() {
+        protected internal virtual void OnGainedHilite() {
             this.IsHighlighted = true;
         }
     }

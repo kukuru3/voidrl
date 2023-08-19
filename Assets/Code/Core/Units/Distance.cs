@@ -30,7 +30,7 @@ namespace Core.Units {
             if (value < 0.1m) return $"{PrintAs(Milimeter)}";
             if (value < 1000m) return $"{PrintAs(Meter)}";
             if (value < 1000000m) return $"{PrintAs(Kilometer)}";
-            if (As(AU) < 1) return $"{PrintAs(LightSecond)}";
+            if (As(AU) < 1) return $"{PrintAs(Kilometer)} | {PrintAs(LightSecond)}";
             if (As(LightYear) < 1) return $"{PrintAs(AU)} | {PrintAs(LightSecond)} | {PrintAs(Kilometer)}";
             return PrintAs(LightYear);
         }

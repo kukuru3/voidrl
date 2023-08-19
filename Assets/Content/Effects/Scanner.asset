@@ -106,7 +106,7 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0.32
+    value: 0.26
   fastMode:
     overrideState: 1
     value: 0
@@ -128,40 +128,40 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0.806
+    value: 0.8
   chromaticAberration:
     overrideState: 1
-    value: 1.074
+    value: 1.1
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.199, b: 0.234, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.0031
+    value: 0.0052
   greenify:
     overrideState: 1
-    value: 0.128
+    value: 0.097
   flickerIntensity:
     overrideState: 1
-    value: 0.079
+    value: 0.076
   dotMatrixRepeat:
     overrideState: 1
     value: 3
   scanlineRepeat:
     overrideState: 1
-    value: 4
+    value: 3
   scanlineSpeed:
     overrideState: 1
-    value: 0
+    value: 3
   scanlineDark:
     overrideState: 1
-    value: 0.2
+    value: 0.26
   scanlineLight:
     overrideState: 1
     value: 1.6
   colorCurve:
     overrideState: 1
-    value: 0.12
+    value: 0.132
 --- !u!114 &4281082538547010851
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb84e30e02715445aeb9959894e3b4d, type: 3}
   m_Name: ColorGrading
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1

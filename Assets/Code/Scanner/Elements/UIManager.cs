@@ -26,7 +26,15 @@ namespace OldScanner {
 
             if (Physics.Raycast(ray, out var hitinfo, 1000, 1<<5, QueryTriggerInteraction.Collide)) {
                 var hilit = hitinfo.collider.gameObject.GetComponentInParent<Element>();
-                SetHighlight(hilit);
+                var localPosition = hitinfo.collider.transform.InverseTransformPoint(hitinfo.point);
+                var x = 0f; var y = 0f;
+                if (hitinfo.collider is BoxCollider bc) {                 
+                    x = localPosition.x / bc.size.x * 2;
+                    y = localPosition.y / bc.size.y * 2;
+                }
+
+                // Debug.Log($"Hitloc: {hitinfo.collider.name} : {x:F3}, {y:F3}");
+                SetHighlight(hilit, new Vector2(x, y));
             } else {
                 SetHighlight(null);
             }
@@ -37,7 +45,8 @@ namespace OldScanner {
             pos.z = 0;
             if (cursor != null) cursor.position = pos;
         }
-        private void SetHighlight(Element newHilite) {
+        private void SetHighlight(Element newHilite, Vector2 localPosition = default) {
+            if (newHilite != null) newHilite.LastCursorLocalPos = localPosition;
             if (highlighted == newHilite) return;
             highlighted?.OnLostHilite();
             highlighted = newHilite;
