@@ -23,12 +23,15 @@ namespace Scanner.PostEffects {
         [Header("Scanlines")]
         [Range(2f, 10f)] public FloatParameter dotMatrixRepeat = new() { value = 3.0f };
         [Range(2f, 10f)] public FloatParameter scanlineRepeat = new() { value = 3.0f };
-        [Range(-30f, 30f)] public FloatParameter scanlineSpeed = new() { value = 2f };
+        [Range(0f, 1f)] public FloatParameter scanlineEffect = new() { value = 0f };
+        [Range(-30f, 30f)] public FloatParameter scanlineSpeed = new() { value = 0f };
 
         [Header("Colors")]
-        [Range(0f, 3f)] public FloatParameter scanlineDark = new() { value = 0.4f };
-        [Range(0f, 3f)] public FloatParameter scanlineLight = new() { value = 1f };
+        [Range(0f, 3f)] public FloatParameter brightnessBaseline = new() { value = 1f };
         [Range(0f, 1f)] public FloatParameter colorCurve = new() { value = 0.4f };
+
+
+
     }
 
     internal class CRTRenderer : PostProcessEffectRenderer<CRT> {
@@ -40,7 +43,11 @@ namespace Scanner.PostEffects {
             sheet.properties.SetFloat("_Greenify",settings.greenify);
             sheet.properties.SetFloat("_ColorCurve", settings.colorCurve);
             sheet.properties.SetFloat("_FlickerIntensity", settings.flickerIntensity);
-            sheet.properties.SetVector("_ScanlineProps", new Vector4(settings.scanlineRepeat, settings.scanlineSpeed, settings.scanlineLight, settings.scanlineDark));
+
+            var scanlineLight = settings.brightnessBaseline * (1 + settings.scanlineEffect * 0.75f);
+            var scanlineDark  = settings.brightnessBaseline * (1f - settings.scanlineEffect);
+
+            sheet.properties.SetVector("_ScanlineProps", new Vector4(settings.scanlineRepeat, settings.scanlineSpeed, scanlineLight, scanlineDark));
 
             sheet.properties.SetColor("_ShadowBaseline", settings.shadowColor);
             sheet.properties.SetFloat("_FinalMix", settings.finalMix);

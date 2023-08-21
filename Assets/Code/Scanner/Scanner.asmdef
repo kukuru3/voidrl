@@ -8,7 +8,8 @@
         "Void",
         "Core",
         "OldTVFilter3.Runtime",
-        "Unity.Postprocessing.Runtime"
+        "Unity.Postprocessing.Runtime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

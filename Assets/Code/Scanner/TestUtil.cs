@@ -258,29 +258,41 @@ namespace Scanner.AppContext {
 
         [UnityEditor.MenuItem("Void/SPACE MATH : time to reach Alpha Centauri")]
         static public void RunTimeToReach() {
-            TestProfile(0.1m, 0.0001m);
+            //TestProfile(0.1m, 0.0001m);
+            //TestProfile(0.1m, 0.001m);
+            //TestProfile(0.1m, 0.01m);
+            //TestProfile(0.1m, 0.1m);
+
+            //TestProfile(0.0005m, 1m); // 0.05% c, fastest man made probe to date
+            //TestProfile(0.001m, 1m); // 0.1%c
+            //TestProfile(0.003m, 1m); // 0.3%c
+            //TestProfile(0.005m, 1m); // 0.5%c
+            //TestProfile(0.0075m, 1m); // 0.75%c
+            //TestProfile(0.01m, 1m); // 1% c
+            //TestProfile(0.03m, 1m); // 3% c
+            //TestProfile(0.05m, 1m); // 5% c
+            //TestProfile(0.1m, 1m);  // 10% c
+
+            //TestProfile(0.01m, 0.001m); // 1% c
+            //TestProfile(0.03m, 0.001m); // 3% c
+            //TestProfile(0.05m, 0.001m); // 5% c
+            //TestProfile(0.1m, 0.001m);  // 10% c
+
+            TestProfile(0.01m, 0.001m);
+            TestProfile(0.03m, 0.001m);
+            TestProfile(0.05m, 0.001m);
             TestProfile(0.1m, 0.001m);
-            TestProfile(0.1m, 0.01m);
-            TestProfile(0.1m, 0.1m);
 
-            TestProfile(0.0005m, 1m); // 0.05% c, fastest man made probe to date
-            TestProfile(0.001m, 1m); // 0.1%c
-            TestProfile(0.003m, 1m); // 0.3%c
-            TestProfile(0.005m, 1m); // 0.5%c
-            TestProfile(0.0075m, 1m); // 0.75%c
-            TestProfile(0.01m, 1m); // 1% c
-            TestProfile(0.03m, 1m); // 3% c
-            TestProfile(0.05m, 1m); // 5% c
-            TestProfile(0.1m, 1m);  // 10% c
+            TestProfile(0.01m, 0.0001m);
+            TestProfile(0.03m, 0.0001m);
+            TestProfile(0.05m, 0.0001m);
+            TestProfile(0.1m, 0.0001m);
 
-            TestProfile(0.01m, 0.001m); // 1% c
-            TestProfile(0.03m, 0.001m); // 3% c
-            TestProfile(0.05m, 0.001m); // 5% c
-            TestProfile(0.1m, 0.001m);  // 10% c
+            TestProfile(0.01m, 0.00001m);
+            TestProfile(0.03m, 0.00001m);
+            TestProfile(0.05m, 0.00001m);
+            TestProfile(0.10m, 0.00001m);
         }
-
-
-        
     }
 }
 

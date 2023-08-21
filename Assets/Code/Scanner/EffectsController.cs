@@ -14,7 +14,7 @@ namespace OldScanner {
 
         private void Start() {
 
-            QualitySettings.vSyncCount = 0;  // VSync must be disabled
+            QualitySettings.vSyncCount = 1;  // VSync must be disabled
             finalDigitalCamera.depthTextureMode = DepthTextureMode.Depth;
             geometryCamera.depthTextureMode = DepthTextureMode.Depth;
             

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO.IsolatedStorage;
+using UnityEngine;
 
 namespace OldScanner {
     class UIManager : MonoBehaviour {
@@ -21,8 +22,10 @@ namespace OldScanner {
 
             if (hideCursor) Cursor.visible = false;
 
-            var mouse = Input.mousePosition;
-            var ray = uiCamera.ScreenPointToRay(Input.mousePosition);
+            // var mouse = Input.mousePosition;
+
+            var distortedMouse = GetDistortedCursorPos();
+            var ray = uiCamera.ScreenPointToRay(distortedMouse);
 
             if (Physics.Raycast(ray, out var hitinfo, 1000, 1<<5, QueryTriggerInteraction.Collide)) {
                 var hilit = hitinfo.collider.gameObject.GetComponentInParent<Element>();
@@ -38,6 +41,25 @@ namespace OldScanner {
             } else {
                 SetHighlight(null);
             }
+        }
+
+        Vector3 GetDistortedCursorPos() {
+            var p = Input.mousePosition;
+            var distortion = 0.2f;
+            var uv = new Vector2(p.x / Screen.width, p.y / Screen.height);
+            var uv2 = Distort(uv, distortion);
+
+            var sx = uv2.x * Screen.width; 
+            var sy = uv2.y * Screen.height;
+
+            return new Vector3(sx, sy, 0);
+        }
+
+        Vector2 Distort(Vector2 uv, float distortion) {
+            var c = uv - Vector2.one * 0.5f;
+            var dt = Vector2.Dot(c, c) * distortion;
+            dt -= 0.2f * distortion;
+            return uv + c * ((1f + dt) * dt);
         }
 
         private void LateUpdate() {

@@ -30,10 +30,10 @@ MonoBehaviour:
     value: 65472
   diffusion:
     overrideState: 1
-    value: 6
+    value: 7
   anamorphicRatio:
     overrideState: 1
-    value: 0.35
+    value: 0
   color:
     overrideState: 0
     value: {r: 1.1491268, g: 1.0566008, b: 0.96986306, a: 1}
@@ -80,10 +80,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 4281082538547010851}
-  - {fileID: -1163149045473861626}
   - {fileID: -4294143289838708391}
-  - {fileID: 3388777275798549740}
   - {fileID: 1302253812162679686}
+  - {fileID: 733866170207936088}
+--- !u!114 &733866170207936088
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be63ae363566e6499172fd933c404a2, type: 3}
+  m_Name: CRT
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  finalMix:
+    overrideState: 1
+    value: 0.8
+  chromaticAberration:
+    overrideState: 1
+    value: 1.1
+  shadowColor:
+    overrideState: 1
+    value: {r: 0, g: 0.199, b: 0.234, a: 1}
+  shadowEnhancer:
+    overrideState: 1
+    value: 0.0054
+  greenify:
+    overrideState: 1
+    value: 0.065
+  flickerIntensity:
+    overrideState: 1
+    value: 0.02
+  dotMatrixRepeat:
+    overrideState: 1
+    value: 3
+  scanlineRepeat:
+    overrideState: 1
+    value: 3
+  scanlineEffect:
+    overrideState: 1
+    value: 0.609
+  scanlineSpeed:
+    overrideState: 0
+    value: 0
+  brightnessBaseline:
+    overrideState: 1
+    value: 1
+  colorCurve:
+    overrideState: 1
+    value: 0.155
 --- !u!114 &1302253812162679686
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -131,37 +182,37 @@ MonoBehaviour:
     value: 0.8
   chromaticAberration:
     overrideState: 1
-    value: 1.1
+    value: 1.09
   shadowColor:
     overrideState: 1
-    value: {r: 0, g: 0.199, b: 0.234, a: 1}
+    value: {r: 0, g: 0.20957744, b: 0.248, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.0052
+    value: 0.0037
   greenify:
     overrideState: 1
-    value: 0.097
+    value: 0.081
   flickerIntensity:
     overrideState: 1
-    value: 0.076
+    value: 0.04
   dotMatrixRepeat:
     overrideState: 1
     value: 3
   scanlineRepeat:
     overrideState: 1
     value: 3
+  scanlineEffect:
+    overrideState: 1
+    value: 1
   scanlineSpeed:
     overrideState: 1
-    value: 3
-  scanlineDark:
+    value: 0
+  brightnessBaseline:
     overrideState: 1
-    value: 0.26
-  scanlineLight:
-    overrideState: 1
-    value: 1.6
+    value: 1
   colorCurve:
     overrideState: 1
-    value: 0.132
+    value: 0.15
 --- !u!114 &4281082538547010851
 MonoBehaviour:
   m_ObjectHideFlags: 3

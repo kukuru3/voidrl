@@ -35,7 +35,6 @@ namespace OldScanner {
                 t = t.Map(0f + colliderFractionMargin, 1f - colliderFractionMargin, 0f, 1f, true);
                 SetValue(t);
             }
-
             UpdateVisuals();
         }
 
@@ -44,7 +43,6 @@ namespace OldScanner {
             var draw = !IsBlink();
             foreach (var blinker in blinkers) blinker.SetActive(draw);
             fillLine.ColorStart = fillLine.ColorEnd = IsHighlighted ? Color.white * 1.25f : Color.white;
-            
         }
 
         float hiliteAlpha = 0f;
