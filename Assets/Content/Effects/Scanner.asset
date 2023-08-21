@@ -101,9 +101,9 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0.8
+    value: 0.754
   chromaticAberration:
-    overrideState: 1
+    overrideState: 0
     value: 1.1
   shadowColor:
     overrideState: 1
@@ -125,7 +125,7 @@ MonoBehaviour:
     value: 3
   scanlineEffect:
     overrideState: 1
-    value: 0.609
+    value: 0.563
   scanlineSpeed:
     overrideState: 0
     value: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
