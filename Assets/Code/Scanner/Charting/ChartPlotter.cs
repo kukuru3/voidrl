@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using K3;
 using Shapes;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace Scanner.Charting {
@@ -16,8 +18,17 @@ namespace Scanner.Charting {
         private AxisDynamicData xData;
         private AxisDynamicData yData;
 
+        private void Start() {
+            var model = GenerateFunctionChart(0m, 5m, (x) => {
+                return (decimal)(600.0 * Math.Pow(1.0 - 0.99, (double)x / 4.5));
+                // 600 * (1 - 0.99)^(x/4.5), where x = [0, 5]
+            });
+
+            Refresh(model);
+        }
+
         public override void DrawShapes(Camera cam) {
-            using (Draw.Command(cam)) {
+            using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterForwardAlpha)) {
 
                 Draw.LineGeometry = LineGeometry.Volumetric3D;
                 Draw.ThicknessSpace = ThicknessSpace.Pixels;
@@ -39,13 +50,14 @@ namespace Scanner.Charting {
                 Draw.Line(m, m + new Vector3(-4,-11, 0), Color.white);
 
                 Draw.Thickness = lineWidth / 2;
-                yData = new AxisDynamicData {
-                    min = 0,
-                    max = 214, 
-                    stepActual = 25,
-                };
 
-                xData = yData;
+                if (model == null) return;
+                //yData = new AxisDynamicData {
+                //    min = 0,
+                //    max = 214, 
+                //    stepActual = 25,
+                //};
+                //xData = yData;
 
                 // if (model == null) return;
 
@@ -75,13 +87,36 @@ namespace Scanner.Charting {
                     Draw.Line(new Vector3(value, -4, 0), new Vector3(value, 4, 0), lineWidth, Color.white);
                     Draw.Text(pos: new Vector3(value, -5, 0), fontSize: 180, content: $"{i}", color: Color.gray, align: TextAlign.Top);
                 }
+
+                for (var i = 0; i < model.plots.Count; i++) {
+                    var plot = model.plots[i];
+                    var path = new PolylinePath();
+
+                    Vector2 PolylineCoords(Datapoint p) {
+                        return new Vector2 {
+                            x = ((float)p.x).Map((float)xData.min, (float)xData.max, 0f, w, true),
+                            y = ((float)p.y).Map((float)yData.min, (float)yData.max, 0f, h, true),
+                        };
+                    }
+
+                    path.AddPoints(plot.points.Select(pt => PolylineCoords(pt)));
+                    var color = Color.HSVToRGB(_hues[i], 0.8f, 1);
+                    color *= 1f;
+                    Draw.Polyline(path: path, color: color, closed:false, thickness: 2, joins: PolylineJoins.Miter);
+                }
+                
             }
         }
+
+        static float[] _hues= { 0f, 0.2f, 0.4f, 0.6f};
+
+
+        
 
         static decimal Map(decimal source, decimal sourceFrom, decimal sourceTo, decimal targetFrom, decimal targetTo, bool constrained = true) {
             var t = (source - sourceFrom) / (sourceTo - sourceFrom);
             if (constrained) t = Math.Clamp(t, 0, 1);
-            return Math.Round(targetFrom + t * (targetTo - targetFrom));
+            return targetFrom + t * (targetTo - targetFrom);
         }
 
         internal void Refresh(ChartData model) {
@@ -119,12 +154,13 @@ namespace Scanner.Charting {
             var delta = result.max - result.min;
             if (delta <= 0m) delta = 1m;
             var grain = Math.Ceiling(Math.Log10((double)(delta)));
+            grain -= 1;
             var s = (decimal)Math.Pow(10, grain);
 
             if (s < 0.000001m) s = 0.000001m;
 
             var a = Math.Floor(result.min / s) * s;
-            var b = Math.Floor(result.max / s + 1) * s;
+            var b = Math.Floor(result.max / s) * s;
 
             result.stepActual = s;
             result.min = a;
@@ -139,9 +175,8 @@ namespace Scanner.Charting {
             var resolution = 300;
             var pts = new List<Datapoint>();
             for (var i = 0; i < resolution; i++) {
-                var x = Map(i, 0, resolution, intervalStart, intervalEnd);
-                var y = fn(x);
-                pts.Add(new Datapoint { x = x, y = y });
+                var _x = Map(i, 0, resolution, intervalStart, intervalEnd);
+                pts.Add(new Datapoint { x = _x, y = fn(_x) });
             }
             return new ChartData() {
                 plots = new List<Plot>() { new Plot() { points = pts } },
