@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace OldScanner {
+namespace Scanner {
 
     abstract class Element : MonoBehaviour {
         public bool IsHighlighted { get; private set; }

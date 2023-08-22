@@ -25,6 +25,7 @@ namespace Core {
             new Units.UnitInfo_Dist();
             new Units.UnitInfo_V();
             new Units.UnitInfo_Accel();
+            new Units.UnitInfo_Mass();
         }
 
         static public IUnitInfo<TUnit> GetUnitInfo<TUnit>() => (IUnitInfo<TUnit>)_registered[typeof(TUnit)];

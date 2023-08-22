@@ -1,7 +1,7 @@
 ﻿using System.IO.IsolatedStorage;
 using UnityEngine;
 
-namespace OldScanner {
+namespace Scanner {
     class UIManager : MonoBehaviour {
         [SerializeField] Camera uiCamera;
         [SerializeField] bool hideCursor;

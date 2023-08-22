@@ -3,12 +3,13 @@ using System.ComponentModel.Composition.Primitives;
 using K3;
 using UnityEngine;
 
-namespace OldScanner {
+namespace Scanner {
     class Slider : Element {
         [SerializeField] float colliderFractionMargin;
         [SerializeField] Shapes.Line fillLine;
         [SerializeField] Shapes.Line masker;
         [SerializeField] GameObject pip;
+        [SerializeField] TMPro.TMP_Text[] captions;
 
         [SerializeField] float pixelFrom;
         [SerializeField] float pixelTo;
@@ -28,6 +29,14 @@ namespace OldScanner {
         [SerializeField] float outerPipOffsetActive;
         [SerializeField] GameObject[] blinkers;
 
+        public void SetCaption(string caption) {
+            foreach (var c in captions) c.text = caption;
+        }
+
+        public void SetValueExternal(float t) {
+            SetValue(t);
+            UpdateVisuals();
+        }
         private void LateUpdate() {
             if (IsHighlighted && Input.GetMouseButton(0)) {
                 var t = LastCursorLocalPos.x + 1f;
@@ -71,9 +80,12 @@ namespace OldScanner {
 
         public float Value { get; private set; }
 
+        public event Action<float> ValueChanged;
+
         void SetValue(float q) {
 
-            this.Value = Value;
+            this.Value = q;
+            this.ValueChanged?.Invoke(Value);
             var px = Mathf.Lerp(pixelFrom, pixelTo, q);
 
             //var pixel = Mathf.Lerp(marginLeewayPixels, maxWidth - marginLeewayPixels, q);
@@ -81,6 +93,7 @@ namespace OldScanner {
             //this.Value = value;            
             masker.End = new Vector3(px, 0, 0);
             pip.transform.localPosition = new Vector3(px, 0, 0);
+
         }
 
         int framesHL;

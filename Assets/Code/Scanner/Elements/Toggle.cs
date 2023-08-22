@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace OldScanner {
+namespace Scanner {
     class Toggle : Element {
         [SerializeField] GameObject[] checkmarks;
         [SerializeField] GameObject activeCheckbox;
@@ -48,6 +49,11 @@ namespace OldScanner {
         private void Click() {
             ToggleState = !ToggleState;
             framesSinceCheckStateChanged = 0;
+            ValueChanged?.Invoke();
         }
+
+        internal void SetCaption(string name) => this.textObject.GetComponent<TMPro.TMP_Text>().text = name;
+
+        public event Action ValueChanged;
     }
 }
