@@ -101,7 +101,7 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0.754
+    value: 0.835
   chromaticAberration:
     overrideState: 0
     value: 1.1
@@ -134,7 +134,7 @@ MonoBehaviour:
     value: 1
   colorCurve:
     overrideState: 1
-    value: 0.155
+    value: 0.151
 --- !u!114 &1302253812162679686
 MonoBehaviour:
   m_ObjectHideFlags: 3

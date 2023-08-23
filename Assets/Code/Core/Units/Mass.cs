@@ -5,6 +5,9 @@
         static public Mass operator+ (Mass a, Mass b) => new Mass(a.value + b.value);
         static public Mass operator- (Mass a, Mass b) => new Mass(a.value - b.value);
 
+        static public Mass operator* (Mass a, decimal b) => new Mass(a.value * b);
+        static public Mass operator/ (Mass a, decimal b) => new Mass(a.value / b);
+
         public override string ToString() {
             if (As(MassUnits.g)<1) return PrintAs(MassUnits.mg);
             if (As(MassUnits.kg)<3) return PrintAs(MassUnits.g);

@@ -2,6 +2,7 @@
 using Core.Calculations;
 using Core.Units;
 using K3;
+using Scanner.Charting;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using static Core.Units.Mass;
@@ -15,7 +16,10 @@ namespace Scanner.Windows {
         [SerializeField] Vector3 columnOffset;
         [SerializeField] Vector3 elementOffsetInsideColumn;
         [SerializeField] int elementsPerColumn;
+
         [SerializeField] TMPro.TMP_Text resultLabel;
+        [SerializeField] TMPro.TMP_Text massLabel;
+        [SerializeField] AreaChart massDistribution;
 
         List<GameObject> elements = new List<GameObject>();
 
@@ -33,9 +37,12 @@ namespace Scanner.Windows {
         private NumberSlider structuralMass;
         private NumberSlider maxToleratedSpeed;
         private NumberSlider passiveShieldingM;
+        private Toggle propellantAsShielding;
         private NumberSlider percentageShielded;
         private NumberSlider activeShieldingAtt;
         private NumberSlider cosmicRays;
+
+        private NumberSlider engineCount;
 
         private void Start() {
             GenerateAll();
@@ -51,10 +58,12 @@ namespace Scanner.Windows {
             var habitatSurface = surface1 * pplNominal;
             var shieldedFraction = percentageShielded.NumericValue;
             var totalShieldingMass = new Mass((decimal)(passiveShieldingM.NumericValue * habitatSurface * shieldedFraction), MassUnits.t);
-            var engineM = new Mass((decimal)engineMass.NumericValue, MassUnits.t);
+
+            var numEngines = Mathf.FloorToInt(engineCount.NumericValue);
+            var totalMassOfEngines = new Mass((decimal)engineMass.NumericValue * numEngines, MassUnits.t);
             var structureM = new Mass((decimal)structuralMass.NumericValue, MassUnits.kt);
             var dryMassKg = 
-                engineM +
+                totalMassOfEngines +
                 structureM + 
                 totalShieldingMass;
 
@@ -66,32 +75,50 @@ namespace Scanner.Windows {
             var distance = new Distance((decimal)distanceToTarget.NumericValue, DistanceUnits.LightYear);
             var maxV = new Velocity((decimal)maxToleratedSpeed.NumericValue, VelocityUnits.C);
 
-            var thrust = (decimal)(exhaustVelocity.NumericValue * propellantFlow.NumericValue);
+            var thrustOfSingleEngine = (decimal)(exhaustVelocity.NumericValue * propellantFlow.NumericValue);
+            var thrustOfAllEngines = thrustOfSingleEngine * numEngines;
 
             var pctDry = totalShieldingMass.ValueSI / dryMassKg.ValueSI;
 
             var massRatio = totalWetMass.ValueSI / dryMassKg.ValueSI;
 
-            s += $"THRUST: <color=#fc2>{thrust/1000:F0}kN</color> | <color=#fc2>{thrust/1000000:F2}MN</color>(v<sub>e</sub>=<color=#c40>{new Velocity((decimal)exhaustVelocity.NumericValue).As(VelocityUnits.C):p2}c</color>) ; Mass Ratio: <color=#6c0>{massRatio:f}</color>\r\n";
+            var lnM = massRatio.Ln();
+
+            var thrustPowerOfSingleEngine = (decimal)(propellantFlow.NumericValue * exhaustVelocity.NumericValue * exhaustVelocity.NumericValue / 2);
+
+            massDistribution.ClearEntries();
+            massDistribution.AddEntry("Engines", (float)totalMassOfEngines.As(MassUnits.kt),    new Color32(250, 150, 120, 255));
+            massDistribution.AddEntry("Structure", (float)structureM.As(MassUnits.kt), new Color32(150, 150, 120, 255));
+            massDistribution.AddEntry("Shielding", (float)totalShieldingMass.As(MassUnits.kt), new Color32(55, 100, 100, 255));
+            massDistribution.AddEntry("Propellant", (float)propellantMass.As(MassUnits.kt), new Color32(240, 140, 8, 255));
+
+            massLabel.text = $"<color=#122>{totalWetMass.As(MassUnits.Mt):f1}Mt";
+
             
+            var bellRadius = (thrustPowerOfSingleEngine / 1000000m * (decimal)engineHeatFactor.NumericValue).Root() * 0.13m;
+            
+            s += $"THRUST: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>\r\n";
+            s += $"Fp = {numEngines} x <color=#f24>{thrustPowerOfSingleEngine:G2}</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)exhaustVelocity.NumericValue).As(VelocityUnits.C):p2}c</color>)";
+            s += $"Engine bells: {numEngines} x {bellRadius:f0}m\r\n";
 
             s += $"Crew total: {pplActual:f0}\r\n";
             s += $"Radiation Shielding mass: <color=#122>{totalShieldingMass}</color> ({pctDry:P1} of dry mass)\r\n";
             s += $"Total mass: <color=#122>{totalWetMass}</color> (Ship:<color=#122>{dryMassKg}</color> , Propellant:<color=#122>{ propellantMass }</color>)\r\n";
+            
 
-            var calc = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, new Velocity((decimal)exhaustVelocity.NumericValue),  new Core.CustomSIValue((decimal)propellantFlow.NumericValue, "kg/s"), isInfiniteFuel);
+            var calc = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, new Velocity((decimal)exhaustVelocity.NumericValue),  new Core.CustomSIValue((decimal)propellantFlow.NumericValue * numEngines, "kg/s"), isInfiniteFuel);
             var totalTime = calc.burnTimePrograde + calc.burnTimeRetrograde + calc.coastTime;
 
             var propPercent = calc.propellantExpenditure.ValueSI / propellantMass.ValueSI;
             var collectedPropellant =  calc.propellantExpenditure - propellantMass ;
 
-            s += $"Brachisto-estimate: Accelerating at <color=#129>{calc.acceleration}</color> (with correction factor <color=#36f>{calc.estimatedAccelerationFactor:f2}</color>)),"
-              + $"distance <color=#f4c>{distance}</color> reached in <color=#ff0>{totalTime}</color>";
+            s += $"Accelerating at <color=#129>{calc.acceleration}</color> (with correction factor <color=#36f>{calc.estimatedAccelerationFactor:f2}</color>)) \r\n"
+              + $"Distance <color=#f4c>{distance}</color> reached in <color=#ff0>{totalTime}</color>\r\n";
 
             if (calc.coastTime.ValueSI > 100)
-                s += $", of which <color=#ff0>{calc.coastTime}</color> spent coasting at maximum velocity of <color=#2af>{calc.topV}</color>.";
+                s += $"of which <color=#ff0>{calc.coastTime}</color> spent coasting at maximum velocity of <color=#2af>{calc.topV}</color>.";
             else 
-                s += $", followed by immediate turnover at <color=#2af>{calc.topV}</color>";
+                s += $"followed by immediate turnover at <color=#2af>{calc.topV}</color>";
 
             s += "\r\n";
 
@@ -102,10 +129,15 @@ namespace Scanner.Windows {
             s += "\r\n";
 
             var structureShieldingBonus = structureM.ValueSI * 0.6m / (decimal)habitatSurface / 1000;
+
+            var propellantShieldingBonus = 0m;
+
+            if (propellantAsShielding.ToggleState)
+                propellantShieldingBonus = propellantMass.ValueSI / (1m + lnM) * 0.8m / (decimal)habitatSurface / 1000; // propellant exhausted during voyage
             
             // dosage:
             var msvperyear = cosmicRays.NumericValue;
-            msvperyear *= (float)System.Math.Pow(System.Math.E, -(double)passiveShieldingM.NumericValue - (double)structureShieldingBonus);
+            msvperyear *= (float)System.Math.Pow(System.Math.E, -(double)passiveShieldingM.NumericValue - (double)structureShieldingBonus - (double)propellantShieldingBonus);
             // active magnetic shielding:
             msvperyear *= 1f - (activeShieldingAtt.NumericValue * 0.85f); // 85% are charged particles, 15% are neutrons and photons, which aren't affected by active shielding
 
@@ -137,32 +169,33 @@ namespace Scanner.Windows {
 
             projAreaPerMan      = GenerateSlider("habitat PA", 10, 50, 25, "m<sup>2</sup> / person");
             areaMultiplier      = GenerateSlider("PA->surface", 1, 20, 3, "x", "f1");
-            nominalCrew         = GenerateSlider("crew", 5000, 100000, 50000, ""); nominalCrew.logarithmic = true;
+            nominalCrew         = GenerateSlider("habitation", 5000, 100000, 50000, "ppl"); nominalCrew.logarithmic = true;
             overpopulation      = GenerateSlider("sardine", 1f, 5f, 1f, "", "p0");
             distanceToTarget    = GenerateSlider("distance", 1, 30, 20f, "ly", "f2"); distanceToTarget.logarithmic = true;
-            brachisto           = GenerateCheckbox("Infinite fuel");
-            propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
-            engineMass          = GenerateSlider("engine m", 1, 50000, 20000, "t", "f0"); engineMass.logarithmic = true;
-            exhaustVelocity     = GenerateSlider("exhaust V", 10000, 50000000, 40000000, "ms<sup>-1</sup>", "G2"); exhaustVelocity.logarithmic = true;
+            brachisto           = GenerateCheckbox("Allow fuel mining");
 
-            
-            // engineThrust        = GenerateSlider("THRUST", 10, 50000000, 5000000, "N", "f0"); engineThrust.logarithmic = true;
-            propellantFlow      = GenerateSlider("prop flow", 0.00001f, 150, 100, "kg/s", "f5"); propellantFlow.logarithmic = true;
+            propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
+            engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");
+            engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0"); engineMass.logarithmic = true;
+            exhaustVelocity     = GenerateSlider("exhaust V", 10000, 50000000, 40000000, "ms<sup>-1</sup>", "G2"); exhaustVelocity.logarithmic = true;
+            propellantFlow      = GenerateSlider("prop flow", 0.00001f, 150, 85, "kg/s", "f5"); propellantFlow.logarithmic = true;
             engineHeatFactor    = GenerateSlider("engine heat", 0, 1, 0.2f, "", "p0");
 
             structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0");
-
             maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2"); maxToleratedSpeed.logarithmic = true;
-
             passiveShieldingM   = GenerateSlider("shielding", 0f, 4.5f, 1f, "t/m<sup>2</sup>", "f1");
+            propellantAsShielding = GenerateCheckbox("Propellant radshield");
             percentageShielded  = GenerateSlider("pct shielded", 0f, 1f, 0.5f, "", "p0");
-
             activeShieldingAtt  = GenerateSlider("active Shld", 0, 1, 0, "-", "p0");
 
             cosmicRays          = GenerateSlider("cosmic rays", 100, 2000, 600, "mSv/yr", "f0");
 
-            exhaustVelocity.GetComponent<Slider>().SetValueExternal(0.77f); // D-He3 fusion values
-            propellantFlow.GetComponent<Slider>().SetValueExternal(0.52f);
+            try { 
+                exhaustVelocity.GetComponent<Slider>().SetValueExternal(0.77f); // D-He3 fusion values
+                propellantFlow.GetComponent<Slider>().SetValueExternal(0.557f);
+            } catch (System.Exception) {
+
+            }
         }
 
 
