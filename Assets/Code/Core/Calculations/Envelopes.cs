@@ -10,6 +10,162 @@ namespace Core.Calculations {
         static public decimal Root(this decimal item) {
             return (decimal)Math.Sqrt((double)item);
         }
+
+        static public decimal Ln(this decimal item) {
+            return (decimal)Math.Log((double)item);
+        }
+
+        static public decimal Log10(this decimal item) {
+            return (decimal)Math.Log10((double)item);
+        }
+
+        public static double LambertW(double x)
+        {
+            // LambertW is not defined in this section
+            if (x < -Math.Exp(-1))
+                throw new Exception("The LambertW-function is not defined for " + x + ".");
+
+            // computes the first branch for real values only
+
+            // amount of iterations (empirically found)
+            int amountOfIterations = Math.Max(4, (int)Math.Ceiling(Math.Log10(x) / 3));
+
+            // initial guess is based on 0 < ln(a) < 3
+            double w = 3 * Math.Log(x + 1) / 4;
+
+            // Halley's method via eqn (5.9) in Corless et al (1996)
+            for (int i = 0; i < amountOfIterations; i++)
+                w = w - (w * Math.Exp(w) - x) / (Math.Exp(w) * (w + 1) - (w + 2) * (w * Math.Exp(w) - x) / (2 * w + 2));
+
+            return w;
+        }
+    }
+
+    public struct BrachistochroneCalculation {
+        public Velocity topV;
+        public TimeSI burnTimePrograde;
+        public TimeSI coastTime;
+        public TimeSI burnTimeRetrograde;
+        public Mass propellantExpenditure;
+        public Distance distanceAfterBurning;
+        public Accel acceleration;
+        public decimal estimatedAccelerationFactor;
+    }
+
+    public class Brachistochrone {
+        public static BrachistochroneCalculation CalculateBrachistochrone(Mass dryMass, Mass propellantMass, Distance distance, Velocity exhaustV, CustomSIValue propellantFlow, bool allowRefills) {
+            if (allowRefills) {
+                propellantMass = new Mass(propellantMass.ValueSI / 2);
+            }
+
+            var m0 = (dryMass + propellantMass).ValueSI;
+            var lnM = (m0 / dryMass.ValueSI).Ln();
+            var d = distance.ValueSI;
+            var F = exhaustV.ValueSI * propellantFlow.ValueSI;
+
+            var a0 = F / m0;
+
+            // end acceleration is F / drymass, but that's only at the end
+            // most of the time is spent near F / wetmass.
+            // it will take 2nd order integration to get the real value.
+            var aEff = F / m0 * (1m + lnM).Root();
+
+            if (allowRefills) {
+                aEff = F / m0;
+            }
+
+
+            var flow = propellantFlow.ValueSI;
+            var halfBurnTimeBasedOnFuel = propellantMass.ValueSI / flow / 2;
+
+            var neededBurnTimeHalfForMidTurnover = (d / aEff).Root();
+
+            var tBurnHalf = neededBurnTimeHalfForMidTurnover;
+
+            if (!allowRefills && neededBurnTimeHalfForMidTurnover > halfBurnTimeBasedOnFuel) { // not enough fuel for true brachisto
+                tBurnHalf = halfBurnTimeBasedOnFuel;
+            }
+
+            var vAtBurnTimeHalf = aEff * tBurnHalf;
+            var distanceAtBurnTimeHalf = aEff * tBurnHalf * tBurnHalf / 2;
+
+            var remainingCoastDistance = d - distanceAtBurnTimeHalf * 2;
+            var coastTime = 0m;
+
+            if (remainingCoastDistance > 100m) {
+                coastTime = remainingCoastDistance / vAtBurnTimeHalf;
+            }
+
+            var propellantExpenditure = flow * tBurnHalf * 2;
+
+            var result = new BrachistochroneCalculation {
+                burnTimePrograde = new TimeSI(tBurnHalf),
+                burnTimeRetrograde = new TimeSI(tBurnHalf),
+                coastTime = new TimeSI(coastTime),
+                distanceAfterBurning = new Distance(distanceAtBurnTimeHalf),
+                propellantExpenditure = new Mass(propellantExpenditure),
+                topV = new Velocity(vAtBurnTimeHalf),
+                acceleration = new Accel(aEff),
+                estimatedAccelerationFactor = aEff / a0,
+
+            };
+
+            return result;
+        }
+
+        public static void CalculateBrachistochroneWithPropellantLoss(Mass dryMass, Mass propellantMass, Distance distance, Velocity exhaustV, CustomSIValue propellantFlow) {
+            var m0 = (dryMass + propellantMass).ValueSI;
+            var lnM = (decimal)Math.Log((double)(m0 / dryMass.ValueSI));
+            var d = distance.ValueSI;
+            var F = exhaustV.ValueSI * propellantFlow.ValueSI;
+
+            var deltaV0 = exhaustV.ValueSI * lnM;
+
+            // insideW = (d f)/(e M v) - 1/e;
+            // d = M/f - (M e^(  W(insideW) + 1) ) /f
+            
+            var a0 = F / m0;
+
+            var tNaive = (d / a0).Root();
+
+            // in reality, acceleration will increase in the latter stage 
+
+            // first, a numeric method:
+            // estimate timestep:
+            int NUMERIC_STEPS = 1000;
+            var Δt = tNaive / NUMERIC_STEPS;
+
+
+            var dryMassKg = dryMass.ValueSI;
+            var currentMassPropellantKg = propellantMass.ValueSI;
+            var flow = propellantFlow.ValueSI;
+
+            var x = 0m;
+            var v = 0m;
+            
+            for (var i = 0; i < NUMERIC_STEPS*5; i++) {
+
+                var m = dryMassKg + currentMassPropellantKg;
+                var deltaVRemaining = exhaustV.ValueSI * (m / dryMassKg).Ln();
+
+                var decelerating = deltaVRemaining <= deltaV0 / 2;
+                
+                var a = F / m;
+
+                if (decelerating) a *= -1m;
+              
+                // leapfrog:
+                // vₑ = v₀ + ½a₀Δt //vₑ is "vee zero point five" basically.
+                // x₁ = x₀ + vₑΔt
+                // v₁ = vₑ + ½a₁Δt
+
+                v += 0.5m * a * Δt;
+                x += v * Δt;
+                v += 0.5m * a * Δt;
+
+                currentMassPropellantKg -= flow * Δt;
+            }
+        }
     }
 
     public class EnvelopeCalculations {

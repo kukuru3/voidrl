@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Core.Calculations;
 using Core.Units;
 using K3;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using static Core.Units.Mass;
 
@@ -66,55 +68,65 @@ namespace Scanner.Windows {
 
             var thrust = (decimal)(exhaustVelocity.NumericValue * propellantFlow.NumericValue);
 
-            var accel0 = thrust / totalWetMass.ValueSI;
-
             var pctDry = totalShieldingMass.ValueSI / dryMassKg.ValueSI;
 
-            s += $"THRUST: {thrust/1000:F0}kN | {thrust/1000000:F2}MN\r\n";
+            var massRatio = totalWetMass.ValueSI / dryMassKg.ValueSI;
 
-            s += $"Crew: {pplActual:f0}\r\n";
-            s += $"Radiation Shielding mass: {totalShieldingMass} ({pctDry:P1} of dry mass)\r\n";
-            s += $"Total mass: {totalWetMass} (Ship:{dryMassKg} , Propellant:{ propellantMass })\r\n";
+            s += $"THRUST: <color=#fc2>{thrust/1000:F0}kN</color> | <color=#fc2>{thrust/1000000:F2}MN</color>(v<sub>e</sub>=<color=#c40>{new Velocity((decimal)exhaustVelocity.NumericValue).As(VelocityUnits.C):p2}c</color>) ; Mass Ratio: <color=#6c0>{massRatio:f}</color>\r\n";
+            
 
-            s += $"Surface: {habitatSurface:f0}m<sup>2</sup>\r\n";
+            s += $"Crew total: {pplActual:f0}\r\n";
+            s += $"Radiation Shielding mass: <color=#122>{totalShieldingMass}</color> ({pctDry:P1} of dry mass)\r\n";
+            s += $"Total mass: <color=#122>{totalWetMass}</color> (Ship:<color=#122>{dryMassKg}</color> , Propellant:<color=#122>{ propellantMass }</color>)\r\n";
 
-            if (isInfiniteFuel) {
-                var estimate = Void.SpaceMath.EstimateTravelTime(distance.ValueSI, maxV.ValueSI, accel0);
-                var t = new TimeSI(estimate.totalTime);
-                var d = new Distance(estimate.distance);
-                var v = new Velocity(estimate.maxV);
-                var ct = new TimeSI(estimate.coastTime);
-                var fuelExpenditure = (decimal)propellantFlow.NumericValue;
-                var totalFuelSpent = new Mass(t.ValueSI * fuelExpenditure);
-                var fractionFuelSpent = totalFuelSpent.ValueSI / (decimal)propellantMass.ValueSI;
-                s += $"Brachisto-estimate: {t} to traverse {d}. MaxV={v}. Coast time: {ct}\r\n";
-                s += $"Fuel needed: {totalFuelSpent} ({fractionFuelSpent:p1} of initial propellant)\r\n";
-            } else {
+            var calc = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, new Velocity((decimal)exhaustVelocity.NumericValue),  new Core.CustomSIValue((decimal)propellantFlow.NumericValue, "kg/s"), isInfiniteFuel);
+            var totalTime = calc.burnTimePrograde + calc.burnTimeRetrograde + calc.coastTime;
 
-            }
+            var propPercent = calc.propellantExpenditure.ValueSI / propellantMass.ValueSI;
+            var collectedPropellant =  calc.propellantExpenditure - propellantMass ;
 
+            s += $"Brachisto-estimate: Accelerating at <color=#129>{calc.acceleration}</color> (with correction factor <color=#36f>{calc.estimatedAccelerationFactor:f2}</color>)),"
+              + $"distance <color=#f4c>{distance}</color> reached in <color=#ff0>{totalTime}</color>";
+
+            if (calc.coastTime.ValueSI > 100)
+                s += $", of which <color=#ff0>{calc.coastTime}</color> spent coasting at maximum velocity of <color=#2af>{calc.topV}</color>.";
+            else 
+                s += $", followed by immediate turnover at <color=#2af>{calc.topV}</color>";
+
+            s += "\r\n";
+
+            s+= $"<color=#ea3>{calc.propellantExpenditure} ({propPercent:p0})</color> propellant expended.";
+
+            if (collectedPropellant.ValueSI > 100)
+                s+= $" <color=#ea3>({collectedPropellant}</color> will have to be MINED from the Oort cloud along the way)";
+            s += "\r\n";
 
             var structureShieldingBonus = structureM.ValueSI * 0.6m / (decimal)habitatSurface / 1000;
             
             // dosage:
             var msvperyear = cosmicRays.NumericValue;
             msvperyear *= (float)System.Math.Pow(System.Math.E, -(double)passiveShieldingM.NumericValue - (double)structureShieldingBonus);
-            msvperyear *= 1f - activeShieldingAtt.NumericValue;
-            s += $"Dosage: {msvperyear:f1}mSv/year\r\n";
+            // active magnetic shielding:
+            msvperyear *= 1f - (activeShieldingAtt.NumericValue * 0.85f); // 85% are charged particles, 15% are neutrons and photons, which aren't affected by active shielding
+
+            var xrays = msvperyear / 0.03f;
+            s += $"Each person absorbs: <color=#020>{msvperyear:f1}mSv</color> (or <color=#020>{xrays:f0} chest x-rays</color>) each year.\r\n";
 
             // cancer incidence on Earth: 2*10e-3 per year
             // "1 year lost per Sievert of exposure in a population"
             var mortFactor = msvperyear / 800f; // so we put in 900 as a pessimistic estimate
             var q = mortFactor / (1f + mortFactor); // this can be proven with some trigonometry on the graph basically.
             var baseLifeExpectancy = 80;
-            var lifeExpectancy = baseLifeExpectancy * (1f - q);
+            var lifeExpectancy = (decimal)(baseLifeExpectancy * (1f - q));
             s += $"Life expectancy: {lifeExpectancy:f1}\r\n";
 
-            var radiationCancerCasesBruteForce = pplActual * q / baseLifeExpectancy;
-            var baselineCancerRate = pplActual / 500;
-            var cancerRateIncreaseDueToRadiation = radiationCancerCasesBruteForce / baselineCancerRate;
-            s += $"est. radiation cancer cases: {(int)(radiationCancerCasesBruteForce)}/year (+{cancerRateIncreaseDueToRadiation:P0} increase) \r\n";
-            
+            var radiationCancerCasesBruteForcePerYear = pplActual * q / baseLifeExpectancy;
+            var baselineCancerRate = pplActual / 500; 
+            var cancerRateIncreaseDueToRadiation = radiationCancerCasesBruteForcePerYear / baselineCancerRate;
+            s += $"est. radiation cancer cases: {(int)(radiationCancerCasesBruteForcePerYear)}/year (+{cancerRateIncreaseDueToRadiation:P0} increase) \r\n";
+            var yearsInTransit = totalTime.As(TimeUnits.Years);
+            var gens = yearsInTransit / 25m;
+            s += $"A total of {gens:f0} generations would live and die on the ship. {(gens-1)*(decimal)pplActual:f0} would be born. Of those, {totalTime.As(TimeUnits.Years) * (decimal)radiationCancerCasesBruteForcePerYear:f0} would have died from cancer due to radiation during the voyage.";
             resultLabel.text = s;
             
         }
@@ -131,7 +143,9 @@ namespace Scanner.Windows {
             brachisto           = GenerateCheckbox("Infinite fuel");
             propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
             engineMass          = GenerateSlider("engine m", 1, 50000, 20000, "t", "f0"); engineMass.logarithmic = true;
-            exhaustVelocity     = GenerateSlider("exhaust V", 10000, 50000000, 40000000, "ms<sup>-1</sup>"); exhaustVelocity.logarithmic = true;
+            exhaustVelocity     = GenerateSlider("exhaust V", 10000, 50000000, 40000000, "ms<sup>-1</sup>", "G2"); exhaustVelocity.logarithmic = true;
+
+            
             // engineThrust        = GenerateSlider("THRUST", 10, 50000000, 5000000, "N", "f0"); engineThrust.logarithmic = true;
             propellantFlow      = GenerateSlider("prop flow", 0.00001f, 150, 100, "kg/s", "f5"); propellantFlow.logarithmic = true;
             engineHeatFactor    = GenerateSlider("engine heat", 0, 1, 0.2f, "", "p0");
@@ -147,26 +161,8 @@ namespace Scanner.Windows {
 
             cosmicRays          = GenerateSlider("cosmic rays", 100, 2000, 600, "mSv/yr", "f0");
 
-            // passive shielding mass, t / m2
-            // % habitats shielded
-            
-            // active shielding attenuation factor
-            
-
-            // intermediaries and outputs:
-
-            // specific impulse
-            // dry mass
-            // wet mass
-            // (fusion) engine bell radius
-            // received dosage per year
-            // life expectancy
-            // medical cancer healing
-
-            // refuel efficiency critical speed
-
-            
-            
+            exhaustVelocity.GetComponent<Slider>().SetValueExternal(0.77f); // D-He3 fusion values
+            propellantFlow.GetComponent<Slider>().SetValueExternal(0.52f);
         }
 
 

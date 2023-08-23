@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using Core.Calculations;
 
 namespace Core {
     public abstract class UnitInfo<TUnit> : IUnitInfo<TUnit> {
@@ -20,6 +22,8 @@ namespace Core {
     public abstract class SIValue {
         protected readonly decimal value;
         public SIValue(decimal value) { this.value = value; }
+
+        public decimal ValueSI => value;
     }
 
     public class CustomSIValue : SIValue {
@@ -33,9 +37,29 @@ namespace Core {
 
         internal IUnitInfo<TUnit> UnitInfo => UnitInfoBroker.GetUnitInfo<TUnit>();
 
-        public decimal ValueSI => value;
-        public decimal As(TUnit unit) => value * UnitInfo.GetInverseMultiplier(unit);
-        public string  PrintAs(TUnit unit) => $"{As(unit):F3}{UnitInfo.GetSuffix(unit)}";
+        public decimal As(TUnit unit) { 
+            var mul = UnitInfo.GetInverseMultiplier(unit);
+            return value * mul;
+        }
+        public string  PrintAs(TUnit unit) {
+            var q = As(unit);
+
+            var formatString = "f0";
+
+            var absQ = Math.Abs(q);
+            if (absQ > 0.0000000001m) {                   
+                var exponent = absQ.Log10();
+
+                if (exponent < -3) formatString = "E";
+                else if (exponent < -1) formatString = "f3";
+                else if (exponent > 7) formatString = "E";
+                else if (exponent < 0) formatString = "f3";
+                else if (exponent < 1) formatString = "f1";
+            }
+            var number = q.ToString(formatString);
+
+            return $"{number}{UnitInfo.GetSuffix(unit)}";
+        }
 
         public override string ToString() {
             var absVal = Math.Abs(value);

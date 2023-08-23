@@ -20,7 +20,10 @@
     }
 
     class UnitInfo_Accel : UnitInfo<AccelUnits> {
-        public override decimal GetMultiplier(AccelUnits t) => t switch { AccelUnits.MetersPerSecondSquared => 1m, AccelUnits.G => Constants.g, _ => throw new System.Exception() };
+        public override decimal GetMultiplier(AccelUnits t) => t switch { 
+            AccelUnits.MetersPerSecondSquared => 1m, 
+            AccelUnits.G => Constants.g, 
+            _ => throw new System.Exception() };
 
         public override string GetSuffix(AccelUnits t) => t switch { AccelUnits.MetersPerSecondSquared => "m/s²", AccelUnits.G => "g", _ => $"{t}" };
     }    

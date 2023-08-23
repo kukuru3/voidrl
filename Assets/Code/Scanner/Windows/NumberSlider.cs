@@ -21,7 +21,7 @@ namespace Scanner.Windows {
             SyncText();
         }
 
-        public float NumericValue { get {
+        public float NumericValue    { get {
             if (logarithmic) {
                 var delta = max - min; if (delta <= 0) return min;
                 var R = Mathf.Log(max, 2f) - Mathf.Log(min, 2f);
