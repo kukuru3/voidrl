@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Calculations;
 using Core.Units;
 using UnityEngine;
 
@@ -47,7 +48,23 @@ namespace Core {
             var v = new Velocity(300_000, VelocityUnits.MetersPerSecond);
             Debug.Log(v);
         }
+        [UnityEditor.MenuItem("Void/SPACE MATH: test trajectory (non-brach)")]
+        static void T2() {
+            static void Print(TravelTimeCalculator.TravelTime kalk) => 
+                Debug.Log($"{(kalk.isBrachistochrone ? "BRACHISTOCHRONE" : "INERTIAL")}; vmax ={new Velocity(kalk.turnoverV)}; tTotal={new TimeSI(kalk.TotalTime)}; tAsc={new TimeSI(kalk.progradeBurnTime)}; tCoast = {new TimeSI(kalk.coastTime)}; tDesc = {new TimeSI(kalk.retrogradeBurnTime)}");
 
+            var kalk = TravelTimeCalculator.CalculateComplexWithRootFinding(new Distance(100), new Mass(10), new Mass(90), new Velocity(10), new CustomSIValue(1, "kg/s"));
+            Print(kalk);
+
+            kalk = TravelTimeCalculator.CalculateComplexWithRootFinding(new Distance(10), new Mass(10), new Mass(90), new Velocity(10), new CustomSIValue(1, "kg/s"));
+            Print(kalk);
+
+            kalk = TravelTimeCalculator.CalculateComplexWithRootFinding(new Distance(10000), new Mass(10), new Mass(90), new Velocity(10), new CustomSIValue(1, "kg/s"));
+            Print(kalk);
+
+        }
+
+        
 
     }
 }

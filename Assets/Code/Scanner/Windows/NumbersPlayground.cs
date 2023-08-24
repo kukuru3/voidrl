@@ -109,37 +109,21 @@ namespace Scanner.Windows {
             var propFlow = new Core.CustomSIValue((decimal)propellantFlow.NumericValue * numEngines, "kg/s");
             var vExhaust = new Velocity((decimal)exhaustVelocity.NumericValue);
 
-            // var calc = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, vExhaust, propFlow, isInfiniteFuel);
+            var calculation = TravelTimeCalculator.CalculateComplexWithRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow);
+            var totalTime = new TimeSI(calculation.TotalTime);
+            var turnoverV = new Velocity(calculation.turnoverV);
+            var propExpenditure = new Mass(calculation.isBrachistochrone ? (calculation.progradeBurnTime + calculation.retrogradeBurnTime) * propFlow.ValueSI : propellantMass.ValueSI);
 
-            var calcOld = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, vExhaust, propFlow, isInfiniteFuel);
-
-            var calc = NumericRootFindingBrachisto.FindBrachistoViaRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow );
-
-            var totalTime = calc.burnTimePrograde + calc.burnTimeRetrograde + calc.coastTime;
-
-            var propPercent = calc.propellantExpenditure.ValueSI / propellantMass.ValueSI;
-            var collectedPropellant =  calc.propellantExpenditure - propellantMass ;
-
-            s += $"Accelerating starts at <color=#129>{calc.acceleration}</color>\r\n"
-              + $"Distance <color=#f4c>{distance}</color> reached in <color=#ff0>{totalTime}</color>\r\n";
-
-
-            //if (calc.coastTime.ValueSI > 100)
-            //    s += $"of which <color=#ff0>{calc.coastTime}</color> spent coasting at maximum velocity of <color=#2af>{calc.topV}</color>.";
-            //else 
-            //    s += $"followed by immediate turnover at <color=#2af>{calc.topV}</color>";
-
-            s += "\r\n";
-
-            var totalTimeB = calcOld.coastTime + calcOld.burnTimePrograde + calcOld.burnTimeRetrograde;
+            s += $"Total time to reach target <color=#f4c>{distance}</color> away: <size=200><b><color=#cd2>{totalTime}</color></b></size>\r\n";
             
-            s += $"Naive, non integral estimate put it at <color=#ff0>{totalTimeB}</color> (burn {calcOld.burnTimePrograde}) / {calcOld.topV}\r\n";
-
-            s+= $"<color=#ea3>{calc.propellantExpenditure} ({propPercent:p0})</color> propellant expended.";
-
-            if (collectedPropellant.ValueSI > 100)
-                s+= $" <color=#ea3>({collectedPropellant}</color> will have to be MINED from the Oort cloud along the way)";
-            s += "\r\n";
+            if (calculation.isBrachistochrone) {
+                s+= $"The movement is <color=#a31>Brachistochrone</color> - turnover at <color=#cd2>{new TimeSI(calculation.progradeBurnTime)}</color> at <color=#2af>{turnoverV}</color>\r\n";
+                s+= $"During this time, <color=#ea3>{propExpenditure}</color> of propellant will be expended, and <color=#ea3>{propellantMass - propExpenditure}</color> remaining\r\n";
+            } else {
+                s+= $"Acceleration burn: <color=#cd2>{new TimeSI(calculation.progradeBurnTime)}</color>, retro burn <color=#cd2>{new TimeSI(calculation.retrogradeBurnTime)}</color>\r\n";
+                s+= $"The ship will coast for <color=#cd2>{new TimeSI(calculation.coastTime)}</color> at <color=#2af>{turnoverV}</color>\r\n";
+                s+= $"During this time, all of <color=#ea3>{propExpenditure}</color> propellant will be expended\r\n";
+            }
 
             var structureShieldingBonus = structureM.ValueSI * 0.6m / (decimal)habitatSurface / 1000;
 
@@ -169,7 +153,9 @@ namespace Scanner.Windows {
             var baselineCancerRate = pplActual / 500; 
             var cancerRateIncreaseDueToRadiation = radiationCancerCasesBruteForcePerYear / baselineCancerRate;
             s += $"est. radiation cancer cases: {(int)(radiationCancerCasesBruteForcePerYear)}/year (+{cancerRateIncreaseDueToRadiation:P0} increase) \r\n";
+
             var yearsInTransit = totalTime.As(TimeUnits.Years);
+
             var gens = yearsInTransit / 25m;
             s += $"A total of {gens:f0} generations would live and die on the ship. {(gens-1)*(decimal)pplActual:f0} would be born. Of those, {totalTime.As(TimeUnits.Years) * (decimal)radiationCancerCasesBruteForcePerYear:f0} would have died from cancer due to radiation during the voyage.";
             resultLabel.text = s;
