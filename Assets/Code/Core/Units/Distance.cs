@@ -27,11 +27,14 @@ namespace Core.Units {
         static public TimeSI operator/(Distance d, Velocity v) => new TimeSI(d.ValueSI / v.ValueSI);
 
         public override string ToString() {
-            if (value < 0.1m) return $"{PrintAs(Milimeter)}";
-            if (value < 1000m) return $"{PrintAs(Meter)}";
-            if (value < 1000000m) return $"{PrintAs(Kilometer)}";
-            if (As(AU) < 1) return $"{PrintAs(Kilometer)} | {PrintAs(LightSecond)}";
-            if (As(LightYear) < 1) return $"{PrintAs(AU)} | {PrintAs(LightSecond)} | {PrintAs(Kilometer)}";
+
+            // bool Threshold(TimeUnits u, decimal lessThan) => System.Math.Abs(As(u)) < lessThan ;
+
+            if (Math.Abs(value) < 0.1m) return $"{PrintAs(Milimeter)}";
+            if (Math.Abs(value) < 1000m) return $"{PrintAs(Meter)}";
+            if (Math.Abs(value) < 1000000m) return $"{PrintAs(Kilometer)}";
+            if (Math.Abs(As(AU)) < 1) return $"{PrintAs(Kilometer)} | {PrintAs(LightSecond)}";
+            if (Math.Abs(As(LightYear)) < 1) return $"{PrintAs(AU)} | {PrintAs(LightSecond)} | {PrintAs(Kilometer)}";
             return PrintAs(LightYear);
         }
     }

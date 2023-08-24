@@ -20,12 +20,13 @@ namespace Core.Units {
         static public TimeSI operator/ (TimeSI a, decimal s) => new TimeSI(a.value / s);
 
         public override string ToString() {
-            if (As(Seconds)< 1) return PrintAs(Miliseconds);
-            if (As(Hours) < 1) return PrintAs(Seconds);
-            if (As(Hours) < 24) return PrintAs(Hours);
-            if (As(Hours) < 72) return $"{PrintAs(Hours)} | {PrintAs(Days)}";
-            if (As(Days)  < 30) return $"{PrintAs(Days)}";
-            if (As(Days)  < 1000) return $"{PrintAs(Days)} | {PrintAs(Years)} ";
+            bool Threshold(TimeUnits u, decimal lessThan) => System.Math.Abs(As(u)) < lessThan ;
+            if (Threshold(Seconds, 1)) return PrintAs(Miliseconds);
+            if (Threshold(Hours, 1)) return PrintAs(Seconds);
+            if (Threshold(Hours, 24)) return PrintAs(Hours);
+            if (Threshold(Hours, 72)) return $"{PrintAs(Hours)} | {PrintAs(Days)}";
+            if (Threshold(Days, 30)) return $"{PrintAs(Days)}";
+            if (Threshold(Days, 1000)) return $"{PrintAs(Days)} | {PrintAs(Years)} ";
             return PrintAs(Years);
         }
     }

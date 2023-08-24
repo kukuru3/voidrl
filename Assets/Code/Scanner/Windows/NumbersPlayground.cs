@@ -106,21 +106,34 @@ namespace Scanner.Windows {
             s += $"Total mass: <color=#122>{totalWetMass}</color> (Ship:<color=#122>{dryMassKg}</color> , Propellant:<color=#122>{ propellantMass }</color>)\r\n";
             
 
-            var calc = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, new Velocity((decimal)exhaustVelocity.NumericValue),  new Core.CustomSIValue((decimal)propellantFlow.NumericValue * numEngines, "kg/s"), isInfiniteFuel);
+            var propFlow = new Core.CustomSIValue((decimal)propellantFlow.NumericValue * numEngines, "kg/s");
+            var vExhaust = new Velocity((decimal)exhaustVelocity.NumericValue);
+
+            // var calc = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, vExhaust, propFlow, isInfiniteFuel);
+
+            var calcOld = Brachistochrone.CalculateBrachistochrone(dryMassKg, propellantMass, distance, vExhaust, propFlow, isInfiniteFuel);
+
+            var calc = NumericRootFindingBrachisto.FindBrachistoViaRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow );
+
             var totalTime = calc.burnTimePrograde + calc.burnTimeRetrograde + calc.coastTime;
 
             var propPercent = calc.propellantExpenditure.ValueSI / propellantMass.ValueSI;
             var collectedPropellant =  calc.propellantExpenditure - propellantMass ;
 
-            s += $"Accelerating at <color=#129>{calc.acceleration}</color> (with correction factor <color=#36f>{calc.estimatedAccelerationFactor:f2}</color>)) \r\n"
+            s += $"Accelerating starts at <color=#129>{calc.acceleration}</color>\r\n"
               + $"Distance <color=#f4c>{distance}</color> reached in <color=#ff0>{totalTime}</color>\r\n";
 
-            if (calc.coastTime.ValueSI > 100)
-                s += $"of which <color=#ff0>{calc.coastTime}</color> spent coasting at maximum velocity of <color=#2af>{calc.topV}</color>.";
-            else 
-                s += $"followed by immediate turnover at <color=#2af>{calc.topV}</color>";
+
+            //if (calc.coastTime.ValueSI > 100)
+            //    s += $"of which <color=#ff0>{calc.coastTime}</color> spent coasting at maximum velocity of <color=#2af>{calc.topV}</color>.";
+            //else 
+            //    s += $"followed by immediate turnover at <color=#2af>{calc.topV}</color>";
 
             s += "\r\n";
+
+            var totalTimeB = calcOld.coastTime + calcOld.burnTimePrograde + calcOld.burnTimeRetrograde;
+            
+            s += $"Naive, non integral estimate put it at <color=#ff0>{totalTimeB}</color> (burn {calcOld.burnTimePrograde}) / {calcOld.topV}\r\n";
 
             s+= $"<color=#ea3>{calc.propellantExpenditure} ({propPercent:p0})</color> propellant expended.";
 
