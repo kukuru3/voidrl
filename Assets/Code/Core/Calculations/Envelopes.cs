@@ -41,17 +41,6 @@ namespace Core.Calculations {
         }
     }
 
-    public struct BrachistochroneCalculation {
-        public Velocity topV;
-        public TimeSI burnTimePrograde;
-        public TimeSI coastTime;
-        public TimeSI burnTimeRetrograde;
-        public Mass propellantExpenditure;
-        public Distance distanceAfterBurning;
-        public Accel acceleration;
-        public decimal estimatedAccelerationFactor;
-    }
-
     public class EnvelopeCalculations {
         /// <param name="initialRelativeVelocity">if greater than zero, the target is APPROACHING us</param>
         public static Envelope GetFastestRendezvous(Velocity initialRelativeVelocity, Accel acceleration, Distance distance) {
@@ -79,30 +68,6 @@ namespace Core.Calculations {
             if ((tt1 + tStop).ValueSI > 0) e.AddStage(new Stage { name = "Break", duration = tt1 + tStop, acceleration = a * -1m});
 
             return e;
-            
-            //var t2 = velocity.ValueSI * velocity.ValueSI / acceleration.ValueSI / 2;
-
-            //if (initialRelativeVelocity.ValueSI < 0) {
-            //    velocity = new Velocity(Math.Abs(velocity.ValueSI));
-            //    // special consideration.
-            //    var t1 = acceleration.ValueSI * distance.ValueSI + velocity.ValueSI * velocity.ValueSI / 2;
-            //    t1 = t1.Root() / acceleration.ValueSI;
-
-            //    var result = new Envelope() { stages = new Stage[2] };
-            //    result.stages[0] = new Stage { name = "Burn", duration = new TimeSI(t1 + t2), acceleration = acceleration };
-            //    result.stages[1] = new Stage { name = "Deel", duration = new TimeSI(t2), acceleration = acceleration * -1 };
-            //    return result;
-            //} else {
-            //    var c = velocity * (velocity / acceleration) / 2 - distance;
-            //    var t1 = LeastPositive(SolveQuadratic(acceleration.ValueSI, 2 * initialRelativeVelocity.ValueSI, c.ValueSI ));
-            //    if (t1.HasValue) {
-            //        var result = new Envelope() { stages = new Stage[2] };
-            //        result.stages[0] = new Stage { name = "Burn", duration = new TimeSI(t1.Value), acceleration = acceleration };
-            //        result.stages[1] = new Stage { name = "Decel", duration = new TimeSI(t1.Value + t2), acceleration = acceleration * -1 };
-            //        return result;
-            //    }
-            //    throw new System.InvalidOperationException("Can't calculate");                
-            //}
         }
 
         public static (decimal x1, decimal x2) SolveQuadratic(decimal a, decimal b, decimal c) {

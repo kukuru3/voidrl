@@ -21,7 +21,7 @@ MonoBehaviour:
     value: 2
   threshold:
     overrideState: 1
-    value: 0.5
+    value: 0.7
   softKnee:
     overrideState: 0
     value: 0.5
@@ -101,19 +101,19 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0.835
+    value: 1
   chromaticAberration:
     overrideState: 0
-    value: 1.1
+    value: 1.05
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.199, b: 0.234, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.0054
+    value: 0.0012
   greenify:
     overrideState: 1
-    value: 0.065
+    value: 0.122
   flickerIntensity:
     overrideState: 1
     value: 0.02
@@ -125,7 +125,7 @@ MonoBehaviour:
     value: 3
   scanlineEffect:
     overrideState: 1
-    value: 0.563
+    value: 0.637
   scanlineSpeed:
     overrideState: 0
     value: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
     value: 1
   colorCurve:
     overrideState: 1
-    value: 0.2
+    value: 0.3
 --- !u!114 &1302253812162679686
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -157,7 +157,7 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0.26
+    value: 0.083
   fastMode:
     overrideState: 1
     value: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
     defaultState: 1
   tonemapper:
     overrideState: 1
-    value: 1
+    value: 2
   toneCurveToeStrength:
     overrideState: 1
     value: 0
@@ -265,7 +265,7 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 0
+    overrideState: 1
     value: -3
   tint:
     overrideState: 0
@@ -275,19 +275,19 @@ MonoBehaviour:
     value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     overrideState: 0
-    value: -180
+    value: -121
   saturation:
     overrideState: 0
-    value: 0
+    value: -100
   brightness:
     overrideState: 0
     value: 0
   postExposure:
     overrideState: 0
-    value: 0
+    value: -1.22
   contrast:
-    overrideState: 0
-    value: 30
+    overrideState: 1
+    value: 0
   mixerRedOutRedIn:
     overrideState: 0
     value: 100

@@ -20,6 +20,10 @@ namespace Scanner.Charting {
         [SerializeField] float hPerAmountUnit;
         [SerializeField] float fixedHeight;
 
+        [SerializeField] float rimThickness;
+        [SerializeField] float rimDistance;
+        [SerializeField] Color rimColor;
+
         public void ClearEntries() {
             entries.Clear();
         }
@@ -40,7 +44,7 @@ namespace Scanner.Charting {
                 Draw.Matrix = transform.localToWorldMatrix;
 
                 var delimiterWidth = 2;
-                var widthAvailable = w - delimiterWidth * (entries.Count - 1);
+                var widthAvailable = w - delimiterWidth * (entries.Count-1);
                 var h = hPerAmountUnit * sumAll;
                 if (h < 20) h = 20;
                 if (fixedHeight >= 1) h = fixedHeight;
@@ -48,9 +52,10 @@ namespace Scanner.Charting {
                 var previouslabelAlsoCouldntFit = false;
                 var bottomlabelOffsetIndex = 0;
 
+               
                 var x0 = 0f;
                 foreach (var entry in entries) {
-                    var wEntry = w * entry.amount / sumAll;
+                    var wEntry = widthAvailable * entry.amount / sumAll;
                     if (entry.amount < float.Epsilon) continue;
                     if (wEntry < 1) wEntry = 1;
                     // var f = Draw.GradientFill; f.colorStart = entry.color; f.colorEnd = entry.color;
@@ -67,6 +72,12 @@ namespace Scanner.Charting {
                     }
                     x0 += wEntry;
                     x0 += delimiterWidth;
+                }
+
+                 if (rimThickness > 0) { 
+                    var rd = rimDistance + rimThickness;
+                    Draw.RectangleBorder(new Vector3(0,-h,0), new Rect(-rd, -rd, w + 2 * rd, h + 2 * rd), rimThickness, rimColor);
+                    // Draw.Rectangle(new Vector3(0, -h, 0), new Rect(-rimDistance, -rimDistance, w + 2 * rimDistance, h + 2 * rimDistance), /* rimThickness, */ rimColor);
                 }
             }
         }

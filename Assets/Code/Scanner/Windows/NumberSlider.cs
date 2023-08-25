@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using K3;
+using UnityEngine;
 
 namespace Scanner.Windows {
     internal class NumberSlider : MonoBehaviour {
@@ -11,7 +12,7 @@ namespace Scanner.Windows {
         [SerializeField] TMPro.TMP_Text text;
         protected Slider slider;
 
-        private void Start() {
+        private void Awake() {
             slider = GetComponent<Slider>();
             slider.ValueChanged += OnSliderVC;
             OnSliderVC(slider.Value);
@@ -21,12 +22,22 @@ namespace Scanner.Windows {
             SyncText();
         }
 
+        public void SetSliderTFromValue(float newNumericValue) {
+            if (logarithmic) {
+                var s = Mathf.Log10(min);
+                var D = Mathf.Log10(max) - s;
+                var v01 = (Mathf.Log10(newNumericValue) - s) / D;
+                slider.SetValueExternal(v01);
+            } else {
+                slider.SetValueExternal(newNumericValue.Map(min, max, 0f, 1f));
+            }
+        }
+
         public float NumericValue    { get {
             if (logarithmic) {
-                var delta = max - min; if (delta <= 0) return min;
-                var R = Mathf.Log(max, 2f) - Mathf.Log(min, 2f);
-                var e0 = Mathf.Log(min, 2f);
-                return Mathf.Pow(2, e0 + R * slider.Value);
+                var s = Mathf.Log10(min);
+                var D = Mathf.Log10(max) - s;
+                return Mathf.Pow(10, s + slider.Value * D);
             } else { 
                 return Mathf.Lerp(min, max, slider.Value);
             }

@@ -3,12 +3,11 @@ using Core.Calculations;
 using Core.Units;
 using K3;
 using Scanner.Charting;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using static Core.Units.Mass;
 
 namespace Scanner.Windows {
-    internal class NumbersPlayground : MonoBehaviour {
+    internal class MissionProfile : MonoBehaviour {
         [SerializeField] GameObject sliderPrefab;
         [SerializeField] GameObject checkboxPrefab;
 
@@ -28,7 +27,7 @@ namespace Scanner.Windows {
         private NumberSlider nominalCrew;
         private NumberSlider overpopulation;
         private NumberSlider distanceToTarget;
-        private Toggle brachisto;
+        private Toggle infiniteFuel;
         private NumberSlider propellantMassTotal;
         private NumberSlider engineMass;
         private NumberSlider exhaustVelocity;
@@ -69,8 +68,6 @@ namespace Scanner.Windows {
 
             var propellantMass = new Mass((decimal)propellantMassTotal.NumericValue, MassUnits.Mt);
             var totalWetMass = dryMassKg + propellantMass;
-
-            var isInfiniteFuel = brachisto.ToggleState;
 
             var distance = new Distance((decimal)distanceToTarget.NumericValue, DistanceUnits.LightYear);
             var maxV = new Velocity((decimal)maxToleratedSpeed.NumericValue, VelocityUnits.C);
@@ -130,7 +127,7 @@ namespace Scanner.Windows {
             var propellantShieldingBonus = 0m;
 
             if (propellantAsShielding.ToggleState)
-                propellantShieldingBonus = propellantMass.ValueSI / (1m + lnM) * 0.8m / (decimal)habitatSurface / 1000; // propellant exhausted during voyage
+                propellantShieldingBonus = propellantMass.ValueSI / (1m + lnM) * 0.9m / (decimal)habitatSurface / 1000; // propellant exhausted during voyage
             
             // dosage:
             var msvperyear = cosmicRays.NumericValue;
@@ -168,20 +165,19 @@ namespace Scanner.Windows {
 
             projAreaPerMan      = GenerateSlider("habitat PA", 10, 50, 25, "m<sup>2</sup> / person");
             areaMultiplier      = GenerateSlider("PA->surface", 1, 20, 3, "x", "f1");
-            nominalCrew         = GenerateSlider("habitation", 5000, 100000, 50000, "ppl"); nominalCrew.logarithmic = true;
+            nominalCrew         = GenerateSlider("habitation", 5000, 100000, 50000, "ppl", logarithmic: true);
             overpopulation      = GenerateSlider("sardine", 1f, 5f, 1f, "", "p0");
-            distanceToTarget    = GenerateSlider("distance", 1, 30, 20f, "ly", "f2"); distanceToTarget.logarithmic = true;
-            brachisto           = GenerateCheckbox("Allow fuel mining");
+            distanceToTarget    = GenerateSlider("distance", 1, 30, 20f, "ly", "f2", logarithmic: true);
 
             propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
             engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");
-            engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0"); engineMass.logarithmic = true;
-            exhaustVelocity     = GenerateSlider("exhaust V", 10000, 50000000, 40000000, "ms<sup>-1</sup>", "G2"); exhaustVelocity.logarithmic = true;
-            propellantFlow      = GenerateSlider("prop flow", 0.00001f, 150, 85, "kg/s", "f5"); propellantFlow.logarithmic = true;
+            engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0", logarithmic: true); 
+            exhaustVelocity     = GenerateSlider("exhaust V", 1e4f, 1e8f, 1e7f, "ms<sup>-1</sup>", "G2", logarithmic: true);
+            propellantFlow      = GenerateSlider("prop flow", 0.001f, 200, 0.7f, "kg/s", "f5", logarithmic: true); 
             engineHeatFactor    = GenerateSlider("engine heat", 0, 1, 0.2f, "", "p0");
 
             structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0");
-            maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2"); maxToleratedSpeed.logarithmic = true;
+            maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2", logarithmic: true);
             passiveShieldingM   = GenerateSlider("shielding", 0f, 4.5f, 1f, "t/m<sup>2</sup>", "f1");
             propellantAsShielding = GenerateCheckbox("Propellant radshield");
             percentageShielded  = GenerateSlider("pct shielded", 0f, 1f, 0.5f, "", "p0");
@@ -209,13 +205,14 @@ namespace Scanner.Windows {
             }
         }
 
-        NumberSlider GenerateSlider(string name, float min, float max, float initialSliderValue, string suffix, string format = "f0") {
+        NumberSlider GenerateSlider(string name, float min, float max, float initialSliderValue, string suffix, string format = "f0", bool logarithmic = false) {
             var go = Instantiate(sliderPrefab, transform); 
             var sld = go.GetComponent<NumberSlider>();
             sld.GetComponent<Slider>().SetCaption(name);
             sld.min = min; sld.max = max; sld.suffix = suffix; sld.format = format;
+            sld.logarithmic = logarithmic;
             AddElement(go);
-            sld.GetComponent<Slider>().SetValueExternal(initialSliderValue.Map(min, max, 0f, 1f));
+            sld.SetSliderTFromValue(initialSliderValue);
             sld.GetComponent<Slider>().ValueChanged += _ => RecalculateAll();
             return sld;
         }

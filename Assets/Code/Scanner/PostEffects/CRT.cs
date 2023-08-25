@@ -44,7 +44,7 @@ namespace Scanner.PostEffects {
             sheet.properties.SetFloat("_ColorCurve", settings.colorCurve);
             sheet.properties.SetFloat("_FlickerIntensity", settings.flickerIntensity);
 
-            var scanlineLight = settings.brightnessBaseline * (1 + settings.scanlineEffect * 0.75f);
+            var scanlineLight = settings.brightnessBaseline * (1 + settings.scanlineEffect * 0.2f);
             var scanlineDark  = settings.brightnessBaseline * (1f - settings.scanlineEffect);
 
             sheet.properties.SetVector("_ScanlineProps", new Vector4(settings.scanlineRepeat, settings.scanlineSpeed, scanlineLight, scanlineDark));
