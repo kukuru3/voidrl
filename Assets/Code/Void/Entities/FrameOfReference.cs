@@ -9,8 +9,7 @@ namespace Void.Entities {
     }
 
     public class FrameOfReference {
-        public Layers layer;
-        
+        public Layers layer;        
         public IEnumerable<FrameOfReference> Children => throw new System.NotImplementedException();
     }
 }

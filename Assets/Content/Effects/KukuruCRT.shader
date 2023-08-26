@@ -13,8 +13,9 @@ Shader "Scanner/CRT"
     float _Greenify;
     float _ColorCurve;
 
+    half4 _CentralBleed;
+
     half3 _ShadowBaseline;
-    float _ShadowCutoff;
 
     float4 _ScanlineProps; // repeat, speed, dark, light
 
@@ -43,6 +44,8 @@ Shader "Scanner/CRT"
         float t = (to - value) / (to - from);
         return lerp(targetFrom, targetTo, t);
     }
+
+    uniform float _AddedSkyboxColor;
 
     float4 Frag(VaryingsDefault i) : SV_Target
     {
@@ -102,29 +105,24 @@ Shader "Scanner/CRT"
         
         half lum = dot(col, float3(0.299f, 0.587f, 0.114f));
 
-        // for pixels whose luminosity is lower than cutoff, make their luminosity as high as the cutoff.
-
-        float adder = 1.0; //saturate(remap(lum, 0, _ShadowCutoff, 1, 0));
+        float adder = 1.0; 
 
         col += _ShadowBaseline * adder;
 
-        // half addition = saturate(remap(lum, _ShadowCutofff/2, _ShadowCutofff, 0.0, 1.0));
-        // half addition = 1;
-        // col += _ShadowBaseline * addition;
-        // subtle color curve:
+        col -= _AddedSkyboxColor;
 
+        float multiplier = length(i.texcoord - 0.5);
+        multiplier = 2 * (0.5 - multiplier + _CentralBleed.z);
 
-        // half shadows = saturate(remap(lum, _ShadowCutofff, _ShadowCutofff + 0.01, 0, 1));
-        // // if lum = 0.3, shadows are blank.
-        // // if lum = 0.0, shadows are full
-        // // half shadows = saturate((_ShadowCutofff - lum) / _ShadowCutofff);
-        
-        // col = lerp(col, _ShadowBaseline, shadows);
+        multiplier = saturate(multiplier);
+        multiplier = pow(multiplier, _CentralBleed.y);
+        col += _ShadowBaseline * (multiplier * _CentralBleed.x);
 
-
-
+        // col *= (1.0 + multiplier * 0.1);
 
         col = saturate(col*(1.0 - _ColorCurve) + _ColorCurve*col*col);
+
+        
 
         // vignette:
         if (useVignette) {

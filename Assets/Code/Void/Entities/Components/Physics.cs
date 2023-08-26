@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Entities.Components {
+namespace Void.Entities.Components {
 
     
 

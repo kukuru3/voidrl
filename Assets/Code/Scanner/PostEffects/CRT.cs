@@ -29,8 +29,9 @@ namespace Scanner.PostEffects {
         [Header("Colors")]
         [Range(0f, 3f)] public FloatParameter brightnessBaseline = new() { value = 1f };
         [Range(0f, 1f)] public FloatParameter colorCurve = new() { value = 0.4f };
-
-
+        [Range(0f, 2f)] public FloatParameter centralBleed = new() { value = 0f };
+        [Range(0.1f, 10f)] public FloatParameter centralBleedPower = new() { value = 2f };
+        [Range(-1, 1f)] public FloatParameter centralBleedCenter = new() { value = 0.1f };
 
     }
 
@@ -51,6 +52,8 @@ namespace Scanner.PostEffects {
 
             sheet.properties.SetColor("_ShadowBaseline", settings.shadowColor);
             sheet.properties.SetFloat("_FinalMix", settings.finalMix);
+            sheet.properties.SetVector("_CentralBleed", new Vector4(settings.centralBleed, settings.centralBleedPower, settings.centralBleedCenter));
+            
 
             Shader.SetGlobalFloat("_AddedSkyboxColor", settings.shadowEnhancer);
 
