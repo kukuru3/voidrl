@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using Core;
+using System.IO.Pipes;
 
 namespace Scanner.ScannerView {
 
     [DefaultExecutionOrder(-10)] // so the billboards and whatnot can catch up
     public class CameraController3D : MonoBehaviour {
         [SerializeField] Camera cameraProper;
-        [SerializeField] Transform pivotPoint;
 
         [SerializeField] float minPhi;
         [SerializeField] float maxPhi;
@@ -53,11 +53,6 @@ namespace Scanner.ScannerView {
         }
 
         private void LateUpdate() {
-            //var pos = Input.mousePosition;
-            //Debug.Log($"PM: {(int)prevMouse.x}, {(int)prevMouse.y}");
-            //mouseDelta = pos - prevMouse;
-            //prevMouse = pos;
-
             mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
 
             if (Input.GetMouseButton(1)) {
@@ -73,7 +68,7 @@ namespace Scanner.ScannerView {
 
             if (lockTheta) t = 0;
             if (lockPhi) p = 90;
-            pivotPoint.transform.rotation = Quaternion.Euler(p, t, 0);
+            // pivotPoint.transform.rotation = Quaternion.Euler(p, t, 0);
 
             var zoomT = (zoomRaw.SmoothValue - minZoomRaw) / (maxZoomRaw - minZoomRaw);
             zoomT = Mathf.Pow(zoomT, zoomPower);
@@ -109,7 +104,12 @@ namespace Scanner.ScannerView {
                 y.target += offset.z;
             }
 
-            pivotPoint.transform.position = new Vector3(x.SmoothValue, 0, y.SmoothValue);
+            var pos0 = new Vector3(x.SmoothValue, 0, y.SmoothValue);
+            var rot = Quaternion.Euler(p, t, 0);
+            transform.position = pos0 + rot * new Vector3(0,0, -50);
+            transform.rotation = rot;
+
+            // pivotPoint.transform.position = new Vector3(x.SmoothValue, 0, y.SmoothValue);
         }
 
         private void ApplyZoom(float zoom) {

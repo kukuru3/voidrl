@@ -38,7 +38,7 @@ namespace Scanner.Charting {
             //Draw.UseGradientFill = true;
 
             //Draw.GradientFill = new GradientFill() { colorStart = Color.white, colorEnd = Color.white, linearStart = Vector2.zero, linearEnd = Vector2.right, type = FillType.LinearGradient, space = FillSpace.Local};
-            using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterForwardAlpha)) {
+            using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterForwardOpaque)) {
                 if (entries == null || entries.Count == 0) return;
                 var sumAll = entries.Where(e => e.amount >= float.Epsilon).Sum(e => e.amount);
                 Draw.Matrix = transform.localToWorldMatrix;

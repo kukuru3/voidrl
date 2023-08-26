@@ -93,8 +93,10 @@ namespace Scanner.Windows {
 
             
             var bellRadius = (thrustPowerOfSingleEngine / 1000000m * (decimal)engineHeatFactor.NumericValue).Root() * 0.13m;
+
+            var a0 = new Accel(thrustOfAllEngines/totalWetMass.ValueSI);
             
-            s += $"THRUST: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>\r\n";
+            s += $"THRUST: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>; a0={a0}\r\n";
             s += $"Fp = {numEngines} x <color=#f24>{thrustPowerOfSingleEngine:G2}</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)exhaustVelocity.NumericValue).As(VelocityUnits.C):p2}c</color>)";
             s += $"Engine bells: {numEngines} x {bellRadius:f0}m\r\n";
 
@@ -167,7 +169,7 @@ namespace Scanner.Windows {
             areaMultiplier      = GenerateSlider("PA->surface", 1, 20, 3, "x", "f1");
             nominalCrew         = GenerateSlider("habitation", 5000, 100000, 50000, "ppl", logarithmic: true);
             overpopulation      = GenerateSlider("sardine", 1f, 5f, 1f, "", "p0");
-            distanceToTarget    = GenerateSlider("distance", 1, 30, 20f, "ly", "f2", logarithmic: true);
+            distanceToTarget    = GenerateSlider("distance", 0.05f, 30, 20f, "ly", "f2", logarithmic: true);
 
             propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
             engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");

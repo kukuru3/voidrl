@@ -101,17 +101,6 @@ namespace Scanner.AppContext {
             var travelDistanceAfterRelease_Miner = 2 * v * timeX + a * timeX * timeX + v * v / a / a / 2;
             var travelDistanceAfterRelease_CS = v * timeRendezvous;
 
-
-            // if released at detection time:
-            // var t1ImmediateRelease = (detectionTime - t2) / 2;
-
-            // todo: this conflates detection time with time of touchdown.
-
-            
-            
-            //var travelDistanceAfterRelease_CS = v * (2m * t1ImmediateRelease + t2);
-            //var travelDistanceAfterRelease_Miner = 2 * v * t1ImmediateRelease + a * t1ImmediateRelease * t1ImmediateRelease + v * v / a / 2;
-
             var overtake = travelDistanceAfterRelease_Miner - travelDistanceAfterRelease_CS;
 
             return new MinerRendezvousResult { 
@@ -206,92 +195,9 @@ namespace Scanner.AppContext {
                 }
             }
 
-            //RunAndPrint(1, 1, 0.001m);
-            //RunAndPrint(10, 1, 0.001m);
-            //RunAndPrint(100, 1, 0.001m);
-            // RunAndPrint(detectionDistanceInAU: 100, minerAccelerationCapInG: 1, colonyShipVinC: 0.01m, timeToMineInHours: 100, minerAccelerationLaden: 0.1m);
             RunAndPrint(detectionDistanceInAU: 100, minerAccelerationCapInG: 1, colonyShipVinC: 0.01m, timeToMineInHours: 24 * 40, minerAccelerationLaden: 0.001m);
             RunAndPrint(detectionDistanceInAU: 10, minerAccelerationCapInG: 1, colonyShipVinC: 0.01m, timeToMineInHours: 1000, minerAccelerationLaden: 0.001m);
             RunAndPrint(detectionDistanceInAU: 100, minerAccelerationCapInG: 1, colonyShipVinC: 0.03m, timeToMineInHours: 100, minerAccelerationLaden: 0.01m);
-            //void RunAndPrint(decimal vColonyShipInC, decimal emptyMinerAccelerationInG, decimal massRatioOfMiningShip, decimal timeToMineOneMassRatioInHours) {
-            //    var data = RunMinerShips(0.1m, 100, 100, 1);    
-            //    Debug.Log(
-            //        $"At {vColonyShipInC:P2}c, mass ratio {massRatioOfMiningShip} and time-to-mine one mass ration of {timeToMineOneMassRatioInHours}h, time is:" +
-            //        $"decel: {SpaceMath.FormatTime(data.tDecel)}, mining: {SpaceMath.FormatTime(data.tDecel)}, catch-up: {SpaceMath.FormatTime(data.tRendezvous)}"
-            //    );
-            //}
-
-            //RunAndPrint(0.01m, 100, 1000, 1);
-        }
-
-        //static internal MinerRendezvousData RunMinerShips(decimal vColonyShipInC, decimal emptyMinerAccelerationInG, decimal massRatioOfMiningShip, decimal timeToMineOneMassRatioInHours) {
-        //    // d = distance of colony ship
-
-        //    var q = emptyMinerAccelerationInG * SpaceMath.g;
-        //    if (q > SpaceMath.g) q = SpaceMath.g; // we PROHIBIT the miners to decelerate faster than 1g because pilots.
-             
-        //    var a = q / (massRatioOfMiningShip + 1); // acceleration back to ship
-        //    var v = vColonyShipInC * SpaceMath.c;
-
-        //    var dDeceleration = v * v / 2 * q; // distance gained while ships are decelerating
-            
-        //    var m1 = timeToMineOneMassRatioInHours * 3600; // time to mine 1 mass ratio in seconds
-        //    var m  = m1 * massRatioOfMiningShip; // m = mining time total
-
-        //    var dMining = v * m;
-
-        //    var d0 = dDeceleration + dMining;
-
-        //    // and here it gets tricky! the colony ship goes d0 + v * t
-        //    // in the same time the miner goes from rest, therefore a * t * t / 2
-        //    // so d0 + v * t = a * t * t / 2
-            
-        //    var term = v * v + 2 * a * d0;
-        //    var tRendezvous = (  v + (decimal)System.Math.Sqrt((double)term)  ) / a;
-
-        //    return new MinerRendezvousData {
-        //        tDecel = v / q,
-        //        tMine = m,
-        //        tRendezvous = tRendezvous
-        //    };
-        //}
-
-        [UnityEditor.MenuItem("Void/SPACE MATH : time to reach Alpha Centauri")]
-        static public void RunTimeToReach() {
-            //TestProfile(0.1m, 0.0001m);
-            //TestProfile(0.1m, 0.001m);
-            //TestProfile(0.1m, 0.01m);
-            //TestProfile(0.1m, 0.1m);
-
-            //TestProfile(0.0005m, 1m); // 0.05% c, fastest man made probe to date
-            //TestProfile(0.001m, 1m); // 0.1%c
-            //TestProfile(0.003m, 1m); // 0.3%c
-            //TestProfile(0.005m, 1m); // 0.5%c
-            //TestProfile(0.0075m, 1m); // 0.75%c
-            //TestProfile(0.01m, 1m); // 1% c
-            //TestProfile(0.03m, 1m); // 3% c
-            //TestProfile(0.05m, 1m); // 5% c
-            //TestProfile(0.1m, 1m);  // 10% c
-
-            //TestProfile(0.01m, 0.001m); // 1% c
-            //TestProfile(0.03m, 0.001m); // 3% c
-            //TestProfile(0.05m, 0.001m); // 5% c
-            //TestProfile(0.1m, 0.001m);  // 10% c
-
-            TestProfile(0.01m, 0.001m);
-            TestProfile(0.03m, 0.001m);
-            TestProfile(0.05m, 0.001m);
-            TestProfile(0.1m, 0.001m);
-
-            TestProfile(0.01m, 0.0001m);
-            TestProfile(0.03m, 0.0001m);
-            TestProfile(0.05m, 0.0001m);
-            TestProfile(0.1m, 0.0001m);
-
-            TestProfile(0.01m, 0.00001m);
-            TestProfile(0.03m, 0.00001m);
-            TestProfile(0.05m, 0.00001m);
-            TestProfile(0.10m, 0.00001m);
         }
     }
 }

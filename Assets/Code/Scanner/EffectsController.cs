@@ -5,7 +5,7 @@ namespace Scanner {
     public class EffectsController : MonoBehaviour
     {
         [SerializeField] Camera finalDigitalCamera;
-        [SerializeField] Camera geometryCamera;
+        // [SerializeField] Camera geometryCamera;
         [SerializeField] OLDTVFilter3 filter;
 
         [SerializeField] [Range(1,10)]int scanlineMult;
@@ -16,7 +16,7 @@ namespace Scanner {
 
             QualitySettings.vSyncCount = 1;  // VSync must be disabled
             finalDigitalCamera.depthTextureMode = DepthTextureMode.Depth;
-            geometryCamera.depthTextureMode = DepthTextureMode.Depth;
+            // geometryCamera.depthTextureMode = DepthTextureMode.Depth;
             
         }
 

@@ -54,7 +54,7 @@ namespace Scanner {
             fillLine.ColorStart = fillLine.ColorEnd = IsHighlighted ? Color.white * 1.25f : Color.white;
         }
 
-        float hiliteAlpha = 0f;
+        // float hiliteAlpha = 0f;
 
         protected internal override void OnGainedHilite() {
             base.OnGainedHilite();

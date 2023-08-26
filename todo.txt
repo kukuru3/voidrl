@@ -1,0 +1,114 @@
+Todo: 
+
+
+- code, assembly & project structure cleanup
+
+
+CORE: some very, very basic stuff for use by all. Units, conversions, utilities, etc. A scripting API may or may not live in here.
+VOID: logic / gameplay layer. NOT just the data layer. This is where you define ships, technologies, buildings, game events, game logic, etc.
+SCANNER: View layer UI elements, , Monobehaviours, Effect implementation, glitches, prefabs, game objects, it all goes here.
+  Scanner should probably be split into two different assemblies because it doesn't seem right to combine the abstractions for UI elements 
+  in the same place where you have highly specialized implementation details such as the part that rotates the ship ring or blinks its lights.
+
+- 
+Calaby-Yau-Podolsky Harmonic Electromagnetic Resonance : CYPHER
+
+- Layers
+    - tactical (50 light seconds / 0.1 AU / 1.5 million km) - even at 1%c, it takes more than an hour to cross this distance. Needless to say, 
+    - scanner (scan for oort cloud comets, etc.) - around 500 AU radius (increase by a factor of 5000)
+    (stellar (up to 25 light years) )
+    ( galactic (up to 125 000 light years) )
+
+    * these all reuse the same code with entities.
+    * we start with the SCANNER layer
+
+
+TECHNICAL WORK
+- ui audio
+- ui transitions
+- ui windows / layers (preventing "fall-through" of UI events)
+- working hyperlinks 
+- ship / external camera is currently ingame.
+- picture-in-picture capability
+
+
+
+
+
+
+RAM - Resonant Amplification Magnetic
+RAMa
+
+SCRAMT - Superconducting resonant amplified magnetic torus
+RAMC - resonant amplification magnetic coil
+RAMH - Resonant 
+RAMT 
+
+HARM - harmonically amplified resonant magnetic fields
+
+CYRA
+CYRAM 
+RAMA 
+
+SCYTHE
+
+SCYRA, SCYRAmp - Superconducting Calaby Yau Resonance Amplifier
+
+RAMP
+
+RAMAT
+
+
+CYRAmp
+
+Ra
+
+Dem - degenerate matter
+
+MaRA
+MAGRA
+CYMRA, CYRAM, CYRA, CYMR
+CYReM
+
+
+SCYTHE: Superconducting Calabi-Yau Toroidal Harmonic 
+
+RAMA Resonant Amplification, Magnetic Amplification
+
+
+
+CYRem
+
+
+
+Harm
+Resonant 
+Amplification 
+Feedback
+Matrix
+
+CYRMag
+ERMI
+
+
+
+Matrioska resonance phenomenon magnetic field amplification
+
+MRPMFA
+
+M.O.T.H.E.R
+
+
+
+
+MRP
+
+
+
+Remag
+
+
+Magnetic 
+
+Degenerate plasma
+Deuterium Liquid  Harmonic resonator

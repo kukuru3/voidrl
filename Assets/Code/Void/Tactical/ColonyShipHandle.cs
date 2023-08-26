@@ -3,15 +3,15 @@
         public string name;
     }
     
-    public class ColonyShipTacticalHandle : TacticalEntity {
+    public class ColonyShipTacticalHandle : Blip {
               
     }
 
-    public class Squadron : TacticalEntity {
+    public class Squadron : Blip {
 
     }
 
-    public class Rendezvous : TacticalEntity {
+    public class Rendezvous : Blip {
         
     }
     

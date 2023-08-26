@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Void.AppContext;
-using Void.Generators;
 
 namespace Void {
     // shortcuts:
@@ -16,21 +15,11 @@ namespace Void.AppContext {
     }
         
     public interface IAppContext {
-        SystemGenerator SystemGenerator { get; }
-        SectorGenerator SectorGenerator { get; }
-
-        SceneReferences SceneReferences { get; }
     }
     
     internal class AppContext : IAppContext {
-        public SystemGenerator SystemGenerator { get; set; }
-        public SectorGenerator SectorGenerator { get; set; }
-
-        public SceneReferences SceneReferences { get; set; }
     }
 
     public class SceneReferences {
-
-        public T Find<T>() where T : UnityEngine.Object => GameObject.FindObjectOfType<T>();
     }
 }

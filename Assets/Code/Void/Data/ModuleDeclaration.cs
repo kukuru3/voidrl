@@ -7,28 +7,21 @@ namespace Void.Data {
         public string id;
     }
 
-    public interface IHasCost {
-        Cargo Cost { get; }
-    }
-
-    public class SymbolDeclaration : Declaration {
-        public string icon;
-        public Color color;
-    }
-
-    //public class StructureDeclaration : Declaration, IHasCost {        
-    //    public Cargo Cost { get; set; }
-    //    public StructureSlottingDeclaration providesSlots;
-    //    public StructureSlottingDeclaration occupies;
+    //public interface IHasCost {
+    //    Cargo Cost { get; }
     //}
 
-    public class ItemDeclaration : Declaration, IHasCost {
-        public Cargo Cost { get; set; }
+    //public class SymbolDeclaration : Declaration {
+    //    public string icon;
+    //    public Color color;
+    //}
+
+    public class ItemDeclaration : Declaration {
+        // public Cargo Cost { get; set; }
     }
 
     public class DataRepository {
-        public List<ItemDeclaration> items = new();
-        public List<SymbolDeclaration> resources = new();
-        //public List<StructureDeclaration> structures = new();
+        //public List<ItemDeclaration> items = new();
+        //public List<SymbolDeclaration> resources = new();
     }
 }
