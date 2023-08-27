@@ -12,7 +12,6 @@ namespace Void.Impl {
             ship.Attach<Facing>();
             ship.Attach<ShipLink>();
 
-
             var bubbleE = gw.CreateNewEntity();
             var bubble = bubbleE.Attach<TacticalShipBubble>();
             bubble.Include(ship);

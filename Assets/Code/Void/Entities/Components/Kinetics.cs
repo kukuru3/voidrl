@@ -22,11 +22,11 @@ namespace Void.Entities.Components {
     }
 
     // hierarchical handle: the ship's presence in VICINITY
-    public class TacticalShipBubble : Component {
+    public class TacticalShipBubble : Container {
         
     }
 
-    public class Container : Component {
+    public abstract class Container : Component {
 
         List<BelongsToContainer> contains = new();
 
