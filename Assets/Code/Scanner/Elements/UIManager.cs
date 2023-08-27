@@ -43,7 +43,7 @@ namespace Scanner {
             }
         }
 
-        Vector3 GetDistortedCursorPos() {
+        public static Vector3 GetDistortedCursorPos() {
             var p = Input.mousePosition;
             var distortion = 0.2f;
             var uv = new Vector2(p.x / Screen.width, p.y / Screen.height);
@@ -55,7 +55,7 @@ namespace Scanner {
             return new Vector3(sx, sy, 0);
         }
 
-        Vector2 Distort(Vector2 uv, float distortion) {
+        static Vector2 Distort(Vector2 uv, float distortion) {
             var c = uv - Vector2.one * 0.5f;
             var dt = Vector2.Dot(c, c) * distortion;
             dt -= 0.2f * distortion;

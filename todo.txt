@@ -33,82 +33,32 @@ TECHNICAL WORK
 
 
 
+What do we need?
+
+Ship management:
+
+(base ship view)
+
+to BUILD NEW SHIT on the ship. Also, tear down existing shit. Construction tab.
+to CONTROL THE MONKEYS on the ship. Social tab.
+to RESEARCH NEW SHIT. Research tab.
+to DEFEND OUR SHIT. Military tab. 
+
+Mission control:
+to VIEW OUR OVERALL MISSION STATE AND PARAMETERS.
+to SEND NIGGAS TO MINE MORE SHIT FOR OUR SHIP SO WE CAN BUILD MORE NEW SHIT. Missions tab.
 
 
+Topdown approach:
 
-RAM - Resonant Amplification Magnetic
-RAMa
+Have MAIN MENU.
+It has no eyecatch. Just a title and the main menu.
 
-SCRAMT - Superconducting resonant amplified magnetic torus
-RAMC - resonant amplification magnetic coil
-RAMH - Resonant 
-RAMT 
+Press a button to show options.
 
-HARM - harmonically amplified resonant magnetic fields
-
-CYRA
-CYRAM 
-RAMA 
-
-SCYTHE
-
-SCYRA, SCYRAmp - Superconducting Calaby Yau Resonance Amplifier
-
-RAMP
-
-RAMAT
+New game / Continue game
+Options
+Exit
 
 
-CYRAmp
-
-Ra
-
-Dem - degenerate matter
-
-MaRA
-MAGRA
-CYMRA, CYRAM, CYRA, CYMR
-CYReM
-
-
-SCYTHE: Superconducting Calabi-Yau Toroidal Harmonic 
-
-RAMA Resonant Amplification, Magnetic Amplification
-
-
-
-CYRem
-
-
-
-Harm
-Resonant 
-Amplification 
-Feedback
-Matrix
-
-CYRMag
-ERMI
-
-
-
-Matrioska resonance phenomenon magnetic field amplification
-
-MRPMFA
-
-M.O.T.H.E.R
-
-
-
-
-MRP
-
-
-
-Remag
-
-
-Magnetic 
-
-Degenerate plasma
-Deuterium Liquid  Harmonic resonator
+Ingame: press escape to show the quick options dialog ()

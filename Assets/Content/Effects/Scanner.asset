@@ -21,7 +21,7 @@ MonoBehaviour:
     value: 2
   threshold:
     overrideState: 1
-    value: 1
+    value: 0.6
   softKnee:
     overrideState: 0
     value: 0.5
@@ -36,7 +36,7 @@ MonoBehaviour:
     value: 0
   color:
     overrideState: 0
-    value: {r: 1.1491268, g: 1.0566008, b: 0.96986306, a: 1}
+    value: {r: 1.5341744, g: 1.3489286, b: 0, a: 1}
   fastMode:
     overrideState: 0
     value: 0
@@ -101,49 +101,55 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0.829
+    value: 1
   chromaticAberration:
     overrideState: 1
-    value: 1.1
+    value: 0.8
   shadowColor:
     overrideState: 1
-    value: {r: 0.013100003, g: 0.22466497, b: 0.262, a: 1}
+    value: {r: 0, g: 0.21153843, b: 0.25, a: 1}
   shadowEnhancer:
     overrideState: 1
     value: 0.0045
   greenify:
     overrideState: 1
-    value: 0.09
+    value: 0.083
   flickerIntensity:
     overrideState: 1
-    value: 0.0321
+    value: 0.0251
   dotMatrixRepeat:
     overrideState: 1
-    value: 3
+    value: 2
   scanlineRepeat:
     overrideState: 1
-    value: 3
+    value: 7.21
   scanlineEffect:
     overrideState: 1
-    value: 0.633
+    value: 0.911
   scanlineSpeed:
     overrideState: 1
-    value: 0
+    value: 4.9
   brightnessBaseline:
     overrideState: 1
-    value: 1.43
+    value: 1.24
   colorCurve:
     overrideState: 1
-    value: 0.3
+    value: 0.212
   centralBleed:
     overrideState: 1
-    value: 1.991
+    value: 0.832
   centralBleedPower:
     overrideState: 1
-    value: 1.91
+    value: 1
   centralBleedCenter:
     overrideState: 1
-    value: -0.02
+    value: 0.05
+  debugTweak:
+    overrideState: 1
+    value: 1
+  distortion:
+    overrideState: 1
+    value: 0.2
 --- !u!114 &1302253812162679686
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -166,9 +172,9 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0.083
+    value: 0
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 0
 --- !u!114 &3388777275798549740
 MonoBehaviour:
@@ -231,6 +237,12 @@ MonoBehaviour:
   centralBleedCenter:
     overrideState: 0
     value: 0.1
+  debugTweak:
+    overrideState: 0
+    value: 0
+  distortion:
+    overrideState: 0
+    value: 0
 --- !u!114 &4281082538547010851
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -243,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb84e30e02715445aeb9959894e3b4d, type: 3}
   m_Name: ColorGrading
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1

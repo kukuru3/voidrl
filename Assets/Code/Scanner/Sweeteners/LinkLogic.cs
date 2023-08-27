@@ -59,7 +59,7 @@ namespace Scanner.Sweeteners {
         }
 
         private void CheckForLink() {
-            var linkIndex = TMP_TextUtilities.FindIntersectingLink(tmpro, Input.mousePosition, uicamera);
+            var linkIndex = TMP_TextUtilities.FindIntersectingLink(tmpro, UIManager.GetDistortedCursorPos(), uicamera);
             if (linkIndex == -1) { OnLinkHover(null); return; }
             OnLinkHover(tmpro.textInfo.linkInfo[linkIndex]);    
         }

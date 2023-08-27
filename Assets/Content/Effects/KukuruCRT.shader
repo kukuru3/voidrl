@@ -22,18 +22,17 @@ Shader "Scanner/CRT"
     float _FlickerIntensity;
 
     float _FinalMix;
+
+    float _Tweak;
+
+    float _Distortion;
     
     float2 curve(float2 uv)
     {
-        uv = (uv - 0.5) * 2.0;
-        uv *= 1.1;	
-        
-        uv.x *= 1.0 + pow((abs(uv.y) / 5.0), 2.0);
-        uv.y *= 1.0 + pow((abs(uv.x) / 4.0), 2.0);
-
-        uv  = (uv / 2.0) + 0.5;
-        uv =  uv *0.92 + 0.04;
-        return uv;
+        float2  c = uv - 0.5;
+        float dt = (dot(c, c) - 0.2) * _Distortion; 
+        return uv + c * ((1.0 + dt) * dt);
+        // return uv;
     }
 
     float4 maintex(float2 uv) {
@@ -53,15 +52,13 @@ Shader "Scanner/CRT"
 
         float2 screen = _ScreenParams.xy;
 
-        const bool useCurve = false;
-        const bool useNoiseLines = true;
+        const bool useCurve = true;
         const bool useBleeding = false;
-        const bool useVignette = true;
 
+        const bool useNoiseLines = true;
+        const bool useVignette = true;
         const bool useScanlines = true;
         const float useDotMatrix = true;
-
-        // const float greenify = 0.15;
 
         float3 colorBalance = float3(1.0 - _Greenify, 1.0 + _Greenify, 1.0 - _Greenify);
 
@@ -140,16 +137,17 @@ Shader "Scanner/CRT"
             // scans will always be in the range of 0 - 0.7
             float scanlineFactor = 0.5 + 0.5 * sin(scanlineSpeed * time + uv.y * screen.y * 2 * PI / scanlineRepeat );
 
-            scanlineFactor = lerp(scanlineDark, scanlineLight, pow(scanlineFactor, 1.7));
+            float y = i.texcoord.y * screen.y + _Tweak;
+            scanlineFactor = step(1, y % 2);
 
-            // scanlineFactor = 0.7 * scanlineFactor;        
-            // scanlineFactor = pow(scanlineFactor,1.7); // and this will remap them even further to the range of 0-0.54
-            // scanlineFactor = 0.4 + scanlineFactor * 0.7;
-            // scanlineFactor *= 2.8;
+            scanlineFactor = lerp(scanlineDark, scanlineLight, scanlineFactor);
 
-            // s = 0.4 + pow(0.7 * s, 1.7) * 0.7;
-            // col *= 2.8; // to compensate for the sinewave, probably. 2 * sqrt(2). 
-            col *= scanlineFactor; // color is multiplied by 0.4 where there are no scanlines, and by 0.78 where the scanlines are full 
+            // col *= scanlineFactor;
+
+            float luma = dot(col, float3(0.299f, 0.587f, 0.114f));
+            float brightness = smoothstep(0.7, 1.4, luma);
+            float multiplier = lerp(scanlineFactor, 1 - 0.5 * scanlineFactor, brightness);
+            col *= multiplier;
         }
 
         //col *= 1.4;
