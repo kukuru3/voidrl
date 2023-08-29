@@ -6,12 +6,12 @@ namespace Void.Entities {
     public class Entity {
         List<Component> components = new();
 
-        internal void _DoDetach(Component c) {
+        internal void _DoAttach(Component c) {
             WillAttachComponent?.Invoke(this, c);
             components.Add(c);
         }
 
-        internal void _DoAttach(Component c) {
+        internal void _DoDetach(Component c) {
             WillDetachComponent?.Invoke(this, c);
             components.Remove(c);
         }
@@ -25,7 +25,7 @@ namespace Void.Entities {
         public event Action<Entity, Component> WillAttachComponent;
         public event Action<Entity, Component> WillDetachComponent;
 
-        public T GetComponent<T>() {
+        public T Get<T>() {
             foreach (var c in components) if (c is T tc) return tc;
             return default;
         }
@@ -65,7 +65,7 @@ namespace Void.Entities {
     }
 
     static public class EntityComponentAttachment {
-        static public void Attach(Component c, Entity e) {
+        static public void AttachTo(this Component c, Entity e) {
             if (c.Entity == e) return;
             if (c.Entity != null) Detach(c);
             c._AttachTo(e);
@@ -80,7 +80,7 @@ namespace Void.Entities {
 
         static public T Attach<T>(this Entity e) where T : Component, new() {
             var c = new T();
-            Attach(c, e);
+            AttachTo(c, e);
             return c;
         }
     }

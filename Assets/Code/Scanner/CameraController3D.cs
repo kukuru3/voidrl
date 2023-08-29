@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Core;
-using System.IO.Pipes;
 
 namespace Scanner.ScannerView {
 
@@ -72,11 +71,11 @@ namespace Scanner.ScannerView {
 
             var zoomT = (zoomRaw.SmoothValue - minZoomRaw) / (maxZoomRaw - minZoomRaw);
             zoomT = Mathf.Pow(zoomT, zoomPower);
-            var zoom = Mathf.Lerp(minZoom, maxZoom, zoomT) * ZOOM_MUL;
+            var zoom = Mathf.Lerp(minZoom, maxZoom, zoomT);
 
             Zoom = zoom;
 
-            ApplyZoom(zoom);
+            ApplyZoom(zoom * ZOOM_MUL);
 
             Vector3 RaycastOnDefaultVerticalPlane(Transform transform, Vector3 offset) {
                 var plane = new Plane(Vector3.up, 0);
@@ -106,7 +105,7 @@ namespace Scanner.ScannerView {
 
             var pos0 = new Vector3(x.SmoothValue, 0, y.SmoothValue);
             var rot = Quaternion.Euler(p, t, 0);
-            transform.position = pos0 + rot * new Vector3(0,0, -50);
+            transform.position = pos0 + rot * new Vector3(0,0, -200);
             transform.rotation = rot;
 
             // pivotPoint.transform.position = new Vector3(x.SmoothValue, 0, y.SmoothValue);

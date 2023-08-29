@@ -61,7 +61,7 @@ namespace Void.Entities.Components {
 
         BelongsToContainer CreateLink(Entity e) { 
             var l = new BelongsToContainer(this);
-            EntityComponentAttachment.Attach(l, e);
+            EntityComponentAttachment.AttachTo(l, e);
             return l;
         }
 

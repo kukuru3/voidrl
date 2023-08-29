@@ -1,9 +1,8 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Scanner.Sweeteners {
+
     internal class RevealText : MonoBehaviour {
 
         [SerializeField] int frequency;
