@@ -75,7 +75,8 @@ namespace Scanner.ScannerView {
 
             Zoom = zoom;
 
-            ApplyZoom(zoom * ZOOM_MUL);
+            zoom *= ZOOM_MUL;
+            ApplyZoom(zoom );
 
             Vector3 RaycastOnDefaultVerticalPlane(Transform transform, Vector3 offset) {
                 var plane = new Plane(Vector3.up, 0);

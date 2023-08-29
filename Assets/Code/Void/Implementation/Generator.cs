@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Void.Entities;
 using Void.Entities.Components;
@@ -37,17 +38,87 @@ namespace Void.Impl {
             solO.AttachTo(solE);
             starmap.Include(solE);
 
-            foreach (var so in LoadStarmapFromFile()) {
-                var e = gw.CreateNewEntity();
-                so.AttachTo(e);
-                starmap.Include(e);
+            var solSS = new SubstellarObjectDeclaration() { name = "Sol", type = StellarSubobjects.MainSequenceStar };
+            var solSSO = gw.CreateNewEntity();
+            solSS.AttachTo(solSSO);
+            
+
+            solO.Include(solSSO);
+
+            var substellars = LoadStarmapFromFile();
+            var parents = substellars.Where(s => StellarObject.IsStellarRootType(s.type)).ToArray();
+
+            Dictionary<SubstellarObjectDeclaration, StellarObject> lookup = new();
+
+            SubstellarObjectDeclaration TryLocateParent(SubstellarObjectDeclaration child, float tolerance) {
+                foreach (var parent in lookup) {
+                    if (parent.Value.name == child.name) continue;
+                    var d = Vector3.SqrMagnitude(child.galacticPosition - parent.Value.galacticPosition);
+                    if (d <= tolerance) {
+                        return parent.Key;
+                    }
+                }    
+                return null;
             }
+
+            void CreateNewFrom(SubstellarObjectDeclaration newPrimary) {
+                var stellarObjectEntity = gw.CreateNewEntity();
+                var so = new StellarObject() { galacticPosition = newPrimary.galacticPosition, name = newPrimary.name };
+                so.AttachTo(stellarObjectEntity);
+                lookup[newPrimary] = so;
+                var subObj = gw.CreateNewEntity();
+                newPrimary.AttachTo(subObj);
+                so.Include(subObj);
+
+                starmap.Include(stellarObjectEntity);
+            }
+
+            void AssignToParent(SubstellarObjectDeclaration item, SubstellarObjectDeclaration primaryOfParent) {
+                lookup.TryGetValue(primaryOfParent, out var parent);
+                if (parent != null) {
+                    var subObj = gw.CreateNewEntity();
+                    item.AttachTo(subObj);
+                    parent.Include(subObj);
+                    lookup[item] = parent;
+                    Debug.LogWarning($"Distributing {item.name} under {parent.name} ");
+                } else {
+                    Debug.LogWarning($"Could not assign {item.name} to {primaryOfParent.name}");
+                }
+            }
+
+            foreach (var ss in substellars) {                
+                var parent = TryLocateParent(ss, 0.5f);
+                if (parent != null) {
+                    AssignToParent(ss, parent);
+                } else {
+                    CreateNewFrom(ss);
+                }
+            }
+
+            foreach (var e in starmap.ListContainedEntities()) {
+                var so = e.Get<StellarObject>();
+                if (so.ContainedSubstellars.Count() == 0) continue;
+                var namesOfSubstellars = so.ContainedSubstellars.Select(ss => ss.name);
+                var prefix = FindCommonPrefix(namesOfSubstellars);
+                if (prefix.Length > 0) {
+                    so.name = prefix.Trim();
+                }
+            }
+
             return starmap;
+        }
+
+        static string FindCommonPrefix(IEnumerable<string> samples) {
+        
+            var commonPrefix = new string(
+                samples.First().Substring(0, samples.Min(s => s.Length))
+                .TakeWhile((c, i) => samples.All(s => s[i] == c)).ToArray());
+            return commonPrefix;
         }
 
         // this is of course incredibly hardcoded for the time being
 
-        IEnumerable<StellarObject> LoadStarmapFromFile() {
+        IEnumerable<SubstellarObjectDeclaration> LoadStarmapFromFile() {
             var file = Core.IO.FileOps.GetFile("stellar_neighbours.txt");
             var fi = new FileInfo(file);
             if (!fi.Exists) {
@@ -57,13 +128,27 @@ namespace Void.Impl {
             var lines = File.ReadAllLines(fi.FullName);
             foreach (var line in lines) {
                 var dataPoints = line.Split(',');
-                var so = TryParseStellarObject(dataPoints);
+
+                var so = TryParseSubstellarObject(dataPoints);
                 if (so != null) yield return so;
             }
         }
 
-        StellarObject TryParseStellarObject(string[] datapoints) {
+
+        SubstellarObjectDeclaration TryParseSubstellarObject(string[] datapoints) {
+            if (datapoints.Length < 5) return default;
             var name = datapoints[0].Trim();
+
+            var typeStr = datapoints[4].Trim();
+            var type = typeStr switch {
+                "S" => StellarSubobjects.MainSequenceStar, 
+                "WD" => StellarSubobjects.WhiteDwarf, 
+                "BD" => StellarSubobjects.BrownDwarf, 
+                "PJ" => StellarSubobjects.JovianPlanet, 
+                "PN" => StellarSubobjects.NeptunianPlanet, 
+                "PT" => StellarSubobjects.TerrestrialPlanet, 
+                _ => StellarSubobjects.Unconfirmed
+            };
 
             var xyz = new Vector3();
             try { 
@@ -77,15 +162,41 @@ namespace Void.Impl {
                 return default;
             }
 
-            var type = datapoints[4].Trim();
+            var spectral = datapoints[5].Trim();
 
-            if (type == "S") return new StellarObject {
-                name = name,
+            return new SubstellarObjectDeclaration() {
                 galacticPosition = xyz,
+                name = name,
+                type = type,
+                spectral = spectral,
             };
-
-            return default;
         }
+
+        //StellarObject TryParseStellarObject(string[] datapoints) {
+        //    if (datapoints.Length < 5) return default;
+        //    var name = datapoints[0].Trim();
+
+        //    var xyz = new Vector3();
+        //    try { 
+        //        xyz = new Vector3( 
+        //            float.Parse(datapoints[1].Trim()), 
+        //            float.Parse(datapoints[2].Trim()),
+        //            float.Parse(datapoints[3].Trim())
+        //        );
+        //    } catch (FormatException) {
+        //        Debug.LogWarning($"Skiping {datapoints[0]} as data invalid");
+        //        return default;
+        //    }
+
+        //    var type = datapoints[4].Trim();
+
+        //    if (type == "S") return new StellarObject {
+        //        name = name,
+        //        galacticPosition = xyz,
+        //    };
+
+        //    return default;
+        //}
 
     }
     

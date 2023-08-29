@@ -1,3 +1,5 @@
+name                                  x         y          z     typ   spect         mass  m.unit    radius  unit     temp  orbits   orbit params - semimajor axis, period, excentricity
+
 Proxima Centauri                 ,  2.945  , -3.056  ,  -0.143  , S   ,M5 Ve  ,     0.12  ,  Ms  ,  0.14  ,  Rs    ,  3050  , AB ,  10000*  ,              , 
 Proxima Centauri d               ,  2.945  , -3.056  ,  -0.143  , PT  ,       ,     0.36  ,  Me  ,  0.7   ,  Re?   ,   270  , C  ,  0.0288  ,    0.0141    ,     0.04
 Proxima Centauri b               ,  2.945  , -3.056  ,  -0.143  , PT  ,       ,     1.5   ,  Me  ,  1.1   ,  Re?   ,   210  , C  ,  0.049   ,    0.0306    ,     0.02
