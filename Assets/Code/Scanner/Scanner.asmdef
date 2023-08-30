@@ -9,7 +9,8 @@
         "Core",
         "OldTVFilter3.Runtime",
         "Unity.Postprocessing.Runtime",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

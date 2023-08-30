@@ -122,13 +122,13 @@ MonoBehaviour:
     value: 2
   scanlineRepeat:
     overrideState: 1
-    value: 7.21
+    value: 2
   scanlineEffect:
     overrideState: 1
-    value: 0.911
+    value: 1
   scanlineSpeed:
     overrideState: 1
-    value: 4.9
+    value: 0
   brightnessBaseline:
     overrideState: 1
     value: 1.24

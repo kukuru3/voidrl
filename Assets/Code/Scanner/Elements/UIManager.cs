@@ -1,9 +1,9 @@
 ﻿using System.IO.IsolatedStorage;
+using Scanner.ScannerView;
 using UnityEngine;
 
 namespace Scanner {
     class UIManager : MonoBehaviour {
-        [SerializeField] Camera uiCamera;
         [SerializeField] bool hideCursor;
         [SerializeField] Transform cursor;
 
@@ -18,6 +18,7 @@ namespace Scanner {
         }
 
         private void Update() {
+            var uiCamera = SceneUtil.UICamera;
             if (uiCamera == null) return;
 
             if (hideCursor) Cursor.visible = false;
@@ -63,7 +64,7 @@ namespace Scanner {
         }
 
         private void LateUpdate() {
-            var pos = uiCamera.ScreenToWorldPoint(Input.mousePosition);
+            var pos = SceneUtil.UICamera.ScreenToWorldPoint(Input.mousePosition);
             pos.z = 0;
             if (cursor != null) cursor.position = pos;
         }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using Scanner.ScannerView;
 using TMPro;
 using UnityEngine;
 
 namespace Scanner.Sweeteners {
     internal class LinkLogic : MonoBehaviour {
 
-        [SerializeField] Camera uicamera;
         private TMP_Text tmpro;
 
         private void Start() {
@@ -59,7 +59,7 @@ namespace Scanner.Sweeteners {
         }
 
         private void CheckForLink() {
-            var linkIndex = TMP_TextUtilities.FindIntersectingLink(tmpro, UIManager.GetDistortedCursorPos(), uicamera);
+            var linkIndex = TMP_TextUtilities.FindIntersectingLink(tmpro, UIManager.GetDistortedCursorPos(), SceneUtil.UICamera);
             if (linkIndex == -1) { OnLinkHover(null); return; }
             OnLinkHover(tmpro.textInfo.linkInfo[linkIndex]);    
         }

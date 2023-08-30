@@ -14,7 +14,7 @@ namespace Scanner {
 
         private void Start() {
 
-            QualitySettings.vSyncCount = 1;  // VSync must be disabled
+            QualitySettings.vSyncCount = 0;  
             finalDigitalCamera.depthTextureMode = DepthTextureMode.Depth;
             // geometryCamera.depthTextureMode = DepthTextureMode.Depth;
             

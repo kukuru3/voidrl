@@ -80,7 +80,6 @@ namespace Void.Impl {
                     item.AttachTo(subObj);
                     parent.Include(subObj);
                     lookup[item] = parent;
-                    Debug.LogWarning($"Distributing {item.name} under {parent.name} ");
                 } else {
                     Debug.LogWarning($"Could not assign {item.name} to {primaryOfParent.name}");
                 }
@@ -164,12 +163,43 @@ namespace Void.Impl {
 
             var spectral = datapoints[5].Trim();
 
+            var sequence = ExtractSpectralType(spectral);
+
             return new SubstellarObjectDeclaration() {
                 galacticPosition = xyz,
                 name = name,
                 type = type,
-                spectral = spectral,
+                starSequence = sequence,
             };
+        }
+
+        private StarTypes ExtractSpectralType(string spectralString) {
+            if (spectralString.Length < 2) return StarTypes.Unknown;
+            var ss = spectralString[0];
+
+            if (spectralString.EndsWith(" V") || spectralString.EndsWith(" Ve")) {
+                switch (ss) {
+                    case 'O': return StarTypes.BlueMainSequence;
+                    case 'B': return StarTypes.BlueMainSequence;
+                    case 'A': return StarTypes.WhiteMainSequence;
+                    case 'F': return StarTypes.YellowWhiteMainSequence;
+                    case 'G': return StarTypes.YellowDwarf;
+                    case 'K': return StarTypes.OrangeDwarf;
+                    case 'M': return StarTypes.RedDwarf;
+                }
+            } else {
+                 switch (ss) {
+                    case 'O': return StarTypes.BlueGiant;
+                    case 'B': return StarTypes.BlueGiant;
+                    case 'A': return StarTypes.WhiteGiant;
+                    case 'F': return StarTypes.YellowWhiteGiant;
+                    case 'G': return StarTypes.YellowGiant;
+                    case 'K': return StarTypes.OrangeGiant;
+                    case 'M': return StarTypes.RedGiant;
+                }
+            }
+            Debug.Log($"Stumped by spectral type `{spectralString}`");
+            return StarTypes.Unknown;
         }
 
         //StellarObject TryParseStellarObject(string[] datapoints) {

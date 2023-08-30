@@ -10,12 +10,18 @@ using Void.Impl;
 namespace Scanner.Impl {
     internal class StarmapView : MonoBehaviour {
         [SerializeField] GameObject stellarObjectPrefab;
+        [SerializeField] StellarNavCamera cam;
 
         //[SerializeField][Range(10, 50)] float maxRange;
 
         [SerializeField] NumberSlider slider;
 
         private Gameworld world;
+
+        IHasWorldFocus focusProvider;
+        Vector3 _prevCenter;
+
+        public void SetSliderValue(float val) => slider.SetSliderTFromValue(val);
 
         private void Start() {
             var g = new InitialGenerator();
@@ -25,6 +31,9 @@ namespace Scanner.Impl {
             var starmap = gg.GenerateStarmap(world);
 
             GenerateViews(starmap);
+            slider.SetSliderTFromValue(13);
+
+            focusProvider = cam;
         }
 
         List<ScannerViewOfStellarObject> allViews = new();
@@ -32,15 +41,22 @@ namespace Scanner.Impl {
         float _lastMaxRange = -999;
         private void Update() {
             var maxRange = slider.NumericValue;
-            if (!Mathf.Approximately(_lastMaxRange, maxRange)) {
+            var center = focusProvider.WorldFocus;
+            var centersDifferSignificantly = (_prevCenter - center).sqrMagnitude > 1e-8f;
+            _prevCenter = center;
+
+            if (centersDifferSignificantly || !Mathf.Approximately(_lastMaxRange, maxRange)) {
                 ApplyRangeFilter(maxRange);
                 _lastMaxRange = maxRange;
             }
+
+
         }
 
         private void ApplyRangeFilter(float maxRange) {
+            var center = focusProvider.WorldFocus;
             foreach (var view in allViews) {
-                var d = view.StellarObject.galacticPosition.magnitude;
+                var d = Vector3.Distance(center, view.StellarObject.galacticPosition);
                 view.gameObject.SetActive(d <= maxRange);
             }
         }

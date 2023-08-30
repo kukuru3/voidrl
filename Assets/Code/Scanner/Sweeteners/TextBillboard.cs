@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Scanner.Sweeteners {
-    internal class Billboard : MonoBehaviour {
+    internal class TextBillboard : MonoBehaviour {
         private GameObject scanCam;
 
         private void Start() {

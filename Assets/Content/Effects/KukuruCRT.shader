@@ -138,7 +138,7 @@ Shader "Scanner/CRT"
             float scanlineFactor = 0.5 + 0.5 * sin(scanlineSpeed * time + uv.y * screen.y * 2 * PI / scanlineRepeat );
 
             float y = i.texcoord.y * screen.y + _Tweak;
-            scanlineFactor = step(1, y % 2);
+            scanlineFactor = step(scanlineRepeat / 2, y % scanlineRepeat);
 
             scanlineFactor = lerp(scanlineDark, scanlineLight, scanlineFactor);
 
@@ -146,7 +146,8 @@ Shader "Scanner/CRT"
 
             float luma = dot(col, float3(0.299f, 0.587f, 0.114f));
             float brightness = smoothstep(0.7, 1.4, luma);
-            float multiplier = lerp(scanlineFactor, 1 - 0.5 * scanlineFactor, brightness);
+            float multiplier = scanlineFactor;
+            // float multiplier = lerp(scanlineFactor, 1 - 0.5 * scanlineFactor, brightness);
             col *= multiplier;
         }
 

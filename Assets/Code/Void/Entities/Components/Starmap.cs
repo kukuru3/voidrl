@@ -38,11 +38,30 @@ namespace Void.Entities.Components {
         Unconfirmed,
     }
 
+    public enum StarTypes {
+        NotAStar,
+        BlueMainSequence,
+        WhiteMainSequence,
+        YellowWhiteMainSequence,
+        YellowDwarf,
+        OrangeDwarf,
+        RedDwarf,
+        BlueGiant,
+        WhiteGiant,
+        YellowWhiteGiant,
+        YellowGiant,
+        OrangeGiant,
+        RedGiant,
+        RedSupergiant,
+        Unknown,
+
+    }
+
     public class SubstellarObjectDeclaration : Component {
         public string name;
         public StellarSubobjects type;
         public Vector3 galacticPosition;
-        public string  spectral;
+        public StarTypes starSequence;
     }
 
 }
