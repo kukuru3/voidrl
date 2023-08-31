@@ -104,19 +104,19 @@ MonoBehaviour:
     value: 1
   chromaticAberration:
     overrideState: 1
-    value: 0.8
+    value: 1.1
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.21153843, b: 0.25, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.0045
+    value: 0.0048
   greenify:
     overrideState: 1
-    value: 0.083
+    value: 0.0508
   flickerIntensity:
     overrideState: 1
-    value: 0.0251
+    value: 0.0387
   dotMatrixRepeat:
     overrideState: 1
     value: 2
@@ -131,22 +131,22 @@ MonoBehaviour:
     value: 0
   brightnessBaseline:
     overrideState: 1
-    value: 1.24
+    value: 1.4
   colorCurve:
     overrideState: 1
     value: 0.212
   centralBleed:
-    overrideState: 1
-    value: 0.832
+    overrideState: 0
+    value: 0.534
   centralBleedPower:
-    overrideState: 1
+    overrideState: 0
     value: 1
   centralBleedCenter:
-    overrideState: 1
+    overrideState: 0
     value: 0.05
   debugTweak:
     overrideState: 1
-    value: 1
+    value: 0.878
   distortion:
     overrideState: 1
     value: 0.2

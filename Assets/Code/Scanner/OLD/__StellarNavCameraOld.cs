@@ -8,7 +8,7 @@ namespace Scanner {
 
     
 
-    public class __StellarNavCameraOld : MonoBehaviour, IHasWorldFocus {
+    public class __StellarNavCameraOld : MonoBehaviour {
         [SerializeField] float orbitDistanceMin;
         [SerializeField] float orbitDistanceMax;
 
@@ -39,7 +39,7 @@ namespace Scanner {
         Vector3 _vel;
         Vector3 targetVel;
 
-        Vector3 IHasWorldFocus.WorldFocus => center;
+        // Vector3 IHasWorldFocus.WorldFocus => center;
 
         internal void Focus(Vector3 newCenter) {
             targetVel = newCenter;

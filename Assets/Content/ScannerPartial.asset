@@ -39,7 +39,7 @@ MonoBehaviour:
     staticPattern: {fileID: 2800000, guid: 43a04c1efe2bb194e936e6b500cc884d, type: 3}
     staticMagnitude: 0.04
     staticScale: 1
-    staticOffset: 11496.646
+    staticOffset: 11744.8955
     dirtPattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
     dirtMagnitude: 0.04
   _televisionFilter:
@@ -50,7 +50,7 @@ MonoBehaviour:
     lineCount: 224
     sync: {x: 0, y: 0}
     brightness: -0.002
-    contrast: 0.4
+    contrast: 0.35
     saturation: 0.2
     sharpness: -0.442
   _chromaticAberrationFilter:

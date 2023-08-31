@@ -23,9 +23,11 @@ namespace Scanner {
 
             var initialOrbitDist = camera.GetOrbitDistanceNormalized();
             var delta = targetOrbitDist - initialOrbitDist;
-            if (delta > 0f) {
+            if (delta < 0f) {
                 // target > initial, we are ZOOMING IN.
-                StartAnim(camera, initialOrbitDist / targetOrbitDist, 0.95f).Forget();
+                StartAnim(camera, 0.3f, 0.95f).Forget();
+            } else {
+                StartAnim(camera, 0.95f, 0.3f).Forget();
             }
         }
 

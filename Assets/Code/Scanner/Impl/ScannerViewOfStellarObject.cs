@@ -128,7 +128,7 @@ namespace Scanner.Impl {
 
 
             if (myElement.IsHighlighted && Input.GetMouseButtonDown(1)) {
-                SceneUtil.GetScannerCamera.GetComponent<__StellarNavCameraOld>().Focus(StellarObject.galacticPosition);
+                SceneUtil.GetScannerCamera.GetComponent<IHasWorldFocus>().Focus(StellarObject.galacticPosition, false);
             }
         }
     }

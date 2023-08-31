@@ -6,6 +6,8 @@ namespace Scanner {
 
     public interface IHasWorldFocus {
         Vector3 WorldFocus { get; }
+        void Focus(Vector3 newCenter, bool immediate);
+
     }
 
     public interface IOrbitCamera {
@@ -13,6 +15,7 @@ namespace Scanner {
         float Phi { get; set; }
 
         void ApplyPan(Vector3 cameraspaceDelta);
+        
         float GetOrbitDistanceNormalized();
         void SetOrbitDistanceNormalized(float normalizedValue, bool immediate);
     }
@@ -49,7 +52,7 @@ namespace Scanner {
 
         Vector3 IHasWorldFocus.WorldFocus => center;
 
-        internal void Focus(Vector3 newCenter, bool immediate) {
+        public void Focus(Vector3 newCenter, bool immediate) {
             target = newCenter;
             if (immediate) center = target;
         }

@@ -31,45 +31,4 @@ namespace Scanner {
         }
         
     }
-
-    public class OrbitingCameraControllerWithSteppedZoom: OrbitingCameraController {
-
-        [SerializeField] CyclingZoomEffect zoomEffect;
-        [SerializeField] bool intermediateZoom;
-
-        protected override void Start() {
-            base.Start();
-            zoomEffect.OnProgressChanged += HandleZoomProgressChanged;
-            zoomEffect.OnEnded += HandleZoomEffectEnded;
-        }
-
-        private void HandleZoomEffectEnded() {
-            
-        }
-
-        private void HandleZoomProgressChanged(float t) {
-            if (intermediateZoom || t >= 1f) { 
-                Mathf.Lerp(initialZoom, targetZoom, t);
-            }
-        }
-
-        float initialZoom;
-        float targetZoom;
-
-        protected override void Update() {
-            base.Update();
-
-            if (!zoomEffect.IsAnimating) {
-                var z = targetCam.GetOrbitDistanceNormalized();
-                initialZoom = z;
-                if (Input.mouseScrollDelta.y > 0 && z < 0.99f) {
-                    targetZoom = 1f;
-                    zoomEffect.StartZoomEffect(targetCam, 1f);
-                } else if (Input.mouseScrollDelta.y < 0 && z > 0.01f) {
-                    targetZoom = 0f;
-                    zoomEffect.StartZoomEffect(targetCam, 0f);
-                }
-            }
-        }
-    }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Scanner.Sweeteners;
 using UnityEngine;
 using Void;
 using Void.Entities;
@@ -9,9 +8,10 @@ using Void.Impl;
 namespace Scanner.Impl {
     internal class NewStarmapView : ScreenView {
         [SerializeField] GameObject stellarObjectPrefab;
-        [SerializeField] __StellarNavCameraOld navCam;
-        [SerializeField] __ZoomerEffectOld zoomEffect;
-
+        
+        [SerializeField] float distanceZoom0;
+        [SerializeField] float distanceZoomFull;
+        
         Gameworld world;
         List<ScannerViewOfStellarObject> allViews = new();
 
