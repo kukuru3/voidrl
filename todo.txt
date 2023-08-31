@@ -1,7 +1,9 @@
 Todo: 
 
+- we do not need an ECS it seems. Clean it up and transfer most functionality into 
+  entities. Entities should be CONTAIN-able by default.
 
-- code, assembly & project structure cleanup
+- 
 
 
 CORE: some very, very basic stuff for use by all. Units, conversions, utilities, etc. A scripting API may or may not live in here.

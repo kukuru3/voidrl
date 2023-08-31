@@ -1,14 +1,14 @@
 ﻿using System;
 using K3;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Scanner {
 
-    public interface IHasWorldFocus {
-        Vector3 WorldFocus { get; }
-    }
 
-    public class StellarNavCamera : MonoBehaviour, IHasWorldFocus {
+    
+
+    public class __StellarNavCameraOld : MonoBehaviour, IHasWorldFocus {
         [SerializeField] float orbitDistanceMin;
         [SerializeField] float orbitDistanceMax;
 
@@ -18,6 +18,7 @@ namespace Scanner {
         [SerializeField] float panMultiplier;
         [SerializeField] float mousePhiMultiplier;
         [SerializeField] float mouseThetaMultiplier;
+
         [SerializeField] float mouseWheelZoomMult;
 
         [SerializeField] float constRotation;
@@ -84,13 +85,34 @@ namespace Scanner {
             center = Vector3.SmoothDamp(center, targetVel, ref _vel, centerSmoothTime);
             orbitD = Mathf.SmoothDamp(orbitD, targetOrbitD, ref _orbitDVel, orbitDSmoothTime);
         }
+        [SerializeField][Range(0f, 20f)] float angleStep;
+        [SerializeField][Range(0f, 1f)] float posStep;
 
         private void UpdatePosition() { 
-
-           
             phi = Mathf.Clamp(phi, minPhi, maxPhi);
-            transform.rotation = Quaternion.Euler(phi, theta, 0);
-            transform.position = center - transform.forward * orbitD;
+
+            var finalTheta = theta;
+            var finalPhi = phi;
+
+            var trueCenter = center;
+
+            if (posStep > 0f) { 
+                trueCenter = stepize(center, posStep);
+            }
+
+            if (angleStep > float.Epsilon) { 
+                finalTheta = Mathf.Floor(theta / angleStep) * angleStep;
+                finalPhi   = Mathf.Floor(phi/ angleStep) * angleStep;
+            }
+            transform.rotation = Quaternion.Euler(finalPhi, finalTheta, 0);
+            transform.position = trueCenter - transform.forward * orbitD;
+        }
+
+        Vector3 stepize(Vector3 coords, float step) {
+            coords.x = Mathf.Floor(coords.x / step) * step;
+            coords.y = Mathf.Floor(coords.y / step) * step;
+            coords.z = Mathf.Floor(coords.z / step) * step;
+            return coords;
         }
     }
 }

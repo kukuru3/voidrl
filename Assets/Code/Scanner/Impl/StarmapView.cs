@@ -8,9 +8,10 @@ using Void.Entities.Components;
 using Void.Impl;
 
 namespace Scanner.Impl {
+
     internal class StarmapView : MonoBehaviour {
         [SerializeField] GameObject stellarObjectPrefab;
-        [SerializeField] StellarNavCamera cam;
+        [SerializeField] __StellarNavCameraOld cam;
 
         //[SerializeField][Range(10, 50)] float maxRange;
 
