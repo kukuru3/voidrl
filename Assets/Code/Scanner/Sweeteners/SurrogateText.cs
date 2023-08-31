@@ -12,13 +12,19 @@ namespace Scanner.Sweeteners {
 
         [SerializeField] float textSize;
 
+        public bool  Display { get; set; } = true;
+
+        Color baseColor;
+
         Transform referenceObject;
         TMP_Text text;
         private void Start() {
             gameObject.layer = 5;
             referenceObject = transform.parent;
-            // transform.parent = null;
             text = GetComponent<TMP_Text>();
+            ColorMultiplier = Color.white;
+            SizeMultiplier = 1f;
+            baseColor = text.color;
         }
 
         private void LateUpdate() {
@@ -30,8 +36,13 @@ namespace Scanner.Sweeteners {
             transform.position = sp;
             transform.rotation = SceneUtil.UICamera.transform.rotation;
 
-            text.fontSize = textSize;
-            text.enabled = referenceObject.gameObject.activeInHierarchy && !outOfFrustum;
+            text.fontSize = textSize * SizeMultiplier;
+            text.color = baseColor * ColorMultiplier;
+            text.enabled = Display && !outOfFrustum;
         }
+
+        public Color ColorMultiplier { get; set; }
+        public float SizeMultiplier { get; set; }
+
     }
 }

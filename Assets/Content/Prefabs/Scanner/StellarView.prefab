@@ -149,10 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0}
-  toDisable:
-  - {fileID: 3910105489334125441}
-  scaleMinDist: 0.1
-  scaleMaxDist: 1
+  scale: 1
+  targetRenderer: {fileID: 3910105489334125441}
 --- !u!1 &2010983368959374861
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,7 +288,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2010983369357727327}
-  - component: {fileID: 2010983369357727392}
   - component: {fileID: 2010983369357727393}
   - component: {fileID: 2010983369357727394}
   - component: {fileID: 2010983369357727326}
@@ -320,34 +317,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2010983369357727392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2010983369357727395}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0227a202d6d1e944888db8f30673549b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blendMode: 1
-  scaleMode: 0
-  color: {r: 1, g: 1, b: 1, a: 1}
-  detailLevel: 2
-  renderQueue: -1
-  zTest: 4
-  zOffsetFactor: 0
-  zOffsetUnits: 0
-  colorMask: 15
-  stencilComp: 8
-  stencilOpPass: 0
-  stencilRefID: 0
-  stencilReadMask: 255
-  stencilWriteMask: 255
-  radius: 0.1
-  radiusSpace: 0
 --- !u!33 &2010983369357727393
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -410,10 +379,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b584eb019d73347ae4c85538209900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main: {fileID: 2010983369357727392}
+  main: {fileID: 0}
   shadow: {fileID: 2010983369744901561}
   shadowLine: {fileID: 2010983368959374860}
   label: {fileID: 2010983370006838968}
+  <DiscHandle>k__BackingField: {fileID: 8105262277848891778}
+  <LabelHandle>k__BackingField: {fileID: 7231189128499111491}
 --- !u!114 &3192459160116196719
 MonoBehaviour:
   m_ObjectHideFlags: 0

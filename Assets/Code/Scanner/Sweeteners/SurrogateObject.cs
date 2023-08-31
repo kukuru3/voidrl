@@ -5,10 +5,12 @@ using UnityEngine;
 namespace Scanner.Sweeteners {
     internal class SurrogateObject : MonoBehaviour {
         [SerializeField] Vector2 offset;
-        [SerializeField] MonoBehaviour[] toDisable;
+        [SerializeField] float scale;
+        [SerializeField] Shapes.ShapeRenderer targetRenderer;
 
-        [SerializeField] float scaleMinDist;
-        [SerializeField] float scaleMaxDist;
+        public float ScaleMultiplier { get; set; } = 1f;
+
+        public bool  Display { get; set; } = true;
 
         private Transform referenceObject;
         private void Start() {
@@ -18,15 +20,16 @@ namespace Scanner.Sweeteners {
 
         private void LateUpdate() {
             var screenPos = SceneUtil.GetScannerCamera.WorldToScreenPoint(referenceObject.position);
-            var outOfFrustum = (screenPos.z < SceneUtil.GetScannerCamera.nearClipPlane || screenPos.z > SceneUtil.GetScannerCamera.farClipPlane);            
+            var outOfFrustum = (screenPos.z < SceneUtil.GetScannerCamera.nearClipPlane || screenPos.z > SceneUtil.GetScannerCamera.farClipPlane);         
             var wp = SceneUtil.UICamera.ScreenToWorldPoint(screenPos + new Vector3(offset.x, offset.y));
             transform.position = wp;
             transform.rotation = SceneUtil.UICamera.transform.rotation;
-            foreach (var c in toDisable) {
-                c.enabled = referenceObject.gameObject.activeInHierarchy && !outOfFrustum;
-            }
 
-            transform.localScale = Vector3.one * screenPos.z.Map(SceneUtil.GetScannerCamera.farClipPlane, SceneUtil.GetScannerCamera.nearClipPlane, scaleMinDist, scaleMaxDist);
+            targetRenderer.enabled = Display && !outOfFrustum;            
+            transform.localScale = Vector3.one * (scale * ScaleMultiplier);
+
+            // Vector3.one * screenPos.z.Map(SceneUtil.GetScannerCamera.farClipPlane, SceneUtil.GetScannerCamera.nearClipPlane, scaleMinDist, scaleMaxDist);
+
         }
     }
 }

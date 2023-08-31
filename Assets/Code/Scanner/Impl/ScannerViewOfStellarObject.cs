@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using Core;
 using Scanner.ScannerView;
 using Shapes;
@@ -13,10 +12,11 @@ namespace Scanner.Impl {
 
         CameraController3D camCtrlr;
 
-        [SerializeField] Sphere main;
         [SerializeField] GameObject shadow;
         [SerializeField] Shapes.Line shadowLine;
         [SerializeField] TMPro.TMP_Text label;
+        [field:SerializeField] internal Sweeteners.SurrogateObject DiscHandle { get; private set; }
+        [field:SerializeField] internal Sweeteners.SurrogateText   LabelHandle { get; private set;}
 
         Element myElement;
 
@@ -28,7 +28,7 @@ namespace Scanner.Impl {
 
         public void Initialize(StellarObject obj) {
             this.StellarObject = obj;
-            main.transform.position = obj.galacticPosition * SCALE;
+            transform.position = obj.galacticPosition * SCALE;
             
             var zeroPos = obj.galacticPosition;
             zeroPos.y = 0;
@@ -109,17 +109,17 @@ namespace Scanner.Impl {
             upTime = 0f;
         }
 
+        bool prevDisplay;
         private void LateUpdate() {
+            if (prevDisplay != LabelHandle.Display) upTime = 0;            
+            prevDisplay = LabelHandle.Display;
+            
             upTime += Time.deltaTime;
             if (upTime < 0.4f) { 
                 var isOn = (upTime % 0.09f < 0.045f);
-                var c = label.color;
-                c.a = isOn ? 1f : 0f;
-                label.color = c;
+                LabelHandle.ColorMultiplier = isOn ? Color.white : Color.clear;
             } else {
-                var c = label.color;
-                c.a = 1f;
-                label.color = c;
+                LabelHandle.ColorMultiplier = Color.white;
             }
             
             if (myElement.IsHighlighted) hiliteAlpha += Time.deltaTime;
