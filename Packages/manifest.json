@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "com.k3.core": "file:C:/Dev/Lib/K3.Core",
-    "com.kukuru3.haxxor": "file:C:/Dev/Lib/Haxxor",
+    "com.k3.core": "file:D:/Dev/Lib/K3.Core",
+    "com.kukuru3.haxxor": "file:D:/Dev/Lib/Haxxor",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.visualstudio": "2.0.17",
