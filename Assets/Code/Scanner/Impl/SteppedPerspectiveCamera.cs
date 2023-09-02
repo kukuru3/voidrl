@@ -10,12 +10,12 @@ namespace Scanner {
 
     }
 
-    public interface IOrbitCamera {
+    public interface IOrbitCamera : IHasWorldFocus {
         float Theta { get; set; }
         float Phi { get; set; }
 
-        void ApplyPan(Vector3 cameraspaceDelta);
-        
+        void ApplyPan(Vector3 cameraspaceDelta, bool preTransformed);
+        float GetOrbitDistance();
         float GetOrbitDistanceNormalized();
         void SetOrbitDistanceNormalized(float normalizedValue, bool immediate);
     }
@@ -63,10 +63,13 @@ namespace Scanner {
             if (immediate) orbitD = d;
         }
 
+        public float GetOrbitDistance() => orbitD;
+
         public float GetOrbitDistanceNormalized() => orbitD.Map(orbitDistanceMin, orbitDistanceMax, 0f, 1f);
         
-        public void ApplyPan(Vector3 cameraspaceDelta) {
-            var worldspacePan = transform.TransformVector(cameraspaceDelta);
+        public void ApplyPan(Vector3 cameraspaceDelta, bool preTransformed) {
+            
+            var worldspacePan = preTransformed ? cameraspaceDelta : transform.TransformVector(cameraspaceDelta);
             
             center += worldspacePan;
             target += worldspacePan;

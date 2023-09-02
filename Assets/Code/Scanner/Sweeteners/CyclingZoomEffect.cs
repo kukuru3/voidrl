@@ -4,7 +4,6 @@ using Shapes;
 using UnityEngine;
 
 namespace Scanner {
-
     
     public class CyclingZoomEffect : MonoBehaviour {
         [SerializeField] int cycles;
@@ -12,6 +11,11 @@ namespace Scanner {
         [SerializeField] Rectangle rectangle;
         // [SerializeField] bool intermediate;
         [SerializeField] bool flashEnd;
+
+        [SerializeField] AudioClip clipCycle;
+        [SerializeField] AudioClip playWhenDone;
+
+        [SerializeField] int audioHeadMS;
 
         public event ProgressChanged OnProgressChanged;
         public event Action OnEnded;
@@ -38,11 +42,18 @@ namespace Scanner {
             var initialZoom = camera.GetOrbitDistanceNormalized();
             
             rectangle.enabled = true;
+
+            var sources = GetComponents<AudioSource>();
             
             for (var c = 0; c < cycles; c++) {
-
                 var t = (float)c / (cycles - 1);
                 OnProgressChanged?.Invoke(t);
+                sources[0].PlayOneShot(clipCycle, 1f);
+                var isLastCycle = c == cycles-1;
+                
+                if (isLastCycle) sources[1].PlayOneShot(playWhenDone, 1f);
+
+                await UniTask.Delay(audioHeadMS);
 
                 var x = Mathf.Lerp(screenFrom, screeenTo, t);
                 rectangle.Width = Screen.width * x;
@@ -53,7 +64,6 @@ namespace Scanner {
                 //    // FindObjectOfType<StarmapView>().SetSliderValue(11.5f + targetZoom * 5f * t);
                 //}
 
-                var isLastCycle = c == cycles-1;
 
                 if (isLastCycle && flashEnd) rectangle.Type = Rectangle.RectangleType.HardSolid;
 
@@ -64,10 +74,14 @@ namespace Scanner {
                     rectangle.enabled = true;
                 }
             }
+
             await UniTask.DelayFrame(2);
             rectangle.enabled = false;
             IsAnimating = false;
+
             OnEnded?.Invoke();
+
+
         }
     }
 }

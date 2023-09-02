@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 7508347970072470192}
   m_Father: {fileID: 2010983369357727327}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3910105489334125441
 MonoBehaviour:
@@ -169,7 +169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2010983368959374857
 Transform:
   m_ObjectHideFlags: 0
@@ -177,13 +177,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010983368959374861}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2010983369744901560}
-  m_RootOrder: 0
+  m_Father: {fileID: 2010983369357727327}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2010983368959374860
 MonoBehaviour:
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blendMode: 1
   scaleMode: 0
-  color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0.3882353}
+  color: {r: 0.06324001, g: 0.255, b: 0.22623599, a: 0.7529412}
   detailLevel: 2
   renderQueue: -1
   zTest: 4
@@ -215,18 +215,18 @@ MonoBehaviour:
   colorMode: 0
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 0, y: 0, z: 0}
-  end: {x: 0, y: 0, z: 10}
-  thickness: 0.02
-  thicknessSpace: 0
+  end: {x: 0, y: 10, z: 0}
+  thickness: 4
+  thicknessSpace: 1
   endCaps: 2
   matchDashSpacingToSize: 1
-  dashed: 0
+  dashed: 1
   dashStyle:
     type: 0
-    space: -1
-    snap: 2
-    size: 4
-    spacing: 4
+    space: 0
+    snap: 0
+    size: 0.1
+    spacing: 0.1
     offset: 0
     shapeModifier: 1
 --- !u!33 &2010983368959374858
@@ -312,6 +312,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2010983370006838970}
+  - {fileID: 2010983368959374857}
   - {fileID: 2010983369744901560}
   - {fileID: 220741555475153143}
   m_Father: {fileID: 0}
@@ -379,9 +380,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b584eb019d73347ae4c85538209900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main: {fileID: 0}
   shadow: {fileID: 2010983369744901561}
-  shadowLine: {fileID: 2010983368959374860}
+  <ShadowLine>k__BackingField: {fileID: 2010983368959374860}
   label: {fileID: 2010983370006838968}
   <DiscHandle>k__BackingField: {fileID: 8105262277848891778}
   <LabelHandle>k__BackingField: {fileID: 7231189128499111491}
@@ -410,12 +410,12 @@ GameObject:
   - component: {fileID: 2010983369744901558}
   - component: {fileID: 2010983369744901559}
   m_Layer: 0
-  m_Name: Shadow
+  m_Name: ShadowDisc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2010983369744901560
 Transform:
   m_ObjectHideFlags: 0
@@ -424,13 +424,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010983369744901561}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -4.58, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2010983368959374857}
+  m_Children: []
   m_Father: {fileID: 2010983369357727327}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &2010983369744901557
 MonoBehaviour:
@@ -439,7 +438,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010983369744901561}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dd51d29965c9d04599a2fdc8a833c6b, type: 3}
   m_Name: 

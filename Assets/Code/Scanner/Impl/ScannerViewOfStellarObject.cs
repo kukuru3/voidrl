@@ -10,10 +10,8 @@ namespace Scanner.Impl {
     internal class ScannerViewOfStellarObject : MonoBehaviour {
         internal StellarObject StellarObject { get; private set; }
 
-        CameraController3D camCtrlr;
-
         [SerializeField] GameObject shadow;
-        [SerializeField] Shapes.Line shadowLine;
+        [field:SerializeField] internal Line ShadowLine { get; private set; }
         [SerializeField] TMPro.TMP_Text label;
         [field:SerializeField] internal Sweeteners.SurrogateObject DiscHandle { get; private set; }
         [field:SerializeField] internal Sweeteners.SurrogateText   LabelHandle { get; private set;}
@@ -35,10 +33,10 @@ namespace Scanner.Impl {
             shadow.transform.position = zeroPos * SCALE;
 
             var h = obj.galacticPosition.y;
-            shadowLine.Start = new Vector3(0,0,0);
-            shadowLine.End = new Vector3(0, 0, h * SCALE);
+            // ShadowLine.Start = new Vector3(0,0,0);
+            // ShadowLine.End = new Vector3(0, 0, h * SCALE);
 
-            camCtrlr = CustomTag.Find(ObjectTags.ScannerCamera).GetComponent<CameraController3D>();
+            // camCtrlr = CustomTag.Find(ObjectTags.ScannerCamera).GetComponent<CameraController3D>();
 
             SubstellarObjectDeclaration firstPrimary;
             string typeString;
@@ -91,10 +89,10 @@ namespace Scanner.Impl {
 
             var numPlanets = neps + jups + ter;
 
-            if (Mathf.Abs(obj.galacticPosition.y)< 0.05f) {
-                shadow.SetActive(false);
-                shadowLine.gameObject.SetActive(false);
-            }
+            //if (Mathf.Abs(obj.galacticPosition.y)< 0.05f) {
+            //    shadow.SetActive(false);
+            //    ShadowLine.gameObject.SetActive(false);
+            //}
         }
 
         float hiliteAlpha;

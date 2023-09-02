@@ -22,12 +22,29 @@ namespace Scanner {
                 targetCam.Phi   += mouseDelta.y * mousePhiMultiplier;
             }
 
+            Vector3 RaycastOntoPlane(Transform transform, Vector3 offset) {
+                var plane = new Plane(Vector3.up, targetCam.WorldFocus);
+                var ray = new Ray(transform.TransformPoint(offset), transform.forward);
+                if (!plane.Raycast(ray, out var q)) throw new System.InvalidCastException("Haha get it, invalid (ray)CAST");
+                return ray.GetPoint(q);
+            }
+
             Vector3 delta = default;
             if (Input.GetMouseButton(2)) {
-                delta.x = mouseDelta.x * panMultiplier;
-                delta.y = mouseDelta.y * panMultiplier;
+                
+                var a = RaycastOntoPlane(transform, default);
+                var unitX = RaycastOntoPlane(transform, Vector3.right) - a;
+                var unitY = RaycastOntoPlane(transform, Vector3.up) - a;
+                var d = targetCam.GetOrbitDistance();
+                delta =       mouseDelta.x * unitX * panMultiplier * d / Screen.height
+                            + mouseDelta.y * unitY * panMultiplier * d / Screen.height;
+
+                
+                // project on plane:
+                //delta.x = mouseDelta.x * panMultiplier;
+                //delta.y = mouseDelta.y * panMultiplier;
             }
-            targetCam.ApplyPan(delta);
+            targetCam.ApplyPan(delta, true);
         }
         
     }

@@ -32,11 +32,6 @@ namespace Scanner {
             if (!zoomEffect.IsAnimating) {
                 var z = targetCam.GetOrbitDistanceNormalized();
                 initialZoom = z;
-
-                //if (!Mathf.Approximately(Input.mouseScrollDelta.y, 0)) {
-
-                //    return;
-                //}
                 if (Input.mouseScrollDelta.y > 0 && z > 0.4f) { // we want to zoom in (get zoom to 0)
                     targetZoom = 0f;
                     zoomEffect.StartZoomEffect(targetCam, 0f);

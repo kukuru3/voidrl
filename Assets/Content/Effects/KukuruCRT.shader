@@ -56,7 +56,7 @@ Shader "Scanner/CRT"
         const bool useBleeding = false;
 
         const bool useNoiseLines = true;
-        const bool useVignette = true;
+        const bool useVignette = false;
         const bool useScanlines = true;
         const float useDotMatrix = true;
 
@@ -123,8 +123,8 @@ Shader "Scanner/CRT"
 
         // vignette:
         if (useVignette) {
-            float vig = (0.0 + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
-            col *= pow(vig,0.3);
+            float vig = 16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y);
+            col *= pow(vig,0.4);
         }
 
         if (useScanlines) {

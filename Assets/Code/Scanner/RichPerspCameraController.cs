@@ -33,7 +33,7 @@ namespace Scanner {
                 delta.y = mouseDelta.y * panMultiplier;
             }
 
-            targetCam.ApplyPan(delta);
+            targetCam.ApplyPan(delta, false);
             targetCam.Theta += Time.deltaTime * constRotation;
 
             var orbitChange = Input.mouseScrollDelta.y * mouseWheelZoomMult;
