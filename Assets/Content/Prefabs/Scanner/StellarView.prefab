@@ -150,7 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0}
   scale: 1
-  targetRenderer: {fileID: 3910105489334125441}
+  targetRenderers:
+  - {fileID: 3910105489334125441}
 --- !u!1 &2010983368959374861
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using K3;
+using Scanner.Sweeteners;
 using UnityEngine;
 using Void;
 using Void.Entities;
@@ -17,6 +18,8 @@ namespace Scanner.Impl {
 
         [SerializeField] SteppedPerspectiveCamera targetCamera;
         [SerializeField] Transform grid;
+
+        [SerializeField] SurrogateObject reticle;
         
         Gameworld world;
         List<ScannerViewOfStellarObject> allViews = new();
@@ -44,11 +47,54 @@ namespace Scanner.Impl {
                 needsUpdate = true;
             }
 
+            if (highlightTime < float.Epsilon)  // a little trick.
+                needsUpdate = true;
+
             var d = _previousCameraCenter - CameraFocus;
             needsUpdate |= d.sqrMagnitude > 1e-8;
             _previousCameraCenter = CameraFocus; 
 
             if (needsUpdate) UpdateStarmapParameters();
+
+            UpdateReticle();
+        }
+
+        ScannerViewOfStellarObject currentlyHighligtedStellarObject;
+        float highlightTime;
+
+        private void UpdateReticle() {
+            highlightTime += Time.deltaTime;
+
+            var t = targetCamera.GetOrbitDistanceNormalized();
+            reticle.ScaleMultiplier = t.Map(0f, 0.4f, 1f, 0.5f);
+
+            var prevH = currentlyHighligtedStellarObject;
+
+            var el = UIManager.Instance.HighlightedElement;
+            if (el is Custom3DElement ce) {
+                var v = ce.GetComponent<ScannerViewOfStellarObject>();
+                if (v != null) {
+                    currentlyHighligtedStellarObject = v;
+                }
+            } else {
+                currentlyHighligtedStellarObject = null;
+            }
+
+            if (prevH != currentlyHighligtedStellarObject) {
+                highlightTime = 0;
+            }
+
+            if (currentlyHighligtedStellarObject != null) { 
+                
+                reticle.transform.parent.position = currentlyHighligtedStellarObject.transform.position;
+                reticle.Display = true;
+                if (highlightTime < 0.25f) reticle.Display = Time.frameCount % 4 < 2;
+            } else {
+                reticle.Display = false;
+                // keepalive:
+                if (highlightTime < 0.1f) reticle.Display = Time.frameCount % 4 < 2;
+            }
+
         }
 
         private void UpdateStarmapParameters() {
@@ -66,9 +112,9 @@ namespace Scanner.Impl {
             var discOnlyDistance  = Mathf.Lerp(12, 35, t);
             var smolDiscDistance = Mathf.Lerp(12, 20, t);
 
-            var shadowLineDistance = Mathf.Lerp(13, 15, t);
-
             foreach (var view in allViews) {
+                var isHighlighted = view == currentlyHighligtedStellarObject;
+
                 var delta = CameraFocus - view.StellarObject.galacticPosition;
                 delta.y *= verticalDistanceModifier;
 
@@ -77,8 +123,8 @@ namespace Scanner.Impl {
                 delta.y = 0;
                 var dFlat = delta.magnitude;
                 
-                var doDisplayLabel = d < discAndLabelDistance;
-                var doDisplayDisc = d < discOnlyDistance;
+                var doDisplayLabel = d < discAndLabelDistance || isHighlighted;
+                var doDisplayDisc = d < discOnlyDistance || isHighlighted;
                 view.DiscHandle.Display = doDisplayDisc;
                 view.LabelHandle.Display = doDisplayLabel;
                 view.ShadowLine.enabled = t < 0.1f && doDisplayDisc; // && dFlat < 10f;
@@ -101,16 +147,6 @@ namespace Scanner.Impl {
         }
 
         Vector3 CameraFocus => ((IHasWorldFocus)targetCamera).WorldFocus;
-
-        void UpdateGalacticView() {
-            foreach (var view in allViews) {
-                UpdateView(view);
-            }
-        }
-
-        private void UpdateView(ScannerViewOfStellarObject view) {
-            
-        }
 
         private void GenerateViews(Starmap starmap) {
             var contained = starmap.ListContainedEntities();

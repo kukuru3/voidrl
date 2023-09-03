@@ -58,7 +58,7 @@ Shader "Scanner/CRT"
         const bool useNoiseLines = true;
         const bool useVignette = false;
         const bool useScanlines = true;
-        const float useDotMatrix = true;
+        const float useDotMatrix = false;
 
         float3 colorBalance = float3(1.0 - _Greenify, 1.0 + _Greenify, 1.0 - _Greenify);
 
@@ -184,10 +184,6 @@ Shader "Scanner/CRT"
 
         return float4(0,1,0,1);
     }
-
-
-
-
 
     ENDHLSL
     SubShader

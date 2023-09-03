@@ -19,9 +19,12 @@ namespace Scanner {
         float GetOrbitDistanceNormalized();
         void SetOrbitDistanceNormalized(float normalizedValue, bool immediate);
     }
-    
 
-    public class  SteppedPerspectiveCamera : MonoBehaviour, IHasWorldFocus, IOrbitCamera {
+    public interface ILaggingCamera {
+        event Action<Pose> LagUpdated;
+    }
+
+    public class  SteppedPerspectiveCamera : MonoBehaviour, IHasWorldFocus, IOrbitCamera, ILaggingCamera {
         [Header("Limits")]
         [SerializeField] float orbitDistanceMin;
         [SerializeField] float orbitDistanceMax;
@@ -33,9 +36,8 @@ namespace Scanner {
         [SerializeField][Range(0.01f, 0.8f)] float centerSmoothTime;
         [SerializeField] [Range(0.01f, 0.8f)]float orbitDSmoothTime;
 
-        [Header("Steps")]
-        [SerializeField][Range(0f, 20f)] float angleStep;
-        [SerializeField][Range(0f, 1f)] float posStep;
+        [Header("Steps")]        
+        [SerializeField][Range(0f, 0.5f)] float centerUpdateTime;
 
         public float Theta { get; set; }
         public float Phi { get; set; }
@@ -47,8 +49,11 @@ namespace Scanner {
 
 
         Vector3 center;
+
         Vector3 _vel;
         Vector3 target;
+
+        Vector3 laggedCenter;
 
         Vector3 IHasWorldFocus.WorldFocus => center;
 
@@ -86,32 +91,45 @@ namespace Scanner {
             orbitD = Mathf.SmoothDamp(orbitD, targetOrbitD, ref _orbitDVel, orbitDSmoothTime);
         }
         
+        float centerTimeLeft;
+
+        public event Action<Pose> LagUpdated;
 
         private void UpdatePosition() { 
             Phi = Mathf.Clamp(Phi, minPhi, maxPhi);
 
             var finalTheta = Theta;
-            var finalPhi = Phi;
+            var finalPhi = Phi;            
 
-            var trueCenter = center;
+            //if (angleStep > float.Epsilon) { 
+            //    finalTheta = Mathf.Floor(Theta / angleStep) * angleStep;
+            //    finalPhi   = Mathf.Floor(Phi/ angleStep) * angleStep;
+            //}
 
-            if (posStep > 0f) { 
-                trueCenter = stepize(center, posStep);
+            var targetRot = transform.rotation;
+            var prevLagC = laggedCenter;
+
+            centerTimeLeft -= Time.deltaTime;
+            if (centerTimeLeft <= 0f) {
+                centerTimeLeft = centerUpdateTime;
+                laggedCenter = center;
+                targetRot = Quaternion.Euler(finalPhi, finalTheta, 0);
             }
-
-            if (angleStep > float.Epsilon) { 
-                finalTheta = Mathf.Floor(Theta / angleStep) * angleStep;
-                finalPhi   = Mathf.Floor(Phi/ angleStep) * angleStep;
-            }
-            transform.rotation = Quaternion.Euler(finalPhi, finalTheta, 0);
-            transform.position = trueCenter - transform.forward * orbitD;
+            var prevPos = transform.position;
+            var prevRot = transform.rotation;
+            transform.position = laggedCenter - transform.forward * orbitD;
+            transform.rotation = targetRot;
+            var deltaPos = laggedCenter - prevLagC;
+            var deltaRot = Quaternion.Inverse(prevRot) * transform.rotation;
+            var p = new Pose(deltaPos, deltaRot);
+            LagUpdated?.Invoke(p);
         }
 
-        Vector3 stepize(Vector3 coords, float step) {
-            coords.x = Mathf.Floor(coords.x / step) * step;
-            coords.y = Mathf.Floor(coords.y / step) * step;
-            coords.z = Mathf.Floor(coords.z / step) * step;
-            return coords;
-        }
+        //Vector3 stepize(Vector3 coords, float step) {
+        //    coords.x = Mathf.Floor(coords.x / step) * step;
+        //    coords.y = Mathf.Floor(coords.y / step) * step;
+        //    coords.z = Mathf.Floor(coords.z / step) * step;
+        //    return coords;
+        //}
     }
 }
