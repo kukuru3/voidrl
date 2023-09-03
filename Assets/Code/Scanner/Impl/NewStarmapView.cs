@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using K3;
 using Scanner.Sweeteners;
+using Shapes;
 using UnityEngine;
 using Void;
 using Void.Entities;
@@ -95,6 +96,8 @@ namespace Scanner.Impl {
                 if (highlightTime < 0.1f) reticle.Display = Time.frameCount % 4 < 2;
             }
 
+            //reticle.GetComponent<Rectangle>().DashOffset += Time.deltaTime;
+
         }
 
         private void UpdateStarmapParameters() {
@@ -109,7 +112,7 @@ namespace Scanner.Impl {
             var t = targetCamera.GetOrbitDistanceNormalized();
 
             var discAndLabelDistance = Mathf.Lerp(12, 12, t);
-            var discOnlyDistance  = Mathf.Lerp(12, 35, t);
+            var discOnlyDistance  = Mathf.Lerp(22, 35, t);
             var smolDiscDistance = Mathf.Lerp(12, 20, t);
 
             foreach (var view in allViews) {
@@ -129,7 +132,8 @@ namespace Scanner.Impl {
                 view.LabelHandle.Display = doDisplayLabel;
                 view.ShadowLine.enabled = t < 0.1f && doDisplayDisc; // && dFlat < 10f;
                 var sy = gridY - view.StellarObject.galacticPosition.y;
-                view.ShadowLine.End = new Vector3(0, sy, 0);
+                view.ShadowLine.End   = new Vector3(0, 0, 0);
+                view.ShadowLine.Start = new Vector3(0, sy, 0);
                 var color = sy > 0 ? Color.red : Color.green;
                 color.a = 0.25f;
                 view.ShadowLine.Color = color;
@@ -142,7 +146,16 @@ namespace Scanner.Impl {
                     view.LabelHandle.SizeMultiplier = 1f;
                 }
 
-                if (d > smolDiscDistance) view.DiscHandle.ScaleMultiplier = 0.1f;
+                if (d > smolDiscDistance) {
+                    view.DiscHandle.ScaleMultiplier = 0.1f;
+                    view.ShadowLine.enabled = false;
+                }
+
+                if (!view.DiscHandle.InFrustum) {
+                    view.ShadowLine.enabled = false;
+                }
+
+                view.ShadowLine.enabled = isHighlighted;
             }
         }
 

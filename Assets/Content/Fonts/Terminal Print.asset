@@ -59,9 +59,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Terminal Print
   m_EditorClassIdentifier: 
-  hashCode: -1682655644
+  hashCode: 1036577941
   material: {fileID: 2781485118454097313}
-  materialHashCode: 670494020
+  materialHashCode: -1861376747
   m_Version: 1.1.0
   m_SourceFontFileGUID: 08791a3dc70c22944ae212529d5e8cdc
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 08791a3dc70c22944ae212529d5e8cdc, type: 3}
@@ -2606,7 +2606,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: x14y24pxHeadUpDaisy Atlas Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - UNDERLAY_ON
   m_InvalidKeywords:
   - MASK_HARD
   m_LightmapFlags: 4
@@ -2670,7 +2671,7 @@ Material:
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
     - _ScaleRatioB: 1.00125
-    - _ScaleRatioC: 0.3807034
+    - _ScaleRatioC: 1.00125
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -2684,9 +2685,9 @@ Material:
     - _TextureHeight: 1024
     - _TextureWidth: 1024
     - _UnderlayDilate: 1
-    - _UnderlayOffsetX: 1
+    - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
-    - _UnderlaySoftness: 0.63
+    - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75

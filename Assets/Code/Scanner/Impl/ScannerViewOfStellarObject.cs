@@ -113,7 +113,7 @@ namespace Scanner.Impl {
             prevDisplay = LabelHandle.Display;
             
             upTime += Time.deltaTime;
-            if (upTime < 0.4f) { 
+            if (upTime < 0.23f) { 
                 var isOn = (upTime % 0.09f < 0.045f);
                 LabelHandle.ColorMultiplier = isOn ? Color.white : Color.clear;
             } else {

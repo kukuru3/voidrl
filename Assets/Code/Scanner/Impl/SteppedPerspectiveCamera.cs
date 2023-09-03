@@ -24,6 +24,7 @@ namespace Scanner {
         event Action<Pose> LagUpdated;
     }
 
+    [DefaultExecutionOrder(1000)]
     public class  SteppedPerspectiveCamera : MonoBehaviour, IHasWorldFocus, IOrbitCamera, ILaggingCamera {
         [Header("Limits")]
         [SerializeField] float orbitDistanceMin;
@@ -38,6 +39,7 @@ namespace Scanner {
 
         [Header("Steps")]        
         [SerializeField][Range(0f, 0.5f)] float centerUpdateTime;
+        [SerializeField][Range(0f, 10f)] float angleStep;
 
         public float Theta { get; set; }
         public float Phi { get; set; }
@@ -99,26 +101,29 @@ namespace Scanner {
             Phi = Mathf.Clamp(Phi, minPhi, maxPhi);
 
             var finalTheta = Theta;
-            var finalPhi = Phi;            
+            var finalPhi = Phi;
 
-            //if (angleStep > float.Epsilon) { 
-            //    finalTheta = Mathf.Floor(Theta / angleStep) * angleStep;
-            //    finalPhi   = Mathf.Floor(Phi/ angleStep) * angleStep;
-            //}
+            if (angleStep > float.Epsilon) {
+                finalTheta = Mathf.Floor(Theta / angleStep) * angleStep;
+                finalPhi = Mathf.Floor(Phi / angleStep) * angleStep;
+            }
 
             var targetRot = transform.rotation;
             var prevLagC = laggedCenter;
+            var prevRot = transform.rotation;
 
             centerTimeLeft -= Time.deltaTime;
             if (centerTimeLeft <= 0f) {
                 centerTimeLeft = centerUpdateTime;
                 laggedCenter = center;
-                targetRot = Quaternion.Euler(finalPhi, finalTheta, 0);
+                transform.rotation = Quaternion.Euler(finalPhi, finalTheta, 0);
             }
+
             var prevPos = transform.position;
-            var prevRot = transform.rotation;
+            
+
             transform.position = laggedCenter - transform.forward * orbitD;
-            transform.rotation = targetRot;
+
             var deltaPos = laggedCenter - prevLagC;
             var deltaRot = Quaternion.Inverse(prevRot) * transform.rotation;
             var p = new Pose(deltaPos, deltaRot);

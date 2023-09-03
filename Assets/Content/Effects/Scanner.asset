@@ -101,10 +101,10 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0
+    value: 1
   chromaticAberration:
     overrideState: 1
-    value: 0.83
+    value: 0.98
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.22575891, b: 0.29799998, a: 1}
@@ -134,7 +134,7 @@ MonoBehaviour:
     value: 1.3
   colorCurve:
     overrideState: 1
-    value: 0.25
+    value: 0.453
   centralBleed:
     overrideState: 0
     value: 0.534

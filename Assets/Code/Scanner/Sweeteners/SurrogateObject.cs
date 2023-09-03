@@ -19,15 +19,22 @@ namespace Scanner.Sweeteners {
             referenceObject = transform.parent;
         }
 
+        public bool InFrustum { get; private set; }
+
         private void LateUpdate() {
             var screenPos = SceneUtil.GetScannerCamera.WorldToScreenPoint(referenceObject.position);
-            var outOfFrustum = (screenPos.z < SceneUtil.GetScannerCamera.nearClipPlane || screenPos.z > SceneUtil.GetScannerCamera.farClipPlane);         
+            var outOfFrustum = (screenPos.z < SceneUtil.GetScannerCamera.nearClipPlane || screenPos.z > SceneUtil.GetScannerCamera.farClipPlane);
+
+            var p = SceneUtil.GetScannerCamera.WorldToViewportPoint(referenceObject.position);
+            if (p.x < 0f || p.x > 1 || p.y < 0 || p.y > 1) outOfFrustum = true;
+            
             var wp = SceneUtil.UICamera.ScreenToWorldPoint(screenPos + new Vector3(offset.x, offset.y));
             transform.position = wp;
             transform.rotation = SceneUtil.UICamera.transform.rotation;
 
+            InFrustum = !outOfFrustum;
             foreach (var r in targetRenderers) {
-                r.enabled = Display && !outOfFrustum;            
+                r.enabled = Display && InFrustum;            
             }
             transform.localScale = Vector3.one * (scale * ScaleMultiplier);
             // Vector3.one * screenPos.z.Map(SceneUtil.GetScannerCamera.farClipPlane, SceneUtil.GetScannerCamera.nearClipPlane, scaleMinDist, scaleMaxDist);

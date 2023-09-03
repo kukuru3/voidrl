@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using Shapes;
 using UnityEngine;
 
@@ -56,6 +57,7 @@ namespace Scanner {
                 await UniTask.Delay(audioHeadMS);
 
                 var x = Mathf.Lerp(screenFrom, screeenTo, t);
+                rectangle.enabled = true;
                 rectangle.Width = Screen.width * x;
                 rectangle.Height = Screen.height * x;
                 
@@ -65,7 +67,11 @@ namespace Scanner {
                 //}
 
 
-                if (isLastCycle && flashEnd) rectangle.Type = Rectangle.RectangleType.HardSolid;
+                if (isLastCycle && flashEnd) {
+                    rectangle.Type = Rectangle.RectangleType.HardSolid;
+                    rectangle.Width = Screen.width;
+                    rectangle.Height = Screen.height;
+                }
 
                 for (var f = 0; f < cycleDuration; f++) {
                     await UniTask.DelayFrame(1);

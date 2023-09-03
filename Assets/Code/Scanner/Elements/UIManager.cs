@@ -12,14 +12,19 @@ namespace Scanner {
         static internal UIManager Instance { get; private set; }
         internal Element HighlightedElement => highlighted;
 
+        EffectsController effects;
 
         private void Start() {
             Instance = this;
+            effects = FindObjectOfType<EffectsController>();
+
         }
 
         private void OnDestroy() {
             Cursor.visible = true;
         }
+
+
 
         private void Update() {
             var uiCamera = SceneUtil.UICamera;
@@ -51,6 +56,7 @@ namespace Scanner {
         public static Vector3 GetDistortedCursorPos() {
             var p = Input.mousePosition;
             var distortion = 0.2f;
+            if (Instance.effects != null) distortion = Instance.effects.Distortion;
             var uv = new Vector2(p.x / Screen.width, p.y / Screen.height);
             var uv2 = Distort(uv, distortion);
 

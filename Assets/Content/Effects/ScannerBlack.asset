@@ -29,14 +29,14 @@ MonoBehaviour:
     overrideState: 0
     value: 65472
   diffusion:
-    overrideState: 1
-    value: 5
+    overrideState: 0
+    value: 6.01
   anamorphicRatio:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
     overrideState: 0
-    value: {r: 1.5341744, g: 1.3489286, b: 0, a: 1}
+    value: {r: 0, g: 1.319508, b: 1.1103449, a: 1}
   fastMode:
     overrideState: 0
     value: 0
@@ -104,52 +104,34 @@ MonoBehaviour:
     value: 1
   chromaticAberration:
     overrideState: 1
-    value: 0.49
+    value: 0.817
   shadowColor:
     overrideState: 1
-    value: {r: 0.184, g: 0.184, b: 0.184, a: 1}
+    value: {r: 0, g: 0.12069999, b: 0.142, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.009
+    value: 0.0045
   greenify:
     overrideState: 1
     value: 0
   flickerIntensity:
     overrideState: 1
-    value: 0.037
-  dotMatrixRepeat:
-    overrideState: 1
-    value: 3
+    value: 0.0512
   scanlineRepeat:
     overrideState: 1
     value: 4
   scanlineEffect:
     overrideState: 1
-    value: 0.039
-  scanlineSpeed:
-    overrideState: 1
-    value: -3.2
+    value: 0.218
   brightnessBaseline:
     overrideState: 1
-    value: 0.94
+    value: 1.57
   colorCurve:
     overrideState: 1
-    value: 0.1
+    value: 0.254
   centralBleed:
     overrideState: 1
-    value: 0.534
-  centralBleedPower:
-    overrideState: 0
-    value: 1
-  centralBleedCenter:
-    overrideState: 0
-    value: 0.05
-  debugTweak:
-    overrideState: 1
-    value: 0.221
-  distortion:
-    overrideState: 0
-    value: 0.2
+    value: 0
 --- !u!114 &1302253812162679686
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -210,18 +192,12 @@ MonoBehaviour:
   flickerIntensity:
     overrideState: 1
     value: 0.04
-  dotMatrixRepeat:
-    overrideState: 1
-    value: 3
   scanlineRepeat:
     overrideState: 1
     value: 3
   scanlineEffect:
     overrideState: 1
     value: 1
-  scanlineSpeed:
-    overrideState: 1
-    value: 0
   brightnessBaseline:
     overrideState: 1
     value: 1
@@ -229,18 +205,6 @@ MonoBehaviour:
     overrideState: 1
     value: 0.15
   centralBleed:
-    overrideState: 0
-    value: 0
-  centralBleedPower:
-    overrideState: 0
-    value: 2
-  centralBleedCenter:
-    overrideState: 0
-    value: 0.1
-  debugTweak:
-    overrideState: 0
-    value: 0
-  distortion:
     overrideState: 0
     value: 0
 --- !u!114 &4281082538547010851
@@ -261,14 +225,14 @@ MonoBehaviour:
     value: 1
   gradingMode:
     overrideState: 1
-    value: 0
+    value: 1
   externalLut:
     overrideState: 0
     value: {fileID: 0}
     defaultState: 1
   tonemapper:
     overrideState: 1
-    value: 2
+    value: 1
   toneCurveToeStrength:
     overrideState: 1
     value: 0
@@ -296,12 +260,12 @@ MonoBehaviour:
     value: 1
   temperature:
     overrideState: 1
-    value: -3
+    value: 4.9
   tint:
-    overrideState: 0
-    value: -87.7
-  colorFilter:
     overrideState: 1
+    value: -2.6
+  colorFilter:
+    overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     overrideState: 0
@@ -314,10 +278,10 @@ MonoBehaviour:
     value: 0
   postExposure:
     overrideState: 0
-    value: -1.22
+    value: 0
   contrast:
     overrideState: 0
-    value: 0
+    value: 33
   mixerRedOutRedIn:
     overrideState: 0
     value: 100

@@ -13,7 +13,7 @@ Shader "Scanner/CRT"
     float _Greenify;
     float _ColorCurve;
 
-    half4 _CentralBleed;
+    float _CentralBleed;
 
     half3 _ShadowBaseline;
 
@@ -109,11 +109,10 @@ Shader "Scanner/CRT"
         col -= _AddedSkyboxColor;
 
         float multiplier = length(i.texcoord - 0.5);
-        multiplier = 2 * (0.5 - multiplier + _CentralBleed.z);
+        multiplier = 2 * (0.4 - multiplier);
 
         multiplier = saturate(multiplier);
-        multiplier = pow(multiplier, _CentralBleed.y);
-        col += _ShadowBaseline * (multiplier * _CentralBleed.x);
+        col += _ShadowBaseline * (multiplier * _CentralBleed);
 
         // col *= (1.0 + multiplier * 0.1);
 
