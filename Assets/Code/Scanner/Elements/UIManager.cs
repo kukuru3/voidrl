@@ -9,8 +9,12 @@ namespace Scanner {
 
         Element highlighted;
 
+        static internal UIManager Instance { get; private set; }
+        internal Element HighlightedElement => highlighted;
+
+
         private void Start() {
-            
+            Instance = this;
         }
 
         private void OnDestroy() {

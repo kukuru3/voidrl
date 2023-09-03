@@ -6,7 +6,8 @@ namespace Scanner.Sweeteners {
     internal class SurrogateObject : MonoBehaviour {
         [SerializeField] Vector2 offset;
         [SerializeField] float scale;
-        [SerializeField] Shapes.ShapeRenderer targetRenderer;
+        [SerializeField] Shapes.ShapeRenderer[] targetRenderers;
+        
 
         public float ScaleMultiplier { get; set; } = 1f;
 
@@ -25,9 +26,10 @@ namespace Scanner.Sweeteners {
             transform.position = wp;
             transform.rotation = SceneUtil.UICamera.transform.rotation;
 
-            targetRenderer.enabled = Display && !outOfFrustum;            
+            foreach (var r in targetRenderers) {
+                r.enabled = Display && !outOfFrustum;            
+            }
             transform.localScale = Vector3.one * (scale * ScaleMultiplier);
-
             // Vector3.one * screenPos.z.Map(SceneUtil.GetScannerCamera.farClipPlane, SceneUtil.GetScannerCamera.nearClipPlane, scaleMinDist, scaleMaxDist);
 
         }
