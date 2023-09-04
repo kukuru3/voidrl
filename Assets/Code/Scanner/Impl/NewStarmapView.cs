@@ -31,6 +31,7 @@ namespace Scanner.Impl {
 
             var gg = new StarmapGenerator();
             var starmap = gg.GenerateStarmap(world);
+            gg.MarkAsImportant(starmap, "Sol", "Epsilon Eridani", "Altair", "Sirius", "Tau Ceti", "Beta Hydri", "Delta Pavonis", "Procyon", "Vega", "Eta Cassiopeiae", "Sigma Draconis", "Fomalhaut C");
 
             GenerateViews(starmap);
         }
@@ -86,7 +87,10 @@ namespace Scanner.Impl {
             }
 
             if (currentlyHighligtedStellarObject != null) { 
-                
+                if (prevH != currentlyHighligtedStellarObject) {
+                    reticle.GetComponentInChildren<AudioSource>().Play();
+                }
+                        
                 reticle.transform.parent.position = currentlyHighligtedStellarObject.transform.position;
                 reticle.Display = true;
                 if (highlightTime < 0.25f) reticle.Display = Time.frameCount % 4 < 2;
@@ -126,8 +130,9 @@ namespace Scanner.Impl {
                 delta.y = 0;
                 var dFlat = delta.magnitude;
                 
-                var doDisplayLabel = d < discAndLabelDistance || isHighlighted;
-                var doDisplayDisc = d < discOnlyDistance || isHighlighted;
+                var doDisplayLabel = d < discAndLabelDistance || isHighlighted || view.StellarObject.Important;
+                var doDisplayDisc = d < discOnlyDistance || isHighlighted || view.StellarObject.Important;
+
                 view.DiscHandle.Display = doDisplayDisc;
                 view.LabelHandle.Display = doDisplayLabel;
                 view.ShadowLine.enabled = t < 0.1f && doDisplayDisc; // && dFlat < 10f;
@@ -179,7 +184,7 @@ namespace Scanner.Impl {
             child.name = $"Stellar View: {so.name}";
 
             var svoso = child.GetComponent<ScannerViewOfStellarObject>();
-            svoso.Initialize(so);          
+            svoso.Initialize(so);
             return svoso;
         }
 

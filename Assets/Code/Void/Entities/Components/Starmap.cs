@@ -10,6 +10,8 @@ namespace Void.Entities.Components {
     public class StellarObject : Container {
         public string name;
         public Vector3 galacticPosition;
+        
+        public bool Important { get; set; }
 
         public IEnumerable<SubstellarObjectDeclaration> ContainedSubstellars => ListContainedEntities().Select(e => e.Get<SubstellarObjectDeclaration>());
 

@@ -8,6 +8,7 @@ namespace Scanner {
 
         [SerializeField] AudioSource sourceRot;
         [SerializeField] AudioSource sourcePos;
+        [SerializeField] AudioSource sourceFocus;
         [SerializeField] float thresholdRot;
         [SerializeField] float thresholdPos;
         [SerializeField] bool interrupt;
@@ -17,6 +18,13 @@ namespace Scanner {
             lagCam = GetComponent<ILaggingCamera>();
             lagCam.LagUpdated += HandleLag;
             initVolume = sourceRot.volume;
+            if (lagCam is IHasWorldFocus focuser) {
+                focuser.NewFocusSet += OnFocusSet;
+            }
+        }
+
+        private void OnFocusSet() {
+            sourceFocus.Play();
         }
 
         float temperaturePos;

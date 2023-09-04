@@ -115,6 +115,14 @@ namespace Void.Impl {
             return commonPrefix;
         }
 
+
+        public void MarkAsImportant(Starmap starmap, params string[] names) {
+            var set = new HashSet<string>(names);
+            foreach (var obj in starmap.ListContainedEntities()) {
+                var so = obj.Get<StellarObject>();
+                if (names.Contains(so.name)) so.Important = true;
+            }
+        }
         // this is of course incredibly hardcoded for the time being
 
         IEnumerable<SubstellarObjectDeclaration> LoadStarmapFromFile() {

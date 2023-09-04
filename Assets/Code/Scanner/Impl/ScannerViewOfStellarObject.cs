@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using Core;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Scanner.ScannerView;
 using Shapes;
 using UnityEngine;
-using Void.AppContext;
 using Void.Entities.Components;
 
 namespace Scanner.Impl {
@@ -11,6 +10,7 @@ namespace Scanner.Impl {
         internal StellarObject StellarObject { get; private set; }
 
         [SerializeField] GameObject shadow;
+        [SerializeField] GameObject stellarDiscPrefab;
         [field:SerializeField] internal Line ShadowLine { get; private set; }
         [SerializeField] TMPro.TMP_Text label;
         [field:SerializeField] internal Sweeteners.SurrogateObject DiscHandle { get; private set; }
@@ -55,13 +55,13 @@ namespace Scanner.Impl {
 
             typeString = firstPrimary.type.ToString();
 
-            if (primaries.Count == 1 && firstPrimary.type == StellarSubobjects.MainSequenceStar) {
+            if (primaries.Count >= 1 && firstPrimary.type == StellarSubobjects.MainSequenceStar) {
                 typeString = "";
             }
 
-            if (primaries.Count == 2) typeString = "Binary system";
-            if (primaries.Count == 3) typeString = "Ternary system";
-            if (primaries.Count == 4) typeString = "Quaternary system";
+            //if (primaries.Count == 2) typeString = "Binary system";
+            //if (primaries.Count == 3) typeString = "Ternary system";
+            //if (primaries.Count == 4) typeString = "Quaternary system";
             if (primaries.Count >= 5) typeString = $"{primaries.Count}-star system";
 
             string color = "fff";
@@ -77,6 +77,7 @@ namespace Scanner.Impl {
             label.text = $"<color=#{color}>{obj.name}</color>"; 
 
             if (!string.IsNullOrWhiteSpace(typeString)) label.text += $"\r\n<size=80%>{typeString}</size>";
+
             if (primaries.Count == 1) {
                 if (firstPrimary.starSequence != StarTypes.NotAStar && firstPrimary.starSequence != StarTypes.Unknown) {
                     // label.text += $"\r\n<size=80%>{firstPrimary.starSequence}</size>";
@@ -89,10 +90,50 @@ namespace Scanner.Impl {
 
             var numPlanets = neps + jups + ter;
 
+            InstantiateStarDiscs(primaries.Count);
+
             //if (Mathf.Abs(obj.galacticPosition.y)< 0.05f) {
             //    shadow.SetActive(false);
             //    ShadowLine.gameObject.SetActive(false);
             //}
+        }
+
+        static Vector3[][] offsets;
+
+        
+        
+           
+
+        private void InstantiateStarDiscs(int count) {
+
+            if (offsets == null) GenerateOffsets();
+            
+            var isPlanet = false;
+            if (count == 0) {
+                count = 1; isPlanet = true;
+            }
+
+            var list = new List<Shapes.ShapeRenderer>();
+
+            if (count >= offsets.Length) count = offsets.Length - 1;
+
+            for (var ix = 0; ix < count; ix++) {
+                var go = Instantiate(stellarDiscPrefab, DiscHandle.transform);
+                go.transform.localPosition = offsets[count-1][ix] * 20f;
+                go.layer = 5;
+                list.Add(go.GetComponent<Shapes.ShapeRenderer>());
+            }
+
+            DiscHandle.ReplaceShapes(list);
+
+        }
+
+        private void GenerateOffsets() {
+            offsets = new Vector3[4][];
+            offsets[0] = new Vector3[] { Vector3.zero };
+            offsets[1] = new Vector3[] { -Vector3.right * 0.5f, Vector3.right * 0.5f };
+            offsets[2] = new Vector3[] { -Vector3.right * 0.5f, Vector3.right * 0.5f, Vector3.up * 0.71f };
+            offsets[3] = new Vector3[] { new Vector2(0.5f, 0), new Vector2(-0.5f, 0), new Vector2(0.5f, 1f), new Vector2(-0.5f, 1f)  };
         }
 
         float hiliteAlpha;

@@ -1,5 +1,9 @@
-﻿using K3;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using K3;
 using Scanner.ScannerView;
+using Shapes;
 using UnityEngine;
 
 namespace Scanner.Sweeteners {
@@ -39,6 +43,10 @@ namespace Scanner.Sweeteners {
             transform.localScale = Vector3.one * (scale * ScaleMultiplier);
             // Vector3.one * screenPos.z.Map(SceneUtil.GetScannerCamera.farClipPlane, SceneUtil.GetScannerCamera.nearClipPlane, scaleMinDist, scaleMaxDist);
 
+        }
+
+        internal void ReplaceShapes(IEnumerable<ShapeRenderer> list) {
+            targetRenderers = list.ToArray();
         }
     }
 }

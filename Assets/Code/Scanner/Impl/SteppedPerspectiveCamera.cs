@@ -7,6 +7,8 @@ namespace Scanner {
     public interface IHasWorldFocus {
         Vector3 WorldFocus { get; }
         void Focus(Vector3 newCenter, bool immediate);
+        
+        event Action NewFocusSet;
 
     }
 
@@ -62,6 +64,7 @@ namespace Scanner {
         public void Focus(Vector3 newCenter, bool immediate) {
             target = newCenter;
             if (immediate) center = target;
+            NewFocusSet?.Invoke();
         }
 
         public void SetOrbitDistanceNormalized(float normalizedValue, bool immediate) {
@@ -96,6 +99,7 @@ namespace Scanner {
         float centerTimeLeft;
 
         public event Action<Pose> LagUpdated;
+        public event Action NewFocusSet;
 
         private void UpdatePosition() { 
             Phi = Mathf.Clamp(Phi, minPhi, maxPhi);

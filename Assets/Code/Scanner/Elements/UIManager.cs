@@ -57,6 +57,7 @@ namespace Scanner {
             var p = Input.mousePosition;
             var distortion = 0.2f;
             if (Instance.effects != null) distortion = Instance.effects.Distortion;
+
             var uv = new Vector2(p.x / Screen.width, p.y / Screen.height);
             var uv2 = Distort(uv, distortion);
 

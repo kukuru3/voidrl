@@ -223,7 +223,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -400, y: -500, z: 0}
   end: {x: -400, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -251,40 +251,6 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &46897350
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Line 2D Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: 08972cbecdebc6944b65c598dec5cb43, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 3
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 12
-    - _StencilWriteMask: 0
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &55867740
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,40 +305,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!21 &72538937
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Regular Polygon Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: a008a2b36086d4e4393a9b3c8a6d998f, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
-    - _StencilID: 4
-    - _StencilOp: 0
-    - _StencilOpPass: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 4
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &86861300
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +316,7 @@ GameObject:
   - component: {fileID: 86861302}
   - component: {fileID: 86861301}
   - component: {fileID: 86861303}
+  - component: {fileID: 86861304}
   m_Layer: 5
   m_Name: Audio
   m_TagString: Untagged
@@ -402,7 +335,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2df1a18920747a644a948ab00c769236, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.22
   m_Pitch: 2.8
   Loop: 0
@@ -513,7 +446,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ca05f8ac0e33e8a47ba198494a8f8da9, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.22
   m_Pitch: 2.5
   Loop: 0
@@ -525,6 +458,102 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0.4
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &86861304
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86861300}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e4595a8bc0ef70e48a929bfaf926af81, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.22
+  m_Pitch: 2
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 300
+  MaxDistance: 1000
+  Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
@@ -698,7 +727,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: 400, z: 0}
   end: {x: 500, y: 400, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -726,6 +755,40 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &156330904
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Line 2D Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: 08972cbecdebc6944b65c598dec5cb43, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 0
+    - _StencilComp: 8
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 8
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &161586833
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +889,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 300, y: -500, z: 0}
   end: {x: 300, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -1105,7 +1168,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 0, y: -500, z: 0}
   end: {x: 0, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -1133,7 +1196,7 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &282198197
+--- !u!21 &295111056
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1168,6 +1231,134 @@ Material:
     - _ZTest: 4
     m_Colors: []
   m_BuildTextureStacks: []
+--- !u!1 &346923273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346923274}
+  - component: {fileID: 346923275}
+  m_Layer: 0
+  m_Name: Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &346923274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346923273}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1977535251}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &346923275
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346923273}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 9a5fe0f03d756e349aae1782a25a664e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1.5
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 300
+  MaxDistance: 1000
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.294
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &416091319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,7 +1558,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: -500, z: 0}
   end: {x: 500, y: -500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -1524,6 +1715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourceRot: {fileID: 86861301}
   sourcePos: {fileID: 86861303}
+  sourceFocus: {fileID: 86861304}
   thresholdRot: 300
   thresholdPos: 30
   interrupt: 1
@@ -1946,40 +2138,6 @@ MonoBehaviour:
   frameRate: 60
   compositeLineRatio: 1
   distortion: 0.1
---- !u!21 &719575127
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Line 2D Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: 08972cbecdebc6944b65c598dec5cb43, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 8
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &756868951
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,7 +2238,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: -400, z: 0}
   end: {x: 500, y: -400, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -2146,7 +2304,7 @@ PrefabInstance:
     - target: {fileID: 57820566080030176, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 719575127}
+      objectReference: {fileID: 2079349598}
     - target: {fileID: 57820566399516829, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2158,7 +2316,7 @@ PrefabInstance:
     - target: {fileID: 57820566430644862, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2048826449}
+      objectReference: {fileID: 1701629006}
     - target: {fileID: 57820567324643776, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2166,7 +2324,7 @@ PrefabInstance:
     - target: {fileID: 57820567324643776, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1785548741}
+      objectReference: {fileID: 943427552}
     - target: {fileID: 57820567353417128, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Name
       value: SliderWithNumber
@@ -2226,7 +2384,7 @@ PrefabInstance:
     - target: {fileID: 57820567452967508, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2006773752}
+      objectReference: {fileID: 2049242566}
     - target: {fileID: 57820567604374638, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2234,43 +2392,9 @@ PrefabInstance:
     - target: {fileID: 57820567604374638, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 872803468}
+      objectReference: {fileID: 1979230524}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
---- !u!21 &872803468
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Regular Polygon Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: a008a2b36086d4e4393a9b3c8a6d998f, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
-    - _StencilID: 4
-    - _StencilOp: 0
-    - _StencilOpPass: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 4
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &908062204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2371,7 +2495,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 200, y: -500, z: 0}
   end: {x: 200, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -2399,6 +2523,40 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &933187119
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Regular Polygon Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: a008a2b36086d4e4393a9b3c8a6d998f, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 0
+    - _StencilComp: 8
+    - _StencilID: 4
+    - _StencilOp: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 4
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &942598579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,6 +2597,41 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942598579}
   m_Enabled: 1
+--- !u!21 &943427552
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Transparent [BORDERED] (instance)
+  m_Shader: {fileID: 4800000, guid: 616a25aec4b286744b9fa8a7c081c531, type: 3}
+  m_ValidKeywords:
+  - BORDERED
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _StencilComp: 6
+    - _StencilID: 4
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 4
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &965338871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,7 +2732,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: 0, z: 0}
   end: {x: 500, y: 0, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -2887,7 +3080,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 0, y: 0, z: 500}
   end: {x: 0, y: 0, z: -500}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3000,7 +3193,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -200, y: -500, z: 0}
   end: {x: -200, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3128,7 +3321,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 400, y: -500, z: 0}
   end: {x: 400, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3156,40 +3349,6 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1203216405
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Line 2D Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: 08972cbecdebc6944b65c598dec5cb43, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 8
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1336286676
 GameObject:
   m_ObjectHideFlags: 0
@@ -3290,7 +3449,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: 100, z: 0}
   end: {x: 500, y: 100, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3418,7 +3577,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: -100, z: 0}
   end: {x: 500, y: -100, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3675,7 +3834,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: -300, z: 0}
   end: {x: 500, y: -300, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3803,7 +3962,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 500, y: -500, z: 0}
   end: {x: 500, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -3931,7 +4090,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: -500, z: 0}
   end: {x: -500, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -4059,7 +4218,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: -200, z: 0}
   end: {x: 500, y: -200, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -4187,7 +4346,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: 200, z: 0}
   end: {x: 500, y: 200, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -4215,6 +4374,40 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1555356191
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Line 2D Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: 08972cbecdebc6944b65c598dec5cb43, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _StencilComp: 3
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 12
+    - _StencilWriteMask: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1578906554
 GameObject:
   m_ObjectHideFlags: 0
@@ -4315,7 +4508,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -100, y: -500, z: 0}
   end: {x: -100, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -4521,17 +4714,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 57820567353417135, guid: 1603b0d0ce628134fa43dee912c49b38, type: 3}
   m_PrefabInstance: {fileID: 823967127}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1785548741
+--- !u!21 &1701629006
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Transparent [BORDERED] (instance)
-  m_Shader: {fileID: 4800000, guid: 616a25aec4b286744b9fa8a7c081c531, type: 3}
-  m_ValidKeywords:
-  - BORDERED
+  m_Name: Line 2D Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: 08972cbecdebc6944b65c598dec5cb43, type: 3}
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -4545,12 +4737,46 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _StencilComp: 6
-    - _StencilID: 4
+    - _StencilComp: 3
+    - _StencilID: 8
     - _StencilOp: 0
     - _StencilOpPass: 0
-    - _StencilReadMask: 4
-    - _StencilWriteMask: 255
+    - _StencilReadMask: 12
+    - _StencilWriteMask: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
+--- !u!21 &1707601005
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Regular Polygon Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: a008a2b36086d4e4393a9b3c8a6d998f, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 0
+    - _StencilComp: 8
+    - _StencilID: 4
+    - _StencilOp: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 4
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
@@ -4656,7 +4882,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 100, y: -500, z: 0}
   end: {x: 100, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -4799,7 +5025,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: 500, z: 0}
   end: {x: 500, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -4923,40 +5149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516b61fc289a85747bcd92ca9263fe09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!21 &1885368681
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Regular Polygon Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: a008a2b36086d4e4393a9b3c8a6d998f, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
-    - _StencilID: 4
-    - _StencilOp: 0
-    - _StencilOpPass: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 4
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1977535250
 GameObject:
   m_ObjectHideFlags: 0
@@ -4988,7 +5180,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 346923274}
   m_Father: {fileID: 169671737}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5112,6 +5305,40 @@ MonoBehaviour:
     radialOrigin: {x: 0, y: 0, z: 0}
     radialRadius: 1
   useFill: 0
+--- !u!21 &1979230524
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Regular Polygon Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: a008a2b36086d4e4393a9b3c8a6d998f, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 0
+    - _StencilComp: 8
+    - _StencilID: 4
+    - _StencilOp: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 4
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &2003754618
 GameObject:
   m_ObjectHideFlags: 0
@@ -5212,7 +5439,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -500, y: 300, z: 0}
   end: {x: 500, y: 300, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
@@ -5240,7 +5467,7 @@ Transform:
   m_Father: {fileID: 55867741}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &2006773752
+--- !u!21 &2049242566
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -5274,7 +5501,7 @@ Material:
     - _ZTest: 4
     m_Colors: []
   m_BuildTextureStacks: []
---- !u!21 &2048826449
+--- !u!21 &2079349598
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -5296,13 +5523,13 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 3
+    - _ColorMask: 0
+    - _StencilComp: 8
     - _StencilID: 8
     - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 12
-    - _StencilWriteMask: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 8
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
@@ -5408,7 +5635,7 @@ MonoBehaviour:
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: -300, y: -500, z: 0}
   end: {x: -300, y: 500, z: 0}
-  thickness: 0.1
+  thickness: 0.006
   thicknessSpace: 0
   endCaps: 2
   matchDashSpacingToSize: 1
