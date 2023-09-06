@@ -18,7 +18,7 @@ namespace Scanner.Windows {
 
         [SerializeField] TMPro.TMP_Text resultLabel;
         [SerializeField] TMPro.TMP_Text massLabel;
-        [SerializeField] AreaChart massDistribution;
+        [SerializeField] Chart massDistribution;
 
         List<GameObject> elements = new List<GameObject>();
 
@@ -84,9 +84,9 @@ namespace Scanner.Windows {
             var thrustPowerOfSingleEngine = (decimal)(propellantFlow.NumericValue * exhaustVelocity.NumericValue * exhaustVelocity.NumericValue / 2);
 
             massDistribution.ClearEntries();
-            massDistribution.AddEntry("Engines", (float)totalMassOfEngines.As(MassUnits.kt),    new Color32(250, 150, 120, 255));
-            massDistribution.AddEntry("Structure", (float)structureM.As(MassUnits.kt), new Color32(150, 150, 120, 255));
-            massDistribution.AddEntry("Shielding", (float)totalShieldingMass.As(MassUnits.kt), new Color32(55, 100, 100, 255));
+            massDistribution.AddEntry("Engines", (float)totalMassOfEngines.As(MassUnits.kt),    new Color32(250, 30, 30, 255));
+            massDistribution.AddEntry("Structure", (float)structureM.As(MassUnits.kt), new Color32(150, 250, 120, 255));
+            massDistribution.AddEntry("Shielding", (float)totalShieldingMass.As(MassUnits.kt), new Color32(55, 130, 130, 255));
             massDistribution.AddEntry("Propellant", (float)propellantMass.As(MassUnits.kt), new Color32(240, 140, 8, 255));
 
             massLabel.text = $"<color=#122>{totalWetMass.As(MassUnits.Mt):f1}Mt";
@@ -108,7 +108,7 @@ namespace Scanner.Windows {
             var propFlow = new Core.CustomSIValue((decimal)propellantFlow.NumericValue * numEngines, "kg/s");
             var vExhaust = new Velocity((decimal)exhaustVelocity.NumericValue);
 
-            var calculation = TravelTimeCalculator.CalculateComplexWithRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow);
+            var calculation = TravelTimeCalculator.CalculateComplexWithRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow, maxV);
             var totalTime = new TimeSI(calculation.TotalTime);
             var turnoverV = new Velocity(calculation.turnoverV);
             var propExpenditure = new Mass(calculation.isBrachistochrone ? (calculation.progradeBurnTime + calculation.retrogradeBurnTime) * propFlow.ValueSI : propellantMass.ValueSI);

@@ -23,13 +23,12 @@ namespace Core.Calculations {
         const int PRIMARY_ITERATIONS = 2000;
         static AscensionProfileSnapshot[] ascensionProfile = new AscensionProfileSnapshot[PRIMARY_ITERATIONS];
 
-        static public TravelTime CalculateComplexWithRootFinding(Distance distance, Mass dryMass, Mass propellantMass, Velocity vExhaust, CustomSIValue propellantMassFlow) {
+        static public TravelTime CalculateComplexWithRootFinding(Distance distance, Mass dryMass, Mass propellantMass, Velocity vExhaust, CustomSIValue propellantMassFlow, Velocity maxToleratedVelocity = null) {
             var d = distance.ValueSI;
             var F = vExhaust.ValueSI * propellantMassFlow.ValueSI;
             var Ve = vExhaust.ValueSI;
             var m0 = dryMass.ValueSI;
 
-            var a0 = F / m0;
             var tIdeal = propellantMass.ValueSI / propellantMassFlow.ValueSI;
             var Δt = tIdeal / 1000m;
 
@@ -37,6 +36,9 @@ namespace Core.Calculations {
             var mP = propellantMass.ValueSI;
 
             var halfΔv = Ve * ((m0 + mP) / m0).Ln() * 0.505m;
+
+            var maxV = decimal.MaxValue;
+            if (maxToleratedVelocity != null) maxV = maxToleratedVelocity.ValueSI;
 
             // build initial profile: burn all the way up to deltaV / 2, then immediately burn retrograde
 
@@ -66,6 +68,12 @@ namespace Core.Calculations {
                 var ΔvRemainingCurrent = Ve * ((m0 + mP) / m0).Ln();
 
                 if (!decel && ΔvRemainingCurrent < halfΔv - v + oldV) {
+                    decel = true;
+                    result.turnoverV = v;
+                    result.progradeBurnTime = t;
+                }
+
+                if (!decel && v > maxV) {
                     decel = true;
                     result.turnoverV = v;
                     result.progradeBurnTime = t;

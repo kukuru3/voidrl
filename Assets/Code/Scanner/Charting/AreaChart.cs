@@ -1,20 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Shapes;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Scanner.Charting {
-    [ExecuteAlways]
-    internal class AreaChart : ImmediateModeShapeDrawer {
 
-        [System.Serializable]
-        public struct Entry {
-            public float amount;
-            public Color color;
-            public string name;
-        }
-        [SerializeField] List<Entry> entries;
+    [ExecuteAlways]
+    internal class AreaChart :  Chart {
 
         [SerializeField] float w;
         [SerializeField] float hPerAmountUnit;
@@ -24,13 +15,6 @@ namespace Scanner.Charting {
         [SerializeField] float rimDistance;
         [SerializeField] Color rimColor;
 
-        public void ClearEntries() {
-            entries.Clear();
-        }
-        public void AddEntry(string name, float amount, Color color) {
-            var entry = new Entry { amount = amount, name = name, color = color };
-            entries.Add(entry);
-        }
 
         public override void DrawShapes(Camera cam) {
 

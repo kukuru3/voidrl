@@ -26,11 +26,11 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     _enabled: 1
-    lineCount: 878
+    lineCount: 545
     distortion: -0.301
     artifact: 0.354
     fringing: 0.54
-    bleeding: 0.987
+    bleeding: 1
   _staticFilter:
     _foldout: 1
     materials:
@@ -39,7 +39,7 @@ MonoBehaviour:
     staticPattern: {fileID: 2800000, guid: 43a04c1efe2bb194e936e6b500cc884d, type: 3}
     staticMagnitude: 0.03
     staticScale: 1.55
-    staticOffset: 14160.515
+    staticOffset: 14556.129
     dirtPattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
     dirtMagnitude: 0.023
   _televisionFilter:
@@ -50,8 +50,8 @@ MonoBehaviour:
     lineCount: 224
     sync: {x: 0, y: 0}
     brightness: 0
-    contrast: 0.03
-    saturation: 0.3
+    contrast: 0.1
+    saturation: 0.4
     sharpness: 0.128
   _chromaticAberrationFilter:
     _foldout: 1
@@ -75,5 +75,5 @@ MonoBehaviour:
     _enabled: 1
     maskPattern: {fileID: 2800000, guid: 740e2a6166d12b5479fbc50eb9a1fc83, type: 3}
     reflexPattern: {fileID: 0}
-    distortionMagnitude: 0.1
+    distortionMagnitude: 0
     reflexMagnitude: 0
