@@ -101,13 +101,13 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 0.658
+    value: 1
   chromaticAberration:
     overrideState: 1
     value: 0.85
   shadowColor:
     overrideState: 1
-    value: {r: 0.16133332, g: 0.15155555, b: 0.22, a: 1}
+    value: {r: 0, g: 0.199, b: 0.234, a: 1}
   shadowEnhancer:
     overrideState: 1
     value: 0.0045
@@ -116,19 +116,19 @@ MonoBehaviour:
     value: 0.091
   flickerIntensity:
     overrideState: 1
-    value: 0.0512
+    value: 0.039
   scanlineRepeat:
     overrideState: 1
     value: 2
   scanlineEffect:
     overrideState: 1
-    value: 0.772
+    value: 0.56
   brightnessBaseline:
     overrideState: 1
-    value: 1.4
+    value: 1.2
   colorCurve:
     overrideState: 1
-    value: 0.032
+    value: 0.147
   centralBleed:
     overrideState: 1
     value: 0

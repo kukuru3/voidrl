@@ -37,11 +37,11 @@ MonoBehaviour:
     - {fileID: 0}
     _enabled: 1
     staticPattern: {fileID: 2800000, guid: 43a04c1efe2bb194e936e6b500cc884d, type: 3}
-    staticMagnitude: 0.084
-    staticScale: 2.29
+    staticMagnitude: 0.034
+    staticScale: 2
     staticOffset: 2195.991
     dirtPattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
-    dirtMagnitude: 0.225
+    dirtMagnitude: 0.073
   _televisionFilter:
     _foldout: 1
     materials:
