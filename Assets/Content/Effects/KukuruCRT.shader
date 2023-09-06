@@ -52,13 +52,13 @@ Shader "Scanner/CRT"
 
         float2 screen = _ScreenParams.xy;
 
-        const bool useCurve = true;
+        const bool useCurve = false;
         const bool useBleeding = false;
 
         const bool useNoiseLines = true;
-        const bool useVignette = false;
+        const bool useVignette = true;
         const bool useScanlines = true;
-        const float useDotMatrix = false;
+        const float useDotMatrix = true;
 
         float3 colorBalance = float3(1.0 - _Greenify, 1.0 + _Greenify, 1.0 - _Greenify);
 
@@ -108,11 +108,11 @@ Shader "Scanner/CRT"
 
         col -= _AddedSkyboxColor;
 
-        float multiplier = length(i.texcoord - 0.5);
-        multiplier = 2 * (0.4 - multiplier);
+        // float multiplier = length(i.texcoord - 0.5);
+        // multiplier = 2 * (0.4 - multiplier);
 
-        multiplier = saturate(multiplier);
-        col += _ShadowBaseline * (multiplier * _CentralBleed);
+        // multiplier = saturate(multiplier);
+        // col += _ShadowBaseline * (multiplier * _CentralBleed);
 
         // col *= (1.0 + multiplier * 0.1);
 
@@ -121,9 +121,9 @@ Shader "Scanner/CRT"
         
 
         // vignette:
-        if (useVignette) {
-            float vig = 16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y);
-            col *= pow(vig,0.4);
+                if (useVignette) {
+            float vig = (0.0 + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
+            col *= pow(vig,0.3);
         }
 
         if (useScanlines) {
@@ -133,21 +133,31 @@ Shader "Scanner/CRT"
             float scanlineDark = _ScanlineProps.z;
             float scanlineLight = _ScanlineProps.w;
 
+            // float scanlineFactor = 0.5 + 0.5 * sin(scanlineSpeed * time + uv.y * screen.y * 2 * PI / scanlineRepeat );
+            // float y = i.texcoord.y * screen.y + _Tweak;
+            // scanlineFactor = step(scanlineRepeat / 2, y % scanlineRepeat);
+            // scanlineFactor = lerp(scanlineDark, scanlineLight, scanlineFactor);
+
+            // float luma = dot(col, float3(0.299f, 0.587f, 0.114f));
+            // float brightness = smoothstep(0.7, 1.4, luma);
+            // float multiplier = scanlineFactor;
+            // col *= multiplier;
+
             // scans will always be in the range of 0 - 0.7
             float scanlineFactor = 0.5 + 0.5 * sin(scanlineSpeed * time + uv.y * screen.y * 2 * PI / scanlineRepeat );
 
-            float y = i.texcoord.y * screen.y + _Tweak;
-            scanlineFactor = step(scanlineRepeat / 2, y % scanlineRepeat);
+            scanlineFactor = lerp(scanlineDark, scanlineLight, pow(scanlineFactor, 1.7));
+            
+            // scanlineFactor = 0.7 * scanlineFactor;        
+            // scanlineFactor = pow(scanlineFactor,1.7); // and this will remap them even further to the range of 0-0.54
+            // scanlineFactor = 0.4 + scanlineFactor * 0.7;
+            // scanlineFactor *= 2.8;
 
-            scanlineFactor = lerp(scanlineDark, scanlineLight, scanlineFactor);
+            // s = 0.4 + pow(0.7 * s, 1.7) * 0.7;
+            // col *= 2.8; // to compensate for the sinewave, probably. 2 * sqrt(2). 
+            col *= scanlineFactor; // c
 
-            // col *= scanlineFactor;
 
-            float luma = dot(col, float3(0.299f, 0.587f, 0.114f));
-            float brightness = smoothstep(0.7, 1.4, luma);
-            float multiplier = scanlineFactor;
-            // float multiplier = lerp(scanlineFactor, 1 - 0.5 * scanlineFactor, brightness);
-            col *= multiplier;
         }
 
         //col *= 1.4;

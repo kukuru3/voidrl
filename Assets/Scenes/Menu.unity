@@ -226,7 +226,7 @@ MonoBehaviour:
   staticSpeed: 0.1
   frameRate: 60
   compositeLineRatio: 1
-  distortion: 0.2
+  distortion: 0
 --- !u!4 &771910142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4405649098287407255, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}

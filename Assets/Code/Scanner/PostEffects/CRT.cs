@@ -21,7 +21,7 @@ namespace Scanner.PostEffects {
         [Range(0f, 0.2f)] public FloatParameter flickerIntensity = new() { value = 0.02f };
 
         [Header("Scanlines")]
-        // [Range(2f, 10f)] public FloatParameter dotMatrixRepeat = new() { value = 3.0f };
+        [Range(2f, 10f)] public FloatParameter dotMatrixRepeat = new() { value = 3.0f };
         [Range(2f, 10f)] public FloatParameter scanlineRepeat = new() { value = 3.0f };
         [Range(0f, 1f)] public FloatParameter scanlineEffect = new() { value = 0f };
         // [Range(-30f, 30f)] public FloatParameter scanlineSpeed = new() { value = 0f };
@@ -41,7 +41,7 @@ namespace Scanner.PostEffects {
             //sheet.properties.SetFloat("_Distortion", settings.distortion);
 
             sheet.properties.SetFloat("_ChromAbbDistance",settings.chromaticAberration);
-            // sheet.properties.SetFloat("_DotMatrixRepeat",settings.dotMatrixRepeat);
+            sheet.properties.SetFloat("_DotMatrixRepeat",settings.dotMatrixRepeat);
             sheet.properties.SetFloat("_Greenify",settings.greenify);
             sheet.properties.SetFloat("_ColorCurve", settings.colorCurve);
             sheet.properties.SetFloat("_FlickerIntensity", settings.flickerIntensity);

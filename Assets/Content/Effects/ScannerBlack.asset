@@ -21,7 +21,7 @@ MonoBehaviour:
     value: 2
   threshold:
     overrideState: 1
-    value: 0.7
+    value: 0.5
   softKnee:
     overrideState: 0
     value: 0.5
@@ -33,7 +33,7 @@ MonoBehaviour:
     value: 6
   anamorphicRatio:
     overrideState: 1
-    value: 0.297
+    value: 0
   color:
     overrideState: 0
     value: {r: 0, g: 1.319508, b: 1.1103449, a: 1}
@@ -101,34 +101,37 @@ MonoBehaviour:
     value: 1
   finalMix:
     overrideState: 1
-    value: 1
+    value: 0.878
   chromaticAberration:
-    overrideState: 1
-    value: 0.85
+    overrideState: 0
+    value: 0.8
   shadowColor:
     overrideState: 1
-    value: {r: 0, g: 0.199, b: 0.234, a: 1}
+    value: {r: 0, g: 0.24819997, b: 0.292, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.0045
+    value: 0.0054
   greenify:
     overrideState: 1
-    value: 0.091
+    value: 0.075
   flickerIntensity:
     overrideState: 1
     value: 0.039
+  dotMatrixRepeat:
+    overrideState: 1
+    value: 3
   scanlineRepeat:
     overrideState: 1
-    value: 2
+    value: 3
   scanlineEffect:
     overrideState: 1
-    value: 0.56
+    value: 0.559
   brightnessBaseline:
     overrideState: 1
-    value: 1.2
+    value: 1
   colorCurve:
     overrideState: 1
-    value: 0.147
+    value: 0.15
   centralBleed:
     overrideState: 1
     value: 0
@@ -192,6 +195,9 @@ MonoBehaviour:
   flickerIntensity:
     overrideState: 1
     value: 0.04
+  dotMatrixRepeat:
+    overrideState: 0
+    value: 3
   scanlineRepeat:
     overrideState: 1
     value: 3
