@@ -104,7 +104,7 @@ MonoBehaviour:
     value: 0.878
   chromaticAberration:
     overrideState: 0
-    value: 0.8
+    value: 0.59
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.24819997, b: 0.292, a: 1}
@@ -113,7 +113,7 @@ MonoBehaviour:
     value: 0.0054
   greenify:
     overrideState: 1
-    value: 0.075
+    value: 0
   flickerIntensity:
     overrideState: 1
     value: 0.039

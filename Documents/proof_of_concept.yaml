@@ -1,6 +1,7 @@
 ui_sterile: # audio "skin" or "theme" or whatever
     - event_id: ui.button.hover
-      eat: false #can be omitted
+      reprocess: true #can be omitted, default: false
+      match_tags: [ ENGINE ] # the element MUST match ALL these tags. Tags starting with "!" are negated.
       responses:
         - _type: audio
           samples:
@@ -20,4 +21,25 @@ ui_sterile: # audio "skin" or "theme" or whatever
 #  b) anywhere in hierearchy, "themers" or "skinners" are declared
 #     skinners are simple, they only have one string field, and that is the theme ID
 #     (in the above example, "ui_sterile")
-#     
+#     if a skinner matches an event by ID, then it HANDLES the event by:
+#       - marking it as HANDLED
+#       - executing the listed responses
+#     the event is bubbled up towards other skinners, but unless reprocess is TRUE, none will do anything.
+
+
+#  in addition, you can declare an aditional SkinnerStack programmatically.
+#  these skinners can be set to have higher or lower priority than the UI hardcoded skinners.
+
+# the idea is that you can set up a special theme for the UI handling of certain buttons only.
+# perhaps the engine-related buttons on the engineering screen need a special modifier to how they trigger.
+# 
+
+
+
+# the skinners ALSO WORK ON NON-UI PRIMITIVES, e.g. blips such as squadron icons.
+
+
+# UI_PRIMITIVE : a
+# BLIP : a blip is something that is on the screen. It can consist of multiple symbols and texts
+# SYMBOL
+# TEXT

@@ -26,11 +26,11 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     _enabled: 1
-    lineCount: 1027
+    lineCount: 530
     distortion: -0.301
     artifact: 0.354
-    fringing: 0.54
-    bleeding: 0.909
+    fringing: 0.079
+    bleeding: 0.424
   _staticFilter:
     _foldout: 1
     materials:
@@ -39,7 +39,7 @@ MonoBehaviour:
     staticPattern: {fileID: 2800000, guid: 43a04c1efe2bb194e936e6b500cc884d, type: 3}
     staticMagnitude: 0.03
     staticScale: 2.09
-    staticOffset: 14813.998
+    staticOffset: 14879.731
     dirtPattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
     dirtMagnitude: 0.055
   _televisionFilter:

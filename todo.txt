@@ -3,7 +3,8 @@ Todo:
 - we do not need an ECS it seems. Clean it up and transfer most functionality into 
   entities. Entities should be CONTAIN-able by default.
 
-- 
+- Stellar Nav Camera, Zoomer, and various Surrogates are currently a mess.
+  Create a better code structure that integrates them
 
 
 CORE: some very, very basic stuff for use by all. Units, conversions, utilities, etc. A scripting API may or may not live in here.
@@ -14,6 +15,16 @@ SCANNER: View layer UI elements, , Monobehaviours, Effect implementation, glitch
 
 - 
 Calaby-Yau-Podolsky Harmonic Electromagnetic Resonance : CYPHER
+Calabi Yau Resonant Oscillator : CYROS
+SCIMMR - self-contained internalized magnetic resonance
+RAMA - resonant 
+HARM - harmonic resonance magnetism
+
+Matrioska
+Magnetic
+Self-contained
+Harmonic
+Oscillator
 
 - Layers
     - tactical (50 light seconds / 0.1 AU / 1.5 million km) - even at 1%c, it takes more than an hour to cross this distance. Needless to say, 
