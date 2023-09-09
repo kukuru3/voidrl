@@ -119,7 +119,9 @@ namespace Scanner.Windows {
             var calculation = TravelTimeCalculator.CalculateComplexWithRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow, maxV);
             var totalTime = new TimeSI(calculation.TotalTime);
             var turnoverV = new Velocity(calculation.turnoverV);
-            var propExpenditure = new Mass(calculation.isBrachistochrone ? (calculation.progradeBurnTime + calculation.retrogradeBurnTime) * propFlow.ValueSI : propellantMass.ValueSI);
+
+
+            var propExpenditure = new Mass((calculation.progradeBurnTime + calculation.retrogradeBurnTime) * propFlow.ValueSI);
 
             s += $"Total time to reach target <color=#f4c>{distance}</color> away: <size=200><b><color=#cd2>{totalTime}</color></b></size>\r\n";
             

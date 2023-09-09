@@ -17,6 +17,8 @@ namespace Scanner {
     }
 
     class Button : Element {
+        public event Action Clicked;
+
         [SerializeField] GameObject regular;
         [SerializeField] GameObject active;
 
@@ -38,6 +40,7 @@ namespace Scanner {
 
         private void Click() {
             timeLastClick = Time.time;
+            Clicked?.Invoke();
         }
 
         private bool VisualState() {
