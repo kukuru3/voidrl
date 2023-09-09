@@ -22,13 +22,15 @@ namespace Scanner.Windows {
 
         List<GameObject> elements = new List<GameObject>();
 
-        NumberSlider projAreaPerMan;
-        private NumberSlider areaMultiplier;
+        // private NumberSlider projAreaPerMan;
+        // private NumberSlider areaMultiplier;
         private NumberSlider nominalCrew;
         private NumberSlider overpopulation;
         private NumberSlider distanceToTarget;
         private Toggle infiniteFuel;
-        private NumberSlider propellantMassTotal;
+
+        private NumberSlider massRatioSlider;
+        // private NumberSlider propellantMassTotal;
         private NumberSlider engineMass;
         private NumberSlider exhaustVelocity;
         private NumberSlider propellantFlow;
@@ -39,7 +41,7 @@ namespace Scanner.Windows {
         private Toggle propellantAsShielding;
         private NumberSlider percentageShielded;
         private NumberSlider activeShieldingAtt;
-        private NumberSlider cosmicRays;
+        // private NumberSlider cosmicRays;
 
         private NumberSlider engineCount;
 
@@ -53,8 +55,12 @@ namespace Scanner.Windows {
             
             var pplNominal = nominalCrew.NumericValue;
             var pplActual = pplNominal * overpopulation.NumericValue;
-            var surface1 = projAreaPerMan.NumericValue * areaMultiplier.NumericValue;
+            // var surface1 = projAreaPerMan.NumericValue * areaMultiplier.NumericValue;
+
+            var surface1 = 75; // m2 per person, 3x3m room, 2.5m ceiling
+
             var habitatSurface = surface1 * pplNominal;
+
             var shieldedFraction = percentageShielded.NumericValue;
             var totalShieldingMass = new Mass((decimal)(passiveShieldingM.NumericValue * habitatSurface * shieldedFraction), MassUnits.t);
 
@@ -66,7 +72,9 @@ namespace Scanner.Windows {
                 structureM + 
                 totalShieldingMass;
 
-            var propellantMass = new Mass((decimal)propellantMassTotal.NumericValue, MassUnits.Mt);
+            var propellantMass = dryMassKg * (decimal)(massRatioSlider.NumericValue - 1f);
+
+            // var propellantMass = new Mass((decimal)propellantMassTotal.NumericValue, MassUnits.Mt);
             var totalWetMass = dryMassKg + propellantMass;
 
             var distance = new Distance((decimal)distanceToTarget.NumericValue, DistanceUnits.LightYear);
@@ -89,7 +97,7 @@ namespace Scanner.Windows {
             massDistribution.AddEntry("Shielding", (float)totalShieldingMass.As(MassUnits.kt), new Color32(55, 130, 130, 255));
             massDistribution.AddEntry("Propellant", (float)propellantMass.As(MassUnits.kt), new Color32(240, 140, 8, 255));
 
-            massLabel.text = $"<color=#122>{totalWetMass.As(MassUnits.Mt):f1}Mt";
+            massLabel.text = $"<color=#122>{dryMassKg.As(MassUnits.Mt):f1}Mt</color>\r\n+\r\n<color=#f81>{propellantMass.As(MassUnits.Mt):f1}Mt</color>";
 
             
             var bellRadius = (thrustPowerOfSingleEngine / 1000000m * (decimal)engineHeatFactor.NumericValue).Root() * 0.13m;
@@ -132,7 +140,10 @@ namespace Scanner.Windows {
                 propellantShieldingBonus = propellantMass.ValueSI / (1m + lnM) * 0.9m / (decimal)habitatSurface / 1000; // propellant exhausted during voyage
             
             // dosage:
-            var msvperyear = cosmicRays.NumericValue;
+            // var msvperyear = cosmicRays.NumericValue;
+
+            var msvperyear = 600f;
+
             msvperyear *= (float)System.Math.Pow(System.Math.E, -(double)passiveShieldingM.NumericValue - (double)structureShieldingBonus - (double)propellantShieldingBonus);
             // active magnetic shielding:
             msvperyear *= 1f - (activeShieldingAtt.NumericValue * 0.85f); // 85% are charged particles, 15% are neutrons and photons, which aren't affected by active shielding
@@ -165,27 +176,28 @@ namespace Scanner.Windows {
 
             // INPUT SLIDERS:
 
-            projAreaPerMan      = GenerateSlider("habitat PA", 10, 50, 25, "m<sup>2</sup> / person");
-            areaMultiplier      = GenerateSlider("PA->surface", 1, 20, 3, "x", "f1");
+            // projAreaPerMan      = GenerateSlider("habitat PA", 10, 50, 25, "m<sup>2</sup> / person");
+            // areaMultiplier      = GenerateSlider("PA->surface", 1, 20, 3, "x", "f1");
             nominalCrew         = GenerateSlider("habitation", 5000, 100000, 50000, "ppl", logarithmic: true);
             overpopulation      = GenerateSlider("sardine", 1f, 5f, 1f, "", "p0");
             distanceToTarget    = GenerateSlider("distance", 0.05f, 30, 20f, "ly", "f2", logarithmic: true);
 
-            propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
+            // propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
+            massRatioSlider     = GenerateSlider("m ratio", 1.1f, 8f, 3f, "x", "f1");
             engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");
             engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0", logarithmic: true); 
             exhaustVelocity     = GenerateSlider("exhaust V", 1e4f, 1e8f, 1e7f, "ms<sup>-1</sup>", "G2", logarithmic: true);
             propellantFlow      = GenerateSlider("prop flow", 0.001f, 200, 0.7f, "kg/s", "f5", logarithmic: true); 
             engineHeatFactor    = GenerateSlider("engine heat", 0, 1, 0.2f, "", "p0");
 
-            structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0");
+            structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0", logarithmic: true);
             maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2", logarithmic: true);
             passiveShieldingM   = GenerateSlider("shielding", 0f, 4.5f, 1f, "t/m<sup>2</sup>", "f1");
             propellantAsShielding = GenerateCheckbox("Propellant radshield");
-            percentageShielded  = GenerateSlider("pct shielded", 0f, 1f, 0.5f, "", "p0");
+            percentageShielded  = GenerateSlider("pct shielded", 0f, 1f, 0.8f, "", "p0");
             activeShieldingAtt  = GenerateSlider("active Shld", 0, 1, 0, "-", "p0");
 
-            cosmicRays          = GenerateSlider("cosmic rays", 100, 2000, 600, "mSv/yr", "f0");
+            // cosmicRays          = GenerateSlider("cosmic rays", 100, 2000, 600, "mSv/yr", "f0");
 
             try { 
                 exhaustVelocity.GetComponent<Slider>().SetValueExternal(0.77f); // D-He3 fusion values

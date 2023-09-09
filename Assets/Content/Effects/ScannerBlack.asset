@@ -113,7 +113,7 @@ MonoBehaviour:
     value: 0.0054
   greenify:
     overrideState: 1
-    value: 0
+    value: 0.103
   flickerIntensity:
     overrideState: 1
     value: 0.039
