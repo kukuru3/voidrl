@@ -4,6 +4,7 @@ using UnityEngine;
 using Void;
 
 namespace Scanner.AppContext {
+
     public class TestUtil {
         static void TestProfile(decimal speedInC, decimal accelInG) {
             var profile = SpaceMath.GetProfile(speedInC, accelInG);

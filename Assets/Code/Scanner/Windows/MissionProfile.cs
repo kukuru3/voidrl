@@ -137,10 +137,14 @@ namespace Scanner.Windows {
             var bellRadius = (thrustPowerOfSingleEngine / 1000000m * (decimal)engineParams.heatFactor).Root() * 0.13m;
 
             var a0 = new Accel(thrustOfAllEngines/totalWetMass.ValueSI);
+
+            var Δv = new Velocity((decimal)engineParams.exhaustVelocity * massRatio.Ln());
             
-            s += $"THRUST: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>; a0={a0}\r\n";
+            s += $"Thrust: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>; a0={a0}\r\n";
             s += $"Fp = {numEngines} x <color=#f24>{thrustPowerOfSingleEngine:G2}</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)engineParams.exhaustVelocity).As(VelocityUnits.C):p2}c</color>)";
             s += $"Engine bells: {numEngines} x {bellRadius:f0}m\r\n";
+
+            s += $"Δv = {Δv}\r\n";
 
             s += $"Crew total: {pplActual:f0}\r\n";
             s += $"Radiation Shielding mass: <color=#122>{totalShieldingMass}</color> ({pctDry:P1} of dry mass)\r\n";

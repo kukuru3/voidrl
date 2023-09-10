@@ -193,7 +193,7 @@ namespace Scanner {
                 q.GetComponent<CyclerSubItem>().Init(this, i);
                 foreach (var c in q.GetComponentsInChildren<TMPro.TMP_Text>(true)) c.text = item.caption;
                 unfoldedItems.Add(q);
-                q.transform.localPosition = new Vector3(0, y, 0);
+                q.transform.localPosition = new Vector3(0, y, -0.5f);
                 y -= 30;
                 q.SetActive(true);
             }
