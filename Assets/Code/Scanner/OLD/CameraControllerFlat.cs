@@ -23,7 +23,7 @@ namespace Scanner {
         SmoothFloat y;
 
         private void ApplyZoom(float zoom) {
-            cameraProper.orthographicSize = Screen.height * 0.5f * zoom;
+            cameraProper.orthographicSize = UnityEngine.Screen.height * 0.5f * zoom;
         }
 
         Vector3 prevMouse;

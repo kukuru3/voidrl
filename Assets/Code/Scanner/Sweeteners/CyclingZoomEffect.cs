@@ -58,8 +58,8 @@ namespace Scanner {
 
                 var x = Mathf.Lerp(screenFrom, screeenTo, t);
                 rectangle.enabled = true;
-                rectangle.Width = Screen.width * x;
-                rectangle.Height = Screen.height * x;
+                rectangle.Width = UnityEngine.Screen.width * x;
+                rectangle.Height = UnityEngine.Screen.height * x;
                 
                 //if (intermediate) {                     
                 //    camera.SetOrbitDistanceNormalized(Mathf.Lerp(initialZoom, targetZoom, t), true);
@@ -69,8 +69,8 @@ namespace Scanner {
 
                 if (isLastCycle && flashEnd) {
                     rectangle.Type = Rectangle.RectangleType.HardSolid;
-                    rectangle.Width = Screen.width;
-                    rectangle.Height = Screen.height;
+                    rectangle.Width = UnityEngine.Screen.width;
+                    rectangle.Height = UnityEngine.Screen.height;
                 }
 
                 for (var f = 0; f < cycleDuration; f++) {

@@ -23,11 +23,11 @@ namespace Scanner {
         private void Update() {
             //filter.preset.scanlineFilter.lineCount = Screen.height / scanlineMult;
 
-            filter.preset.compositeFilter.lineCount = Mathf.RoundToInt(Screen.height * compositeLineRatio);
+            filter.preset.compositeFilter.lineCount = Mathf.RoundToInt(UnityEngine.Screen.height * compositeLineRatio);
             filter.preset.staticFilter.staticOffset += staticSpeed * Time.deltaTime;
             filter.preset.tubeFilter.distortionMagnitude = Distortion;
 
-            SceneUtil.UICamera.orthographicSize = Screen.height / 2;
+            SceneUtil.UICamera.orthographicSize = UnityEngine.Screen.height / 2;
             
             Application.targetFrameRate = frameRate;
         }

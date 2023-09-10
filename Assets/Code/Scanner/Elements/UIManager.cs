@@ -58,11 +58,11 @@ namespace Scanner {
             var distortion = 0.2f;
             if (Instance.effects != null) distortion = Instance.effects.Distortion;
 
-            var uv = new Vector2(p.x / Screen.width, p.y / Screen.height);
+            var uv = new Vector2(p.x / UnityEngine.Screen.width, p.y / UnityEngine.Screen.height);
             var uv2 = Distort(uv, distortion);
 
-            var sx = uv2.x * Screen.width; 
-            var sy = uv2.y * Screen.height;
+            var sx = uv2.x * UnityEngine.Screen.width; 
+            var sy = uv2.y * UnityEngine.Screen.height;
 
             return new Vector3(sx, sy, 0);
         }

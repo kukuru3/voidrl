@@ -36,8 +36,8 @@ namespace Scanner {
                 var unitX = RaycastOntoPlane(transform, Vector3.right) - a;
                 var unitY = RaycastOntoPlane(transform, Vector3.up) - a;
                 var d = targetCam.GetOrbitDistance();
-                delta =       mouseDelta.x * unitX * panMultiplier * d / Screen.height
-                            + mouseDelta.y * unitY * panMultiplier * d / Screen.height;
+                delta =       mouseDelta.x * unitX * panMultiplier * d / UnityEngine.Screen.height
+                            + mouseDelta.y * unitY * panMultiplier * d / UnityEngine.Screen.height;
 
                 
                 // project on plane:

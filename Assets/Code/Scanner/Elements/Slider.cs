@@ -4,6 +4,7 @@ using K3;
 using UnityEngine;
 
 namespace Scanner {
+
     class Slider : Element {
         [SerializeField] float colliderFractionMargin;
         [SerializeField] Shapes.Line fillLine;

@@ -76,11 +76,7 @@ namespace Scanner.Windows {
 
             bool canTweakPropFlow = false;
 
-            if (!isCustomEngine && (engineParams.propellantFlowVariableBonus > float.Epsilon)) {
-                propellantFlow.min = engineParams.propellantFlow;
-                propellantFlow.max = engineParams.propellantFlowVariableBonus;
-                canTweakPropFlow = true;
-            }
+            
 
             if (engineSelector.Selected.data is EngineDeclaration decl) {
                 engineParams = decl;
@@ -92,11 +88,22 @@ namespace Scanner.Windows {
                 engineParams.heatFactor = engineHeatFactor.NumericValue;
             }
 
+            if (!isCustomEngine && (engineParams.propellantFlowVariableBonus > float.Epsilon)) {
+                propellantFlow.min = engineParams.propellantFlow;
+                propellantFlow.max = engineParams.propellantFlowVariableBonus;
+                canTweakPropFlow = true;
+            }
+
             foreach (var e in new[] { propellantFlow, exhaustVelocity, engineMass, engineHeatFactor }) {
                 e.gameObject.SetActive(isCustomEngine);
             }
 
-            if ( canTweakPropFlow ) propellantFlow.gameObject.SetActive(true);
+            if ( canTweakPropFlow ) { 
+                propellantFlow.gameObject.SetActive(true);
+                engineParams.propellantFlow = propellantFlow.NumericValue;
+            }
+
+
 
             var totalMassOfEngines = new Mass((decimal)engineParams.engineMass * numEngines, MassUnits.t);
             var structureM = new Mass((decimal)structuralMass.NumericValue, MassUnits.kt);
@@ -139,9 +146,11 @@ namespace Scanner.Windows {
             var a0 = new Accel(thrustOfAllEngines/totalWetMass.ValueSI);
 
             var Δv = new Velocity((decimal)engineParams.exhaustVelocity * massRatio.Ln());
+
+            var terawattOutput = thrustPowerOfSingleEngine / 10e12m;
             
             s += $"Thrust: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>; a0={a0}\r\n";
-            s += $"Fp = {numEngines} x <color=#f24>{thrustPowerOfSingleEngine:G2}</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)engineParams.exhaustVelocity).As(VelocityUnits.C):p2}c</color>)";
+            s += $"Fp = <color=#f24>{numEngines * terawattOutput:f1}TW</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)engineParams.exhaustVelocity).As(VelocityUnits.C):p2}c</color>)";
             s += $"Engine bells: {numEngines} x {bellRadius:f0}m\r\n";
 
             s += $"Δv = {Δv}\r\n";
@@ -240,9 +249,6 @@ namespace Scanner.Windows {
 
             massRatioSlider     = GenerateSlider("m ratio", 1.1f, 8f, 3f, "x", "f1");
 
-           
-
-
             structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0", logarithmic: true);
             maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2", logarithmic: true);
             passiveShieldingM   = GenerateSlider("shielding", 0f, 4.5f, 1f, "t/m<sup>2</sup>", "f1");
@@ -254,7 +260,8 @@ namespace Scanner.Windows {
 
             engineSelector = GenerateSelector();
             engineSelector.AddItem("Engine: Daedalus", new EngineDeclaration(1e7f, 0.7f, heatFactor: 0.2f, engineMass: 5e4f));
-            engineSelector.AddItem("Ouroboros Drive", new EngineDeclaration(4e7f, 0.9f, heatFactor: 0.05f, engineMass: 3e5f));
+            engineSelector.AddItem("Ouroboros Drive", new EngineDeclaration(4e7f, 0.9f, heatFactor: 0.05f, engineMass: 3e5f, propFlowBonus: 9.1f));
+            engineSelector.AddItem("Antimatter beam", new EngineDeclaration(1e8f, 1f, heatFactor: 0.1f,  engineMass: 1e4f));
             engineSelector.AddItem("Custom Engine", null);
 
             engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0", logarithmic: true); 
