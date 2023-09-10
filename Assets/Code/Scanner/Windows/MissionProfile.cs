@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core.Calculations;
 using Core.Units;
-using K3;
 using Scanner.Charting;
 using UnityEngine;
 using static Core.Units.Mass;
@@ -10,6 +9,7 @@ namespace Scanner.Windows {
     internal class MissionProfile : MonoBehaviour {
         [SerializeField] GameObject sliderPrefab;
         [SerializeField] GameObject checkboxPrefab;
+        [SerializeField] GameObject selectorPrefab;
 
         [SerializeField] Vector3 start;
         [SerializeField] Vector3 columnOffset;
@@ -26,15 +26,20 @@ namespace Scanner.Windows {
         // private NumberSlider areaMultiplier;
         private NumberSlider nominalCrew;
         private NumberSlider overpopulation;
-        private NumberSlider distanceToTarget;
+        private Selector distanceSelector;
+        // private NumberSlider distanceToTarget;
         private Toggle infiniteFuel;
 
         private NumberSlider massRatioSlider;
         // private NumberSlider propellantMassTotal;
+
+        private Selector engineSelector;
+
         private NumberSlider engineMass;
         private NumberSlider exhaustVelocity;
         private NumberSlider propellantFlow;
         private NumberSlider engineHeatFactor;
+
         private NumberSlider structuralMass;
         private NumberSlider maxToleratedSpeed;
         private NumberSlider passiveShieldingM;
@@ -65,7 +70,35 @@ namespace Scanner.Windows {
             var totalShieldingMass = new Mass((decimal)(passiveShieldingM.NumericValue * habitatSurface * shieldedFraction), MassUnits.t);
 
             var numEngines = Mathf.FloorToInt(engineCount.NumericValue);
-            var totalMassOfEngines = new Mass((decimal)engineMass.NumericValue * numEngines, MassUnits.t);
+
+            var isCustomEngine = engineSelector.Selected.data == null;
+            EngineDeclaration engineParams = default;
+
+            bool canTweakPropFlow = false;
+
+            if (!isCustomEngine && (engineParams.propellantFlowVariableBonus > float.Epsilon)) {
+                propellantFlow.min = engineParams.propellantFlow;
+                propellantFlow.max = engineParams.propellantFlowVariableBonus;
+                canTweakPropFlow = true;
+            }
+
+            if (engineSelector.Selected.data is EngineDeclaration decl) {
+                engineParams = decl;
+            } else {
+                engineParams.propellantFlow = propellantFlow.NumericValue;
+                engineParams.propellantFlowVariableBonus = 0f;
+                engineParams.exhaustVelocity = exhaustVelocity.NumericValue;
+                engineParams.engineMass = engineMass.NumericValue;
+                engineParams.heatFactor = engineHeatFactor.NumericValue;
+            }
+
+            foreach (var e in new[] { propellantFlow, exhaustVelocity, engineMass, engineHeatFactor }) {
+                e.gameObject.SetActive(isCustomEngine);
+            }
+
+            if ( canTweakPropFlow ) propellantFlow.gameObject.SetActive(true);
+
+            var totalMassOfEngines = new Mass((decimal)engineParams.engineMass * numEngines, MassUnits.t);
             var structureM = new Mass((decimal)structuralMass.NumericValue, MassUnits.kt);
             var dryMassKg = 
                 totalMassOfEngines +
@@ -76,11 +109,12 @@ namespace Scanner.Windows {
 
             // var propellantMass = new Mass((decimal)propellantMassTotal.NumericValue, MassUnits.Mt);
             var totalWetMass = dryMassKg + propellantMass;
-
-            var distance = new Distance((decimal)distanceToTarget.NumericValue, DistanceUnits.LightYear);
+            
+            var distance = new Distance((decimal)(float)distanceSelector.Selected.data, DistanceUnits.LightYear);
             var maxV = new Velocity((decimal)maxToleratedSpeed.NumericValue, VelocityUnits.C);
 
-            var thrustOfSingleEngine = (decimal)(exhaustVelocity.NumericValue * propellantFlow.NumericValue);
+            var thrustOfSingleEngine = (decimal)(engineParams.exhaustVelocity * engineParams.propellantFlow);
+
             var thrustOfAllEngines = thrustOfSingleEngine * numEngines;
 
             var pctDry = totalShieldingMass.ValueSI / dryMassKg.ValueSI;
@@ -89,7 +123,7 @@ namespace Scanner.Windows {
 
             var lnM = massRatio.Ln();
 
-            var thrustPowerOfSingleEngine = (decimal)(propellantFlow.NumericValue * exhaustVelocity.NumericValue * exhaustVelocity.NumericValue / 2);
+            var thrustPowerOfSingleEngine = (decimal)(engineParams.propellantFlow * engineParams.exhaustVelocity * engineParams.exhaustVelocity / 2);
 
             massDistribution.ClearEntries();
             massDistribution.AddEntry("Engines", (float)totalMassOfEngines.As(MassUnits.kt),    new Color32(250, 30, 30, 255));
@@ -100,12 +134,12 @@ namespace Scanner.Windows {
             massLabel.text = $"<color=#122>{dryMassKg.As(MassUnits.Mt):f1}Mt</color>\r\n+\r\n<color=#f81>{propellantMass.As(MassUnits.Mt):f1}Mt</color>";
 
             
-            var bellRadius = (thrustPowerOfSingleEngine / 1000000m * (decimal)engineHeatFactor.NumericValue).Root() * 0.13m;
+            var bellRadius = (thrustPowerOfSingleEngine / 1000000m * (decimal)engineParams.heatFactor).Root() * 0.13m;
 
             var a0 = new Accel(thrustOfAllEngines/totalWetMass.ValueSI);
             
             s += $"THRUST: {numEngines} x <color=#fc2>{thrustOfSingleEngine/1000:F0}kN</color>; TOTAL = <color=#fc2>{thrustOfAllEngines/1000000:F2}MN</color>; Mass Ratio: <color=#6c0>{massRatio:f}</color>; a0={a0}\r\n";
-            s += $"Fp = {numEngines} x <color=#f24>{thrustPowerOfSingleEngine:G2}</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)exhaustVelocity.NumericValue).As(VelocityUnits.C):p2}c</color>)";
+            s += $"Fp = {numEngines} x <color=#f24>{thrustPowerOfSingleEngine:G2}</color> ; v<sub>e</sub>=<color=#c40>{new Velocity((decimal)engineParams.exhaustVelocity).As(VelocityUnits.C):p2}c</color>)";
             s += $"Engine bells: {numEngines} x {bellRadius:f0}m\r\n";
 
             s += $"Crew total: {pplActual:f0}\r\n";
@@ -113,8 +147,8 @@ namespace Scanner.Windows {
             s += $"Total mass: <color=#122>{totalWetMass}</color> (Ship:<color=#122>{dryMassKg}</color> , Propellant:<color=#122>{ propellantMass }</color>)\r\n";
             
 
-            var propFlow = new Core.CustomSIValue((decimal)propellantFlow.NumericValue * numEngines, "kg/s");
-            var vExhaust = new Velocity((decimal)exhaustVelocity.NumericValue);
+            var propFlow = new Core.CustomSIValue((decimal)engineParams.propellantFlow * numEngines, "kg/s");
+            var vExhaust = new Velocity((decimal)engineParams.exhaustVelocity);
 
             var calculation = TravelTimeCalculator.CalculateComplexWithRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow, maxV);
             var totalTime = new TimeSI(calculation.TotalTime);
@@ -125,12 +159,18 @@ namespace Scanner.Windows {
 
             s += $"Total time to reach target <color=#f4c>{distance}</color> away: <size=200><b><color=#cd2>{totalTime}</color></b></size>\r\n";
             
+            var leftoverPropellant = (propellantMass.ValueSI - propExpenditure.ValueSI) / propellantMass.ValueSI > 0.02m;
+
             if (calculation.isBrachistochrone) {
                 s+= $"The movement is <color=#a31>Brachistochrone</color> - turnover at <color=#cd2>{new TimeSI(calculation.progradeBurnTime)}</color> at <color=#2af>{turnoverV}</color>\r\n";
-                s+= $"During this time, <color=#ea3>{propExpenditure}</color> of propellant will be expended, and <color=#ea3>{propellantMass - propExpenditure}</color> remaining\r\n";
             } else {
                 s+= $"Acceleration burn: <color=#cd2>{new TimeSI(calculation.progradeBurnTime)}</color>, retro burn <color=#cd2>{new TimeSI(calculation.retrogradeBurnTime)}</color>\r\n";
                 s+= $"The ship will coast for <color=#cd2>{new TimeSI(calculation.coastTime)}</color> at <color=#2af>{turnoverV}</color>\r\n";
+            }
+
+            if (leftoverPropellant) { 
+                s+= $"During this time, <color=#ea3>{propExpenditure}</color> of propellant will be expended, and <color=#ea3>{propellantMass - propExpenditure}</color> remaining\r\n";
+            } else { 
                 s+= $"During this time, all of <color=#ea3>{propExpenditure}</color> propellant will be expended\r\n";
             }
 
@@ -139,7 +179,7 @@ namespace Scanner.Windows {
             var propellantShieldingBonus = 0m;
 
             if (propellantAsShielding.ToggleState)
-                propellantShieldingBonus = propellantMass.ValueSI / (1m + lnM) * 0.9m / (decimal)habitatSurface / 1000; // propellant exhausted during voyage
+                propellantShieldingBonus = propellantMass.ValueSI * 0.5m / (decimal)habitatSurface / 1000; // propellant exhausted during voyage
             
             // dosage:
             // var msvperyear = cosmicRays.NumericValue;
@@ -182,15 +222,22 @@ namespace Scanner.Windows {
             // areaMultiplier      = GenerateSlider("PA->surface", 1, 20, 3, "x", "f1");
             nominalCrew         = GenerateSlider("habitation", 5000, 100000, 50000, "ppl", logarithmic: true);
             overpopulation      = GenerateSlider("sardine", 1f, 5f, 1f, "", "p0");
-            distanceToTarget    = GenerateSlider("distance", 0.05f, 30, 20f, "ly", "f2", logarithmic: true);
 
-            // propellantMassTotal = GenerateSlider("propellant", 0.1f, 10, 1, "Mt", "f2");
+            // distanceToTarget    = GenerateSlider("distance", 0.05f, 30, 20f, "ly", "f2", logarithmic: true);
+
+            distanceSelector = GenerateSelector();
+            distanceSelector.AddItem("Oort cloud", 0.15f);
+            distanceSelector.AddItem("1 Light Year", 1f);
+            distanceSelector.AddItem("Proxima Centauri", 4.2f);
+            distanceSelector.AddItem("Barnard's Star", 	5.96f);
+            distanceSelector.AddItem("Sirius", 8.709f);
+            distanceSelector.AddItem("Epsilon Eridani", 10.5f);
+            distanceSelector.AddItem("Tau Ceti", 11.91f);
+
             massRatioSlider     = GenerateSlider("m ratio", 1.1f, 8f, 3f, "x", "f1");
-            engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");
-            engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0", logarithmic: true); 
-            exhaustVelocity     = GenerateSlider("exhaust V", 1e4f, 1e8f, 1e7f, "ms<sup>-1</sup>", "G2", logarithmic: true);
-            propellantFlow      = GenerateSlider("prop flow", 0.001f, 200, 0.7f, "kg/s", "f5", logarithmic: true); 
-            engineHeatFactor    = GenerateSlider("engine heat", 0, 1, 0.2f, "", "p0");
+
+           
+
 
             structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0", logarithmic: true);
             maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2", logarithmic: true);
@@ -199,27 +246,64 @@ namespace Scanner.Windows {
             percentageShielded  = GenerateSlider("pct shielded", 0f, 1f, 0.8f, "", "p0");
             activeShieldingAtt  = GenerateSlider("active Shld", 0, 1, 0, "-", "p0");
 
+            engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");
+
+            engineSelector = GenerateSelector();
+            engineSelector.AddItem("Engine: Daedalus", new EngineDeclaration(1e7f, 0.7f, heatFactor: 0.2f, engineMass: 5e4f));
+            engineSelector.AddItem("Ouroboros Drive", new EngineDeclaration(4e7f, 0.9f, heatFactor: 0.05f, engineMass: 3e5f));
+            engineSelector.AddItem("Custom Engine", null);
+
+            engineMass          = GenerateSlider("engine m", 50, 500000, 50000, "t", "f0", logarithmic: true); 
+            exhaustVelocity     = GenerateSlider("exhaust V", 1e4f, 1e8f, 1e7f, "ms<sup>-1</sup>", "G2", logarithmic: true);
+            propellantFlow      = GenerateSlider("prop flow", 0.001f, 200, 0.7f, "kg/s", "f5", logarithmic: true); 
+            engineHeatFactor    = GenerateSlider("engine heat", 0, 1, 0.2f, "", "p0");
+
+
             // cosmicRays          = GenerateSlider("cosmic rays", 100, 2000, 600, "mSv/yr", "f0");
 
             try { 
-                exhaustVelocity.GetComponent<Slider>().SetValueExternal(0.77f); // D-He3 fusion values
-                propellantFlow.GetComponent<Slider>().SetValueExternal(0.557f);
+                //exhaustVelocity.GetComponent<Slider>().SetValueExternal(0.77f); // D-He3 fusion values
+                //propellantFlow.GetComponent<Slider>().SetValueExternal(0.557f);
             } catch (System.Exception) {
 
             }
         }
-
+        struct EngineDeclaration {
+            public EngineDeclaration(float eV, float propFlow, float engineMass = 5000f, float heatFactor = 0.5f, float propFlowBonus = 0f)
+            {
+                this.exhaustVelocity = eV;
+                this.propellantFlow = propFlow;
+                this.propellantFlowVariableBonus = propFlowBonus;
+                this.engineMass = engineMass;
+                this.heatFactor = heatFactor;
+            }
+            public float exhaustVelocity;
+            public float propellantFlow;
+            public float propellantFlowVariableBonus;
+            public float heatFactor;
+            public float engineMass;
+        }
 
 
         private void Update() {
+            var x = -1;
             for (var i = 0; i < elements.Count; i++) {
                 var element = elements[i];
-                var column   = i / elementsPerColumn;
-                var inColumn = i % elementsPerColumn;
+                if (element.activeInHierarchy) x++;
+                var column   = x / elementsPerColumn;   
+                var inColumn = x % elementsPerColumn;
                 var pos = start + columnOffset * column + elementOffsetInsideColumn * inColumn;
                 element.transform.position = pos;
             }
         }
+
+        Selector GenerateSelector() {
+            var go = Instantiate(selectorPrefab, transform);
+            var sel = go.GetComponent<Selector>();
+            AddElement(go);
+            sel.IndexChanged += _ => RecalculateAll();
+            return sel;
+        }   
 
         NumberSlider GenerateSlider(string name, float min, float max, float initialSliderValue, string suffix, string format = "f0", bool logarithmic = false) {
             var go = Instantiate(sliderPrefab, transform); 

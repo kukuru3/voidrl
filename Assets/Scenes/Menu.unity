@@ -484,20 +484,8 @@ PrefabInstance:
       value: New Game
       objectReference: {fileID: 0}
     - target: {fileID: 4405649098555209710, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_fontSizeMax
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 4405649098555209710, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_fontSizeMin
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 4405649098555209710, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
       propertyPath: m_lineSpacing
       value: -22
-      objectReference: {fileID: 0}
-    - target: {fileID: 4405649098555209710, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4405649099245269586, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
       propertyPath: m_SizeDelta.x
@@ -516,25 +504,9 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 4405649099245269587, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_fontSizeMax
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 4405649099245269587, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_fontSizeMin
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 4405649099245269587, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_lineSpacing
-      value: -22
-      objectReference: {fileID: 0}
-    - target: {fileID: 4405649099245269587, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
       propertyPath: m_fontMaterial
       value: 
       objectReference: {fileID: 1557968485}
-    - target: {fileID: 4405649099245269587, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
 --- !u!224 &1279982814 stripped
