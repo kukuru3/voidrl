@@ -95,8 +95,8 @@ namespace Scanner {
 
             var leftFull = shState == SemanticHighlight.Left;
             var rightFull = shState == SemanticHighlight.Right;
-            // var centerFull = shState == SemanticHighlight.Center;
-            var centerFull = shState > SemanticHighlight.None;
+            var centerFull = shState == SemanticHighlight.Center;
+            //var centerFull = shState == SemanticHighlight.None;
 
             if (shState == SemanticHighlight.Center) leftFull = rightFull = centerFull = true;
 

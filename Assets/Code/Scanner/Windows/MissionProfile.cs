@@ -259,8 +259,8 @@ namespace Scanner.Windows {
             engineCount         = GenerateSlider("num engines", 1, 20, 5, "", "f0");
 
             engineSelector = GenerateSelector();
-            engineSelector.AddItem("Engine: Daedalus", new EngineDeclaration(1e7f, 0.7f, heatFactor: 0.2f, engineMass: 5e4f));
-            engineSelector.AddItem("Ouroboros Drive", new EngineDeclaration(4e7f, 0.9f, heatFactor: 0.05f, engineMass: 3e5f, propFlowBonus: 9.1f));
+            engineSelector.AddItem("Engine: Daedalus", new EngineDeclaration(1e7f, 0.7f, heatFactor: 0.2f, engineMass: 5e3f));
+            engineSelector.AddItem("Ouroboros Drive", new EngineDeclaration(4e7f, 0.9f, heatFactor: 0.01f, engineMass: 8e3f, propFlowBonus: 9.1f));
             engineSelector.AddItem("Antimatter beam", new EngineDeclaration(1e8f, 1f, heatFactor: 0.1f,  engineMass: 1e4f));
             engineSelector.AddItem("Custom Engine", null);
 

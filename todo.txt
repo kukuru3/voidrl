@@ -20,6 +20,16 @@ SCIMMR - self-contained internalized magnetic resonance
 RAMA - resonant 
 HARM - harmonic resonance magnetism
 
+
+Relativistic Exit Velocity Degenerate Plasma Fusion Drive
+
+Omicron-Pinch Degenerate Plasma Pulse Aneutronic Fusion Drive
+AKA Omicron Drive.
+
+Degenerate State Plasma 
+
+RAMA 
+
 Matrioska
 Magnetic
 Self-contained
@@ -75,3 +85,65 @@ Exit
 
 
 Ingame: press escape to show the quick options dialog ()
+
+
+
+Components:
+- Power, heat and fluid transfer
+- Life support
+- Spinner
+- Axial electromagnet / mass driver
+- Transportation system
+- Auxiliary reactor
+- Heat exchange turbines
+- Heat radiators
+- Engine assembly
+- Reservoirs
+- Storage
+- Zero-G industry
+- Superheated Centrifuge
+- Meteor shield
+- Active radiation shielding generator
+- Hangar
+- Mechanic bay
+- Gantry
+- Berth (for mining ships)
+- Observatory
+- Radiation Shielding
+- Armour
+- Habitation zone
+  - Slums
+  - Habitats
+  - Utopia
+  - Recreation
+- Hydroponic bay
+- Spinner (manufactory)
+- Point defences
+- Railgun mount
+- Command module
+- Biotech lab
+  - Cryogenic Storage
+  - Nursery
+  - Hospital
+  - Organic Recycler
+- Materials lab 
+- Containment / Brig
+- Training ground
+- Storm shelter
+
+
+Large structural organization:
+Spine
+Engine ring
+Radiators
+Habitation
+Operations
+Meteor shield
+
+
+Spinal module:
+  - long, triangular. Set along spine, doesn't rotate, zero-g.
+
+
+
+

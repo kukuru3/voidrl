@@ -18,7 +18,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 1.66
+    value: 1.63
   threshold:
     overrideState: 1
     value: 0.5
@@ -103,14 +103,14 @@ MonoBehaviour:
     overrideState: 1
     value: 0.878
   chromaticAberration:
-    overrideState: 0
-    value: 0.59
+    overrideState: 1
+    value: 0.8
   shadowColor:
     overrideState: 1
     value: {r: 0, g: 0.24819997, b: 0.292, a: 1}
   shadowEnhancer:
     overrideState: 1
-    value: 0.0054
+    value: 0.0035
   greenify:
     overrideState: 1
     value: 0.103
@@ -119,19 +119,19 @@ MonoBehaviour:
     value: 0.039
   dotMatrixRepeat:
     overrideState: 1
-    value: 3
+    value: 2
   scanlineRepeat:
     overrideState: 1
     value: 3
   scanlineEffect:
     overrideState: 1
-    value: 0.559
+    value: 0.158
   brightnessBaseline:
     overrideState: 1
     value: 1
   colorCurve:
     overrideState: 1
-    value: 0.15
+    value: 0.142
   centralBleed:
     overrideState: 1
     value: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0
+    value: 0.465
   fastMode:
     overrideState: 0
     value: 0

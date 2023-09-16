@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Scanner {
+
     public class  OrbitingCameraController : MonoBehaviour
     {
         [SerializeField] float panMultiplier;
