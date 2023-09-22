@@ -1,4 +1,5 @@
 ﻿using Core.h3x;
+using Cysharp.Threading.Tasks.Triggers;
 using K3.Hex;
 using Shapes;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Scanner.HexShip {
         public override void DrawShapes(Camera cam) {
             var hexes = Hexes.InRadius(default, mapRadius);
 
-            using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterForwardOpaque)) {            
+            using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterImageEffects)) {            
                 for (var z = 0; z < mapH; z++) {
                     foreach (var hex in hexes) {
                         var h3 = new Hex3(hex, z);

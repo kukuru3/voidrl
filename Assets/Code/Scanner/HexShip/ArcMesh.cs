@@ -1,7 +1,7 @@
 using UnityEngine;
 
-namespace Arkio
-{
+namespace Scanner.HexShip {
+
     public static class ArcMesh
     {
         // generates a solid, closed mesh in an arc centered around the positive z axis, offset at the arc radius from the model center

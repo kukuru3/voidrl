@@ -10,10 +10,11 @@ namespace Scanner.ModularShip {
 
     public class ShipModule : MonoBehaviour
     {
-        [SerializeField] string name;
+        [SerializeField] string moduleName;
         [SerializeField] float  weight;
 
         ModularVehicle vehicle;
+
         public void OnAttached(ModularVehicle vehicle) {
             this.vehicle = vehicle;
         }

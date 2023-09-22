@@ -1,4 +1,4 @@
-Todo: 
+ 
 
 - we do not need an ECS it seems. Clean it up and transfer most functionality into 
   entities. Entities should be CONTAIN-able by default.
@@ -144,6 +144,108 @@ Meteor shield
 Spinal module:
   - long, triangular. Set along spine, doesn't rotate, zero-g.
 
+SIMPLE CONSTRUCTION:
+
+This is similar to X-com's base building.
+The ship is divided into pressurized, shielded, separated compartments called MODULES.
+
+Each module gives some basic bonuses (all defense modules employ some sensor technicians, all technical modules give some production)
+
+Some structures may have unclear allegiance to modules; this should not be avoided, but rather be used as a game mechanic. Schools can be in habitation modules, but as a matter of policy, children could be concentrated in special education centers that belong to technical modules.
+
+PRESSURIZATION
+- modules are usually pressurized, and most cannot function unpressurized
+- modules having their own isolated life support system have much purer air.
+
+ARTIFICIAL GRAVITY
+- zero-g habitat modules are possible, but living in zero-g will lead to long-term effects for the population such as lowered productivity and decreased biological integrity
+- 1g can only be achieved in a large spinning ring module, or, later a small fast-spinning ring module.
+- 1g habitation is coveted. 
+- reduced gravity is preferable to no gravity. 
+- we could require the player to install a technical module in the base of any spinning module, as the "spinner" structure depends on it. This reduces build diversity.
+- Military module in a 1g environment would unlock "high-g training", increasing robustness of the troops.
+
+RADIATION SHIELDING
+- in most modules, work areas are shielded from radiation
+- rad-shielded modules are much heavier, but offer benefits
+- just the existence of rad-shielded modules is sufficient to stratify the society.
+
+DISTANCE AND ADJACENCY
+We  run a simple simulation of resource flow. We recognize resource producers, consumers, and 
+Resources in this context are power, water, air.
+
+Air needs to be cycled throughout the ship in a closed life-support loop. Purity is tracked in various modules.
+
+Modules can be distributed for redundancy, or joined together for an adjacency bonus.
+
+Radiators lose efficiency the farther away they are from heat sources.
+Storage modules should obviously be close to factories processing large amounts of materials.
+Reservoirs should be close to reactors.
+Habitats should be close to life support.
+The route people take from habitats to "work" modules is also tracked. If this becomes too long, it will impact productivity.
+
+ADJUNCT HABITATION:
+you can sacrifice a structure slot to have people live in the module where they work. This is not much coveted, as these people can have very little reason to leave their module. This is how you get slums. This is how you get the Independent Republic of Hydroponics C.
+
+ATTACHMENTS:
+Observation mast
+Railgun 
+Reservoirs (propulsion module attachment)
+Maneuver thrusters gain a bonus when placed on a propulsion module on a large ring.
 
 
 
+- extremes should be viable. "Module soup" where you have one of each is boring and should be discouraged
+
+
+
+OR 
+distribute as seen fit (2 per segment, one spinal, one ringular)
+
+reactor
+propulsion
+military
+habitat
+industry
+agriculture
+science
+
+central ones are bulkier - while ringular are thinner but can spin.
+
+choose up to one attachment per segment
+
+radiators
+engines
+reservoirs
+storage bays
+meteor shield
+habitat ring (allows )
+
+
+modules have immediate benefits, but can also grant structure slots.
+Some structures require, and occupy, slots from different modules.
+Some structures require power, manpower or cadre.
+
+
+Example structures:
+active magnetic radiation shielding
+storm shelter 
+high energy laboratory 
+plasma centrifuge separator
+microlathe 
+strike craft hangar
+simulator pods
+zero-g industry 
+water purifier 
+
+criostasis pods
+biological storage
+nursery
+
+railguns
+point defenses
+observation mast
+
+We want around 10 segments to start with. This gives us 20 modules + 10 attachments.
+Extremes should be viable - like having only 1 science and 5 military modules.
+RING modules may be spun (though it's not necessary)

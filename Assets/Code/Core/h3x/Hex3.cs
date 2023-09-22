@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using K3.Hex;
 using UnityEngine;
 
@@ -19,7 +20,12 @@ namespace Core.h3x {
 
         public static implicit operator Hex3((Hex c , int z) t) => new Hex3(t.c, t.z);
 
+        public static implicit operator Hex3((int q, int r, int z) t) => new Hex3(t.q, t.r, t.z);
+
         public static Hex3 operator +(Hex3 a, Hex3 b) => new Hex3(a.hex + b.hex, a.zed + b.zed);
+
+        public override bool Equals(object other) => other is Hex3 hex && this.hex.Equals(hex.hex) && zed == hex.zed;
+        public override int GetHashCode() => HashCode.Combine(hex.q, hex.r, zed);
     }
 
     public static class Hex3Util {
