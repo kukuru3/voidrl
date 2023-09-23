@@ -37,7 +37,7 @@ namespace Scanner.TubeShip {
         public int spinePos;
     }
 
-    class Tubeship {
+    class TubeshipModel {
         List<Tube> tubes = new List<Tube>();
 
         public void AddTube(Tube tube) => tubes.Add(tube);

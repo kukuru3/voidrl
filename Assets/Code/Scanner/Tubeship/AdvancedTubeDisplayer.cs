@@ -5,15 +5,16 @@ using UnityEngine;
 namespace Scanner.TubeShip.View {
     [ExecuteAlways]
     [RequireComponent(typeof(TubeView))]
-    internal class TubeDebugDisplayer : ImmediateModeShapeDrawer {
-        [SerializeField][Range(0f, 1f)] float unroll = 0f;
+    internal class AdvancedTubeDisplayer : ImmediateModeShapeDrawer {
+        [SerializeField] float squareDimension;
+        [SerializeField] float squareThickness;
         public override void DrawShapes(Camera cam) {
             var tube = GetComponent<TubeView>();
             var tp = tube.GetAllTubePoints();
 
             using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterImageEffects)) {
                 foreach (var a in tp) {
-                    var item = tube.GetUnrolledTubePoint(a.axisPos, a.arcPos, unroll);
+                    var item = tube.GetUnrolledTubePoint(a.axisPos, a.arcPos, tube.Unroll);
                     
                     var fwd = transform.forward;
                     var up = transform.TransformVector(item.up);
@@ -29,8 +30,8 @@ namespace Scanner.TubeShip.View {
                     Draw.RectangleBorder(
                         pos: pos,
                         rot: rot,
-                        thickness: 0.1f,
-                        rect: new Rect(-0.2f, -0.2f, 0.4f, 0.4f),
+                        thickness: squareThickness,
+                        rect: new Rect(-squareDimension/2, -squareDimension/2, squareDimension, squareDimension),
                         color: color
                     );
                 }

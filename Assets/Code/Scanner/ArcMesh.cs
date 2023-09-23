@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scanner.HexShip {
+namespace Scanner {
 
     public static class ArcMesh
     {

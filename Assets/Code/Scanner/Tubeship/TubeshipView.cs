@@ -16,6 +16,8 @@ namespace Scanner.TubeShip.View {
         
         // tubes can have custom ZED adjacency tunnels.
         // within a tube, adjacency is always rectangular with Y-wraparound
+
+        [field:SerializeField][field:Range(0f, 1f)] public float Unroll { get; set; } = 0f;
     }
     
 }
