@@ -39763,7 +39763,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999416588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.27}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39800,7 +39800,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 36
   <SpineSegments>k__BackingField: 2
   <Radius>k__BackingField: 3
-  <ZSquash>k__BackingField: 2
+  <ZSquash>k__BackingField: 1
 --- !u!1 &1999661983
 GameObject:
   m_ObjectHideFlags: 0
@@ -40367,7 +40367,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2042188446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -4.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41018,6 +41018,7 @@ MonoBehaviour:
     gridH: 4
     prefab: {fileID: 0}
   targetShip: {fileID: 2042188447}
+  damping: 0.2
 --- !u!1 &2066837655
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,8 @@ namespace Scanner.TubeShip.View {
         [SerializeField] Buildable[] buildables;
 
         [SerializeField] TubeshipView targetShip;
+        [SerializeField] float damping;
+
         GameObject currentBuildPhantom;
 
         TubeView[] allTubes;
@@ -28,6 +30,7 @@ namespace Scanner.TubeShip.View {
             if (currentBuildPhantom == null) currentBuildPhantom = CreateBuildPhantom();
             (var tube, var rad, var spn) = GetClosestValidTubeIntersectParams();
             // if (tube != null) Debug.Log($"{tube} : {rad:F2} / {spn:F2}");
+            var prevActive = currentBuildPhantom.activeSelf;
             currentBuildPhantom.SetActive(tube); // this is retarded because Unity's bool overload is retarded.
             if (tube == null) return;
             
@@ -37,8 +40,20 @@ namespace Scanner.TubeShip.View {
             var posWS = tube.transform.TransformPoint(tp.pos);
             var rotWS = tube.transform.rotation * Quaternion.LookRotation(tube.transform.forward, tp.up);
 
-            currentBuildPhantom.transform.SetPositionAndRotation(posWS, rotWS);
+            if (prevActive) { 
+                var p = currentBuildPhantom.transform.position;
+                var r = currentBuildPhantom.transform.rotation;
+                currentBuildPhantom.transform.SetPositionAndRotation(
+                    Vector3.SmoothDamp(p, posWS, ref _vel, damping), 
+                    K3.TransformUtility.SmoothDamp(r, rotWS, ref _qvel, damping)
+                );
+            } else { 
+                currentBuildPhantom.transform.SetPositionAndRotation(posWS, rotWS);
+            }
         }
+
+        Quaternion _qvel = Quaternion.identity;
+        Vector3 _vel = Vector3.zero;
 
         private GameObject CreateBuildPhantom() {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
