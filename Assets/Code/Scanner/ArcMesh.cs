@@ -29,13 +29,14 @@ namespace Scanner {
             int[] tris;
             var verts = CreateSolidArc(arc, outsideRadius, insideRadius, margin, thickness, segments, out tris);
 
-            // make positions center relative
-            var center = new Vector3(0, 0, insideRadius + ((outsideRadius - insideRadius) / 2));
-            for (var i = 0; i < verts.Length; ++i)
-            {
+            var m = (outsideRadius + insideRadius) / 2;            
+            var center = new Vector3(0, -thickness / 2, m);
+            var rot = Quaternion.Euler(-90,0,0);
+            for (var i = 0; i < verts.Length; ++i) {
                 verts[i] -= center;
+                verts[i] = rot * verts[i];
             }
-            
+
             result.vertices = verts;
             result.triangles = tris;
             

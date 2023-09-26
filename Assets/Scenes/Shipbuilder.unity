@@ -7167,7 +7167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitDistanceMin: 3
-  orbitDistanceMax: 10
+  orbitDistanceMax: 33
   minPhi: -80
   maxPhi: 80
   centerSmoothTime: 0.3
@@ -15244,7 +15244,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 12
   <SpineSegments>k__BackingField: 8
   <Radius>k__BackingField: 2
-  <ZSquash>k__BackingField: 1.69
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &782379999
 GameObject:
   m_ObjectHideFlags: 0
@@ -33679,7 +33679,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 6
   <SpineSegments>k__BackingField: 9
   <Radius>k__BackingField: 1
-  <ZSquash>k__BackingField: 2
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1735568047
 GameObject:
   m_ObjectHideFlags: 0
@@ -35311,7 +35311,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 12
   <SpineSegments>k__BackingField: 20
   <Radius>k__BackingField: 2
-  <ZSquash>k__BackingField: 1
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1831221167
 GameObject:
   m_ObjectHideFlags: 0
@@ -35458,7 +35458,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 36
   <SpineSegments>k__BackingField: 3
   <Radius>k__BackingField: 6
-  <ZSquash>k__BackingField: 1
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1840865191
 GameObject:
   m_ObjectHideFlags: 0
@@ -39352,7 +39352,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 12
   <SpineSegments>k__BackingField: 20
   <Radius>k__BackingField: 1
-  <ZSquash>k__BackingField: 1
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1989454596
 GameObject:
   m_ObjectHideFlags: 0
@@ -39800,7 +39800,7 @@ MonoBehaviour:
   <ArcSegments>k__BackingField: 36
   <SpineSegments>k__BackingField: 2
   <Radius>k__BackingField: 3
-  <ZSquash>k__BackingField: 1
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1999661983
 GameObject:
   m_ObjectHideFlags: 0
@@ -41010,15 +41010,15 @@ MonoBehaviour:
     gridH: 2
     prefab: {fileID: 0}
   - name: Daedalus Engine
-    gridW: 1
-    gridH: 3
+    gridW: 3
+    gridH: 1
     prefab: {fileID: 0}
   - name: Technical Module
     gridW: 4
     gridH: 4
     prefab: {fileID: 0}
   targetShip: {fileID: 2042188447}
-  damping: 0.2
+  damping: 0.045
 --- !u!1 &2066837655
 GameObject:
   m_ObjectHideFlags: 0

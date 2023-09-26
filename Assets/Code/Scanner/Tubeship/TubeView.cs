@@ -44,7 +44,15 @@ namespace Scanner.TubeShip.View {
         [field:SerializeField][field:Range(1, 20)] public int SpineSegments { get; set; }
         [field:SerializeField][field:Range(0.3f, 10f)] public float Radius { get; set; }
 
-        [field:SerializeField][field:Range(0.4f, 3f)] public float ZSquash { get; set; } = 1.5f;
+        [field:SerializeField][field:Range(0.4f, 3f)] public float SpinalDistanceMultiplier { get; set; } = 1f;
+
+        public (float halfAngle, float polygonSideDist, float polygonDistanceFromTubeCenter, float circumferentialDistanceOfRadialSegments) GetTubeDimensionParams() {
+            var alpha = Mathf.PI / ArcSegments;
+            var b = Mathf.Sin(alpha) * 2 * Radius;
+            var d = b / Mathf.Sqrt(3);
+            var c = Mathf.PI * 2 * Radius / ArcSegments;
+            return (alpha, b, d, c);
+        }
 
         public float Unroll => GetComponentInParent<TubeshipView>().Unroll;
 
@@ -66,7 +74,8 @@ namespace Scanner.TubeShip.View {
             var angle = Mathf.PI * 2f * arc / ArcSegments;
             var x = Mathf.Sin(angle) * h;
             var y = Mathf.Cos(angle) * h;
-            var z = axis * d * 1.5f * ZSquash;
+            
+            var z = axis * SpinalDistance;
             var center = new Vector3(x, y, z);
             var up = new Vector3(x,y, 0);
 
@@ -77,6 +86,8 @@ namespace Scanner.TubeShip.View {
                  up = up,
              };
         }
+
+        public float SpinalDistance => Mathf.PI * 2 * Radius / ArcSegments * SpinalDistanceMultiplier;
         
         public (Vector3 pos, Vector3 up) GetUnrolledTubePoint(float axisPos, float arcPos, float unroll) {
             var alpha = Mathf.PI / ArcSegments;
@@ -90,7 +101,7 @@ namespace Scanner.TubeShip.View {
             var sumOfSideLengthsOverCircumference = ArcSegments * Mathf.Sin(alpha) / Mathf.PI;
 
             if (Mathf.Approximately(unroll, 1f)) {
-                var zz = axisPos * d * 1.5f * ZSquash;
+                var zz = axisPos * SpinalDistance ;
                 var cc = new Vector3(arcPos * b * sumOfSideLengthsOverCircumference , h, zz);
                 var uu = Vector3.up;
                 return (cc, uu);
@@ -105,7 +116,7 @@ namespace Scanner.TubeShip.View {
             var x = Mathf.Sin(angle) * h;
             var y = Mathf.Cos(angle) * h;
 
-            var z = axisPos * d * 1.5f * ZSquash;
+            var z = axisPos * SpinalDistance;
             var center = new Vector3(x, y - unrollHCompensation, z);
             var up = new Vector3(x,y, 0).normalized;
 
