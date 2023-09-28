@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using K3;
 using Scanner.ScannerView;
 using UnityEditor.UI;
@@ -79,14 +80,14 @@ namespace Scanner.TubeShip.View {
             
             foreach (var p in buildPhantoms) if (p != null) p.SetActive(true);
 
-            var offSpn = (buildables[selectionIndex].gridW - 1) * 0.5f;
-            var offRad = (buildables[selectionIndex].gridH - 1) * 0.5f;
-            var spnZero = Mathf.RoundToInt(spn - offSpn);
-            var radZero = Mathf.RoundToInt(rad - offRad);
-            var spnFinal = offSpn + spnZero;
-            var arcFinal = offRad + radZero;;
+            var spineOffset = (buildables[selectionIndex].gridW - 1) * 0.5f;
+            var arcOffset = (buildables[selectionIndex].gridH - 1) * 0.5f;
+            var spnZero = Mathf.RoundToInt(spn - spineOffset);
+            var arcZero = Mathf.RoundToInt(rad - arcOffset);
+            var spnFinal = spineOffset + spnZero;
+            var arcFinal = arcOffset + arcZero;;
           
-            var legalities = CheckLegality(buildables[selectionIndex], tube, spnZero, radZero, Symmetry);
+            var legalities = CheckLegality(buildables[selectionIndex], tube, spnZero, arcZero, Symmetry);
 
             for (var i = 0; i < Symmetry; i++) { 
                 var symmetryOffset = i * tube.ArcSegments / Symmetry;
@@ -101,6 +102,39 @@ namespace Scanner.TubeShip.View {
                 
                 buildPhantoms[i].GetComponent<MeshRenderer>().material.SetColor("_Color", color);
             }
+
+            if (Input.GetMouseButtonDown(0)) {
+                for (var i = 0; i < Symmetry ; i++) { 
+                    if (legalities[i] != BuildLegality.Legal) continue;
+                    var initialTile = tube.GetTile(arcZero + tube.ArcSegments / Symmetry * i, spnZero);
+                    var arcDimension = buildables[selectionIndex].gridH;
+                    var spineDimension = buildables[selectionIndex].gridW;
+
+                    var structure = new Structure() {
+                        arcDimension = arcDimension,
+                        spineDimension = spineDimension,
+                        identity = buildables[selectionIndex].name,
+                        initialTile = initialTile,
+                        occupiesTiles = GetOccupancy(initialTile, spineDimension, arcDimension),
+                    };
+                    
+                    targetShip.Build(structure, initialTile);
+                    var go = DoInstantiate(selectionIndex, tube);
+                    go.transform.position = buildPhantoms[i].transform.position;
+                    go.transform.rotation = buildPhantoms[i].transform.rotation;
+                    go.transform.SetParent(transform, true);
+                }
+            }
+        }
+
+        Tile[] GetOccupancy(Tile initialTile, int spinalDim, int arcDim) { 
+            var l = new List<Tile>();
+            for (var s = 0; s < spinalDim; s++)
+                for (var a = 0; a < arcDim; a++) { 
+                    var t = initialTile.tube.GetTile(initialTile.arcPos + a, initialTile.spinePos + s);
+                    l.Add(t);
+                }
+            return l.ToArray();
         }
         
         BuildLegality[] CheckLegality(Buildable b, TubeView tube, int spnZero, int arcZero, int symmetry) {
@@ -138,6 +172,21 @@ namespace Scanner.TubeShip.View {
         Quaternion _qvel = Quaternion.identity;
         Vector3 _vel = Vector3.zero;
 
+        private GameObject DoInstantiate(int buildIndex, TubeView tube) {
+            var b =  buildables[buildIndex];
+            var prefab = buildables[buildIndex].prefab;
+            GameObject go;
+            if (prefab == null) {
+                go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                var mesh = ArcMesh.Solid(Mathf.PI * 2 / tube.ArcSegments * b.gridH, tube.Radius, tube.Radius - 0.05f, 0f, tube.SpinalDistance * b.gridW, 64);
+                go.GetComponent<MeshFilter>().sharedMesh = mesh;
+            } else {
+                go = Instantiate(prefab);
+            }
+            go.name = buildables[buildIndex].name;
+            return go;
+        }
+
         private void RegenerateBuildPhantoms(int buildableIndex, TubeView tube, int symmetry) {
             if (buildPhantoms != null) foreach (var bp in buildPhantoms) Destroy(bp);
             buildPhantoms = new GameObject[0];
@@ -148,15 +197,7 @@ namespace Scanner.TubeShip.View {
             var p = buildables[buildableIndex].prefab;
 
             for (var i = 0; i < symmetry; i++) { 
-                GameObject go;
-
-                if (p == null) {
-                    go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    var mesh = ArcMesh.Solid(Mathf.PI * 2 / tube.ArcSegments * b.gridH, tube.Radius, tube.Radius - 0.05f, 0f, tube.SpinalDistance * b.gridW, 64);
-                    go.GetComponent<MeshFilter>().sharedMesh = mesh;
-                } else {
-                    go = Instantiate(p);
-                }
+                var go = DoInstantiate(buildableIndex, tube);
                 go.GetComponent<MeshRenderer>().sharedMaterial = this.ghostMaterial;
                 go.name = $"BUILD PHANTOM [{b.name}] : {i+1}";
                 buildPhantoms[i] = go;
