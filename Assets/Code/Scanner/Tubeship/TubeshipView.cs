@@ -43,6 +43,7 @@ namespace Scanner.TubeShip.View {
             for (var s = 0; s < structure.spineDimension; s++) {
                 for (var a = 0; a < structure.arcDimension; a++) {
                     var t = tube.GetTile(a0 + a, s0 + s);
+                    if (t == null) throw new System.Exception("Cannot build on a null tile");
                     t.occupiedBy = structure;
                     l.Add(t);
                 }
