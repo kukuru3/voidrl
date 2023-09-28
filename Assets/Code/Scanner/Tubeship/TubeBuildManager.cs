@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using K3;
 using Scanner.ScannerView;
+using UnityEditor.UI;
 using UnityEngine;
 
 namespace Scanner.TubeShip.View {
@@ -14,89 +17,153 @@ namespace Scanner.TubeShip.View {
     }
 
     internal class TubeBuildManager : MonoBehaviour {
-        [SerializeField] Buildable[] buildables;
 
         [SerializeField] TubeshipView targetShip;
         [SerializeField] float damping;
+        [SerializeField] Material ghostMaterial;
 
-        GameObject currentBuildPhantom;
+        [SerializeField] Selector buildablesSelector;
+        [SerializeField] Selector symmetrySelector;
+        [SerializeField] Buildable[] buildables;
+
+        public int Symmetry => symmetrySelector.CyclerIndex + 1;
+
+        GameObject[] buildPhantoms = new GameObject[0];
+
         TubeView lastPhantomTube;
 
-        int selectionIndex = -1;        
+        int selectionIndex = -1;   
+
+        class BuildIntent {
+            public Buildable buildable;
+            public TubeView targetTube;
+            public int a0;
+            public int s0;
+            public int symmetryRepeats;
+            internal List<GameObject> buildPhantoms = new();
+        }
 
         TubeView[] allTubes;
         private void Start() {
             allTubes = targetShip.GetComponentsInChildren<TubeView>();
+            buildablesSelector.ClearItems();
+            foreach (var bb in buildables) {
+                buildablesSelector.AddItem(bb.name, bb);
+            }
+            buildablesSelector.CyclerIndex = 1;
+            buildablesSelector.IndexChanged += SelectedNewBuildable;
         }
+
+        private void SelectedNewBuildable(int index) {
+            selectionIndex = index;
+            lastPhantomTube = null;
+        }
+
+        int buildPhantomIndex;
 
         private void LateUpdate() {
-            if (Input.GetKeyDown(KeyCode.Tab)) {
-                selectionIndex++; if (selectionIndex >= buildables.Length) selectionIndex = 0;
-                lastPhantomTube = null;
-            }
+            if (selectionIndex < 0) return;
 
             (var tube, var rad, var spn) = GetClosestValidTubeIntersectParams();
-            var old = currentBuildPhantom;
-            if (tube != null) AdaptBuildPhantomToTube(tube);
-            var didRegen = currentBuildPhantom != null && currentBuildPhantom != old;
+
+            if (tube == null) {
+                foreach (var p in buildPhantoms) if (p != null) p.SetActive(false);
+            }
+
+            var shouldRegeneratePhantoms = lastPhantomTube != tube || buildPhantoms.Length != Symmetry || buildPhantomIndex != selectionIndex;
+            
+            if (shouldRegeneratePhantoms) RegenerateBuildPhantoms(selectionIndex, tube, Symmetry);
+
             if (tube == null) return;
-
-            if (currentBuildPhantom == null) return;
-
-            // if (tube != null) Debug.Log($"{tube} : {rad:F2} / {spn:F2}");
-            var prevActive = currentBuildPhantom.activeSelf;
-            currentBuildPhantom.SetActive(tube); // this is retarded because Unity's bool overload is retarded.
+            if (buildPhantoms[0] == null) return;
             
-            var offSpn = (buildables[selectionIndex].gridH - 1) * 0.5f;
-            var offRad = (buildables[selectionIndex].gridW - 1) * 0.5f;
-            
-            var spnFinal = Mathf.RoundToInt(spn + offSpn) - offSpn;
-            var radFinal = Mathf.RoundToInt(rad + offRad) - offRad;
-            var tp = tube.GetUnrolledTubePoint(spnFinal, radFinal, 0f);
-            var posWS = tube.transform.TransformPoint(tp.pos);
-            var rotWS = tube.transform.rotation * Quaternion.LookRotation(tube.transform.forward, tp.up);
+            foreach (var p in buildPhantoms) if (p != null) p.SetActive(true);
 
-            if (prevActive && !didRegen) { 
-                var p = currentBuildPhantom.transform.position;
-                var r = currentBuildPhantom.transform.rotation;
-                currentBuildPhantom.transform.SetPositionAndRotation(
-                    Vector3.SmoothDamp(p, posWS, ref _vel, damping), 
-                    K3.TransformUtility.SmoothDamp(r, rotWS, ref _qvel, damping)
-                );
-            } else { 
-                currentBuildPhantom.transform.SetPositionAndRotation(posWS, rotWS);
+            var offSpn = (buildables[selectionIndex].gridW - 1) * 0.5f;
+            var offRad = (buildables[selectionIndex].gridH - 1) * 0.5f;
+            var spnZero = Mathf.RoundToInt(spn - offSpn);
+            var radZero = Mathf.RoundToInt(rad - offRad);
+            var spnFinal = offSpn + spnZero;
+            var arcFinal = offRad + radZero;;
+          
+            var legalities = CheckLegality(buildables[selectionIndex], tube, spnZero, radZero, Symmetry);
+
+            for (var i = 0; i < Symmetry; i++) { 
+                var symmetryOffset = i * tube.ArcSegments / Symmetry;
+                var tp = tube.GetUnrolledTubePoint(spnFinal, arcFinal + symmetryOffset, 0f);
+                var posWS = tube.transform.TransformPoint(tp.pos);
+                var rotWS = tube.transform.rotation * Quaternion.LookRotation(tube.transform.forward, tp.up);
+
+                buildPhantoms[i].transform.SetPositionAndRotation(posWS, rotWS);
+                var color = new Color(0.1f, 0.8f, 0f, 0.4f);
+                if (legalities[i] == BuildLegality.Occupied) color = new Color(0.8f, 0f, 0f, 0.4f);
+                if (legalities[i] == BuildLegality.Illegal)  color = new Color(0.4f, 0f, 0f, 0.4f);
+                
+                buildPhantoms[i].GetComponent<MeshRenderer>().material.SetColor("_Color", color);
             }
         }
+        
+        BuildLegality[] CheckLegality(Buildable b, TubeView tube, int spnZero, int arcZero, int symmetry) {
+            var result = new BuildLegality[symmetry];
 
-        private void AdaptBuildPhantomToTube(TubeView tube) {
-            if (lastPhantomTube == tube) return;
-            if (selectionIndex >= 0 && buildables[selectionIndex].prefab == null) {
-                if (currentBuildPhantom != null) { 
-                    Destroy(currentBuildPhantom);
-                    currentBuildPhantom = null;                
+            var symmetryOffset = tube.ArcSegments / symmetry;
+
+            for (var i = 0; i < symmetry; i++) {
+                result[i] = BuildLegality.Legal;
+
+                for (var s = 0; s < b.gridH; s++) {
+                    for (var a = 0; a < b.gridW; a++) {
+                        var tile = tube.GetTile(arcZero + a + symmetryOffset * i, spnZero + s);
+                        if (tile == null) {
+                            result[i] = BuildLegality.Illegal;
+                        } else if (tile.occupiedBy != null) {
+                            if (result[i] > BuildLegality.Illegal) result[i] = BuildLegality.Occupied; 
+                            goto EXIT_LOOP;
+                        }
+                    }
                 }
-                currentBuildPhantom = RegenerateBuildPhantom(selectionIndex, tube);
+
+                EXIT_LOOP: 
+                
+                ;
             }
-            lastPhantomTube = tube;
+            return result;
+        }
+        public enum BuildLegality {
+            Illegal,
+            Occupied,
+            Legal,
         }
 
         Quaternion _qvel = Quaternion.identity;
         Vector3 _vel = Vector3.zero;
 
-        private GameObject RegenerateBuildPhantom(int index, TubeView tube) {
-            var b = buildables[index];
-            var p = buildables[index].prefab;
-            GameObject go;
+        private void RegenerateBuildPhantoms(int buildableIndex, TubeView tube, int symmetry) {
+            if (buildPhantoms != null) foreach (var bp in buildPhantoms) Destroy(bp);
+            buildPhantoms = new GameObject[0];
+            if (buildableIndex == -1) return;
+            if (tube == null) return;
+            buildPhantoms = new GameObject[symmetry];
+            var b = buildables[buildableIndex];
+            var p = buildables[buildableIndex].prefab;
 
-            if (p == null) {
-                go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                var mesh = ArcMesh.Solid(Mathf.PI * 2 / tube.ArcSegments * b.gridH, tube.Radius, tube.Radius - 0.05f, 0f, tube.SpinalDistance * b.gridW, 64);
-                go.GetComponent<MeshFilter>().sharedMesh = mesh;
-            } else {
-                go = Instantiate(p);
+            for (var i = 0; i < symmetry; i++) { 
+                GameObject go;
+
+                if (p == null) {
+                    go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    var mesh = ArcMesh.Solid(Mathf.PI * 2 / tube.ArcSegments * b.gridH, tube.Radius, tube.Radius - 0.05f, 0f, tube.SpinalDistance * b.gridW, 64);
+                    go.GetComponent<MeshFilter>().sharedMesh = mesh;
+                } else {
+                    go = Instantiate(p);
+                }
+                go.GetComponent<MeshRenderer>().sharedMaterial = this.ghostMaterial;
+                go.name = $"BUILD PHANTOM [{b.name}] : {i+1}";
+                buildPhantoms[i] = go;
             }
-            go.name = $"BUILD PHANTOM [{b.name}]";
-            return go;
+
+            lastPhantomTube = tube;
+            buildPhantomIndex = buildableIndex;            
         }
 
         private (TubeView tube, float radial, float spinal) GetClosestValidTubeIntersectParams() {

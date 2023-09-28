@@ -1,4 +1,5 @@
-﻿using K3;
+﻿using System.Collections.Generic;
+using K3;
 using Scanner.ScannerView;
 using UnityEngine;
 
@@ -39,12 +40,55 @@ namespace Scanner.TubeShip.View {
             return (false, 0f, 0f, 0f);
         }
     }
+    public class Tile {
+        public Structure occupiedBy;
+        internal TubeView tube;
+        public int arcPos;
+        public int spinePos;
+    }
+
     internal class TubeView : MonoBehaviour {
         [field:SerializeField][field:Range(3, 60)] public int ArcSegments { get; set; }
         [field:SerializeField][field:Range(1, 20)] public int SpineSegments { get; set; }
         [field:SerializeField][field:Range(0.3f, 10f)] public float Radius { get; set; }
 
         [field:SerializeField][field:Range(0.4f, 3f)] public float SpinalDistanceMultiplier { get; set; } = 1f;
+
+        public Tile GetTile(int arc, int spine) {
+            if (tiles == null) return null;
+            if (spine < 0 || spine >= SpineSegments) return null;
+            (arc, spine) = GetWrappedIndices(arc, spine);            
+            return tiles[spine, arc];
+        }
+
+        private void Start() {
+            RegenerateTiles();
+        }
+
+        Tile[,] tiles;
+
+        private void LateUpdate() {
+            if (tiles == null || tiles.GetLength(0) != SpineSegments || tiles.GetLength(1) != ArcSegments) {
+                RegenerateTiles();
+            }
+        }
+
+        private void RegenerateTiles() {
+            var structs = new HashSet<Structure>();
+            if (tiles != null) {
+                foreach (var tile in tiles) if (tile.occupiedBy != null) structs.Add(tile.occupiedBy);
+                foreach (var s in structs) this.GetComponentInParent<TubeshipView>().DestroyStructure(s);
+            }
+            tiles = new Tile[SpineSegments, ArcSegments];
+            for (var s = 0; s < SpineSegments; s++)
+                for (var a = 0; a < ArcSegments; a++) {
+                    tiles[s, a] = new Tile() {
+                        arcPos = a,
+                        spinePos = s,
+                        tube = this,
+                    };
+                }
+        }
 
         public (float halfAngle, float polygonSideDist, float polygonDistanceFromTubeCenter, float circumferentialDistanceOfRadialSegments) GetTubeDimensionParams() {
             var alpha = Mathf.PI / ArcSegments;
@@ -66,10 +110,15 @@ namespace Scanner.TubeShip.View {
             return result;
         }
 
+        public (int arc, int spine) GetWrappedIndices(int a, int s) {
+            a %= ArcSegments; if (a < 0 ) a += ArcSegments;
+            // s %= SpineSegments; if (s < 0) s += SpineSegments;
+            return (a, s);
+        }
+
         public TubePoint GetTubePoint(int axis, int arc) {
             var alpha = Mathf.PI / ArcSegments;
             var b = Mathf.Sin(alpha) * 2 * Radius;
-            var d = b / Mathf.Sqrt(3);
             var h = Mathf.Cos(alpha) * Radius;
             var angle = Mathf.PI * 2f * arc / ArcSegments;
             var x = Mathf.Sin(angle) * h;

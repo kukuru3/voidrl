@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Shapes;
 using UnityEngine;
-using UnityEngine.WSA;
 
 namespace Scanner {
-
     class Selector : Element {
         [SerializeField] GameObject regularMain;
         [SerializeField] GameObject activeMain;
@@ -49,6 +47,10 @@ namespace Scanner {
             foreach (var item in newItems) AddItem(item, null);
         }
 
+        public void ClearItems() {
+            if (data == null) data = new();
+            data.Clear();
+        }
         public void AddItem(string item, object data) {
             if (this.data == null) this.data = new();
             this.data.Add((item, data));
@@ -76,8 +78,10 @@ namespace Scanner {
         SemanticHighlight shState;
 
         private void Start() {
+            
+            if (data == null) 
+                data = initialItems.Select(i => (i, (object)null)).ToList();
             cyclerIndex = -1; CyclerIndex = 0;
-            if (data == null) data = initialItems.Select(i => (i, (object)null)).ToList();
         }
 
         private void LateUpdate() {

@@ -16,6 +16,11 @@ namespace Scanner.TubeShip.View {
                 foreach (var a in tp) {
                     var item = tube.GetUnrolledTubePoint(a.axisPos, a.arcPos, tube.Unroll);
                     
+                    var tile = tube.GetTile(a.arcPos, a.axisPos);
+                    if (tile?.occupiedBy != null) {
+                        continue;
+                    }
+
                     var fwd = transform.forward;
                     var up = transform.TransformVector(item.up);
                     var pos = transform.TransformPoint(item.pos);
