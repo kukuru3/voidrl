@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Scanner.TubeShip.View {
 
     internal static class TubeUtility {
-        public static (bool hasResult, float radial, float spinal, float distance) RaycastTube(Ray ray, TubeView tube) {
+        public static (bool hasResult, float radial, float spinal, float distance) RaycastTube(Ray ray, Tube tube) {
 
             var originInTubespace = tube.transform.InverseTransformPoint(ray.origin);
             var directionInTubespace = tube.transform.InverseTransformDirection(ray.direction);
@@ -42,12 +42,12 @@ namespace Scanner.TubeShip.View {
     }
     public class Tile {
         public Structure occupiedBy;
-        internal TubeView tube;
+        internal Tube tube;
         public int arcPos;
         public int spinePos;
     }
 
-    internal class TubeView : MonoBehaviour {
+    internal class Tube : MonoBehaviour {
         [field:SerializeField][field:Range(3, 60)] public int ArcSegments { get; set; }
         [field:SerializeField][field:Range(1, 20)] public int SpineSegments { get; set; }
         [field:SerializeField][field:Range(0.3f, 10f)] public float Radius { get; set; }
@@ -77,7 +77,7 @@ namespace Scanner.TubeShip.View {
             var structs = new HashSet<Structure>();
             if (tiles != null) {
                 foreach (var tile in tiles) if (tile.occupiedBy != null) structs.Add(tile.occupiedBy);
-                foreach (var s in structs) this.GetComponentInParent<TubeshipView>().DestroyStructure(s);
+                foreach (var s in structs) this.GetComponentInParent<Ship>().DestroyStructure(s);
             }
             tiles = new Tile[SpineSegments, ArcSegments];
             for (var s = 0; s < SpineSegments; s++)
@@ -98,7 +98,7 @@ namespace Scanner.TubeShip.View {
             return (alpha, b, d, c);
         }
 
-        public float Unroll => GetComponentInParent<TubeshipView>().Unroll;
+        public float Unroll => GetComponentInParent<Ship>().Unroll;
 
         public TubePoint[,] GetAllTubePoints() {
             var result = new TubePoint[SpineSegments, ArcSegments];

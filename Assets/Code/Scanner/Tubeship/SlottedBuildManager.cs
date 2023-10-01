@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using K3;
 using Scanner.ScannerView;
-using UnityEditor.UI;
 using UnityEngine;
 
 namespace Scanner.TubeShip.View {
@@ -17,9 +14,9 @@ namespace Scanner.TubeShip.View {
 
     }
 
-    internal class TubeBuildManager : MonoBehaviour {
+    internal class SlottedBuildManager : MonoBehaviour {
 
-        [SerializeField] TubeshipView targetShip;
+        [SerializeField] Ship targetShip;
         [SerializeField] float damping;
         [SerializeField] Material ghostMaterial;
 
@@ -31,22 +28,22 @@ namespace Scanner.TubeShip.View {
 
         GameObject[] buildPhantoms = new GameObject[0];
 
-        TubeView lastPhantomTube;
+        Tube lastPhantomTube;
 
         int selectionIndex = -1;   
 
         class BuildIntent {
             public Buildable buildable;
-            public TubeView targetTube;
+            public Tube targetTube;
             public int a0;
             public int s0;
             public int symmetryRepeats;
             internal List<GameObject> buildPhantoms = new();
         }
 
-        TubeView[] allTubes;
+        Tube[] allTubes;
         private void Start() {
-            allTubes = targetShip.GetComponentsInChildren<TubeView>();
+            allTubes = targetShip.GetComponentsInChildren<Tube>();
             buildablesSelector.ClearItems();
             foreach (var bb in buildables) {
                 buildablesSelector.AddItem(bb.name, bb);
@@ -137,7 +134,7 @@ namespace Scanner.TubeShip.View {
             return l.ToArray();
         }
         
-        BuildLegality[] CheckLegality(Buildable b, TubeView tube, int spnZero, int arcZero, int symmetry) {
+        BuildLegality[] CheckLegality(Buildable b, Tube tube, int spnZero, int arcZero, int symmetry) {
             var result = new BuildLegality[symmetry];
 
             var symmetryOffset = tube.ArcSegments / symmetry;
@@ -172,7 +169,7 @@ namespace Scanner.TubeShip.View {
         Quaternion _qvel = Quaternion.identity;
         Vector3 _vel = Vector3.zero;
 
-        private GameObject DoInstantiate(int buildIndex, TubeView tube) {
+        private GameObject DoInstantiate(int buildIndex, Tube tube) {
             var b =  buildables[buildIndex];
             var prefab = buildables[buildIndex].prefab;
             GameObject go;
@@ -187,7 +184,7 @@ namespace Scanner.TubeShip.View {
             return go;
         }
 
-        private void RegenerateBuildPhantoms(int buildableIndex, TubeView tube, int symmetry) {
+        private void RegenerateBuildPhantoms(int buildableIndex, Tube tube, int symmetry) {
             if (buildPhantoms != null) foreach (var bp in buildPhantoms) Destroy(bp);
             buildPhantoms = new GameObject[0];
             if (buildableIndex == -1) return;
@@ -207,9 +204,9 @@ namespace Scanner.TubeShip.View {
             buildPhantomIndex = buildableIndex;            
         }
 
-        private (TubeView tube, float radial, float spinal) GetClosestValidTubeIntersectParams() {
+        private (Tube tube, float radial, float spinal) GetClosestValidTubeIntersectParams() {
             var minDist = float.MaxValue;
-            TubeView bestTube = null;
+            Tube bestTube = null;
             var bestRadial = 0f;
             var bestSpinal = 0f;
             foreach (var tube in allTubes) {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Scripting;
 
 namespace Scanner.TubeShip.View {
 
@@ -11,7 +10,7 @@ namespace Scanner.TubeShip.View {
         public int axisPos;
     }
 
-    internal class TubeshipView : MonoBehaviour {
+    internal class Ship : MonoBehaviour {
         // a tubeship is composed of a bunch of parts that are attached to one another.
         // a tube can be unrolled to a rectangle.
         // structurally speaking, extending the spine is like adding more tiles to the rectangle's width.

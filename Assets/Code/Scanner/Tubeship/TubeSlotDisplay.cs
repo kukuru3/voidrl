@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Scanner.TubeShip.View {
     [ExecuteAlways]
-    [RequireComponent(typeof(TubeView))]
-    internal class AdvancedTubeDisplayer : ImmediateModeShapeDrawer {
+    [RequireComponent(typeof(Tube))]
+    internal class TubeSlotDisplay : ImmediateModeShapeDrawer {
         [SerializeField] float squareDimension;
         [SerializeField] float squareThickness;
         public override void DrawShapes(Camera cam) {
-            var tube = GetComponent<TubeView>();
+            var tube = GetComponent<Tube>();
             var tp = tube.GetAllTubePoints();
 
             using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterImageEffects)) {
