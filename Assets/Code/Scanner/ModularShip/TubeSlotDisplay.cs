@@ -2,7 +2,7 @@
 using Shapes;
 using UnityEngine;
 
-namespace Scanner.TubeShip.View {
+namespace Scanner.ModularShip {
     [ExecuteAlways]
     [RequireComponent(typeof(Tube))]
     internal class TubeSlotDisplay : ImmediateModeShapeDrawer {

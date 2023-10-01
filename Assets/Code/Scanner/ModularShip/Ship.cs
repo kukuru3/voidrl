@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scanner.TubeShip.View {
-
+namespace Scanner.ModularShip {
     public struct TubePoint {
         public Vector3 position;
         public Vector3 up;

@@ -3,7 +3,7 @@ using K3;
 using Scanner.ScannerView;
 using UnityEngine;
 
-namespace Scanner.TubeShip.View {
+namespace Scanner.ModularShip {
 
     internal static class TubeUtility {
         public static (bool hasResult, float radial, float spinal, float distance) RaycastTube(Ray ray, Tube tube) {

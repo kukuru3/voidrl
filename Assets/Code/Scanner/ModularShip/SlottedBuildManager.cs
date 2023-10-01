@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Scanner.ScannerView;
 using UnityEngine;
 
-namespace Scanner.TubeShip.View {
+namespace Scanner.ModularShip {
 
     [Serializable]
     internal struct Buildable {

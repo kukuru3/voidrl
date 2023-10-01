@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Scanner.TubeShip {
+namespace Scanner.ModularShip {
 
     //class Tube {
     //    public Tube(int spineSegments, int arcSegments) {
