@@ -26789,10 +26789,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442c629702f77b34692efe86a5eee2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ArcSegments>k__BackingField: 6
+  <ArcSegments>k__BackingField: 12
   <SpineSegments>k__BackingField: 15
   <Radius>k__BackingField: 1
-  <SpinalDistanceMultiplier>k__BackingField: 1
+  <SpinalDistanceMultiplier>k__BackingField: 1.5
 --- !u!1 &1361204872
 GameObject:
   m_ObjectHideFlags: 0

@@ -163,7 +163,9 @@ namespace Scanner.Windows {
             var propFlow = new Core.CustomSIValue((decimal)engineParams.propellantFlow * numEngines, "kg/s");
             var vExhaust = new Velocity((decimal)engineParams.exhaustVelocity);
 
+            // the big one:
             var calculation = TravelTimeCalculator.CalculateComplexWithRootFinding(distance, dryMassKg, propellantMass, vExhaust, propFlow, maxV);
+
             var totalTime = new TimeSI(calculation.TotalTime);
             var turnoverV = new Velocity(calculation.turnoverV);
 
@@ -248,6 +250,7 @@ namespace Scanner.Windows {
             distanceSelector.AddItem("Tau Ceti", 11.91f);
 
             massRatioSlider     = GenerateSlider("m ratio", 1.1f, 8f, 3f, "x", "f1");
+            infiniteFuel        = GenerateCheckbox("In situ refuel");
 
             structuralMass      = GenerateSlider("struct m", 50, 1000, 500, "kt", "f0", logarithmic: true);
             maxToleratedSpeed   = GenerateSlider("tolerated v", 0.01f, 0.8f, 0.3f, "c", "p2", logarithmic: true);

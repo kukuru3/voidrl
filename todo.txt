@@ -88,61 +88,64 @@ Ingame: press escape to show the quick options dialog ()
 
 
 
-Components:
-- Power, heat and fluid transfer
-- Life support
-- Spinner
-- Axial electromagnet / mass driver
-- Transportation system
-- Auxiliary reactor
-- Heat exchange turbines
+Structural modules:
+- Reactor
 - Heat radiators
-- Engine assembly
-- Reservoirs
-- Storage
-- Zero-G industry
-- Superheated Centrifuge
+- Engine injection assembly
+- Maneuver control engines
+- Reservoir (storage)
 - Meteor shield
-- Active radiation shielding generator
-- Hangar
-- Mechanic bay
-- Gantry
+
 - Berth (for mining ships)
-- Observatory
-- Radiation Shielding
-- Armour
-- Habitation zone
-  - Slums
-  - Habitats
-  - Utopia
-  - Recreation
-- Hydroponic bay
-- Spinner (manufactory)
-- Point defences
+- Gantry
+
+- Hangar module
+- Engineering module
+    - materials lab
+    - zero-g industry
+    - microlathe 
+    - heavy Industry
+    - armament industry
+- Habitat module   
+    - bio-lab
+    - criogenic storage 
+    - nursery
+    - hospital
+    - organic recycler
+
+- Hydroponic module (facilities: algae tanks...)
+- Operations module (facilities: bridge, training grounds...)
+
+Minor structures:
+- Spinner
+- Life support
+- Heat exchange turbines
 - Railgun mount
+- Point defences
+- Missile bay
+- Large Antenna
+
+Could be both structural or facilities:
+
+- Superheated Centrifuge
+- Radiation Shielding
 - Command module
+
+
+FACILITIES
 - Biotech lab
-  - Cryogenic Storage
-  - Nursery
-  - Hospital
-  - Organic Recycler
+- Cryogenic Storage
+- Nursery
+- Hospital
+- Organic Recycler
 - Materials lab 
 - Containment / Brig
 - Training ground
 - Storm shelter
 
+- Zero-G Industry
+- Microlathe spinner (manufactory)
 
-Large structural organization:
-Spine
-Engine ring
-Radiators
-Habitation
-Operations
-Meteor shield
-
-
-Spinal module:
-  - long, triangular. Set along spine, doesn't rotate, zero-g.
 
 SIMPLE CONSTRUCTION:
 
@@ -249,3 +252,5 @@ observation mast
 We want around 10 segments to start with. This gives us 20 modules + 10 attachments.
 Extremes should be viable - like having only 1 science and 5 military modules.
 RING modules may be spun (though it's not necessary)
+
+====================================
