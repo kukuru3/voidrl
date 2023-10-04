@@ -42,12 +42,16 @@ namespace Scanner.ModularShip {
     }
     public class Tile {
         public Structure occupiedBy;
-        internal Tube tube;
+        internal IGrid source;
         public int arcPos;
         public int spinePos;
     }
 
-    internal class Tube : MonoBehaviour {
+    public interface IGrid {
+        Tile GetTile(int x, int y);
+    }
+
+    internal class Tube : MonoBehaviour, IGrid {
         [field:SerializeField][field:Range(3, 60)] public int ArcSegments { get; set; }
         [field:SerializeField][field:Range(1, 20)] public int SpineSegments { get; set; }
         [field:SerializeField][field:Range(0.3f, 10f)] public float Radius { get; set; }
@@ -85,7 +89,7 @@ namespace Scanner.ModularShip {
                     tiles[s, a] = new Tile() {
                         arcPos = a,
                         spinePos = s,
-                        tube = this,
+                        source = this,
                     };
                 }
         }

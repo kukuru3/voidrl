@@ -10,17 +10,11 @@ namespace Scanner.ModularShip {
     }
 
     internal class Ship : MonoBehaviour {
-        // a tubeship is composed of a bunch of parts that are attached to one another.
-        // a tube can be unrolled to a rectangle.
-        // structurally speaking, extending the spine is like adding more tiles to the rectangle's width.
-        
-        // tubes can have custom ZED adjacency tunnels.
-        // within a tube, adjacency is always rectangular with Y-wraparound
-
+        // GRIDS
         [field:SerializeField][field:Range(0f, 1f)] public float Unroll { get; set; } = 0f;
 
         List<Structure> allStructures = new();
-
+        
         public IReadOnlyList<Structure> Structures => allStructures;
 
         public void DestroyStructure(Structure structure) {
@@ -31,7 +25,7 @@ namespace Scanner.ModularShip {
         }
 
         public void Build(Structure structure, Tile initialTile) {
-            var tube = initialTile.tube;
+            var tube = initialTile.source;
 
             var a0 = initialTile.arcPos;
             var s0 = initialTile.spinePos;
@@ -60,7 +54,7 @@ namespace Scanner.ModularShip {
         public Tile initialTile;
         public Tile[] occupiesTiles;
     }
-    
+
 }
 
 

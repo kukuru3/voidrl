@@ -128,7 +128,7 @@ namespace Scanner.ModularShip {
             var l = new List<Tile>();
             for (var s = 0; s < spinalDim; s++)
                 for (var a = 0; a < arcDim; a++) { 
-                    var t = initialTile.tube.GetTile(initialTile.arcPos + a, initialTile.spinePos + s);
+                    var t = initialTile.source.GetTile(initialTile.arcPos + a, initialTile.spinePos + s);
                     l.Add(t);
                 }
             return l.ToArray();

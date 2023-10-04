@@ -10,6 +10,7 @@ namespace Scanner.ModularShip {
         [SerializeField] float squareThickness;
         public override void DrawShapes(Camera cam) {
             var tube = GetComponent<Tube>();
+            if (tube == null) return;
             var tp = tube.GetAllTubePoints();
 
             using (Draw.Command(cam, UnityEngine.Rendering.CameraEvent.AfterImageEffects)) {

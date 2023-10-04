@@ -155,9 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: -1
-  d: 1
-  alpha: 4
 --- !u!23 &7613328
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -570,9 +567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 3
-  alpha: 6
 --- !u!23 &21220838
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -882,9 +876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 1
 --- !u!23 &42752732
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -996,9 +987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 0
 --- !u!23 &49446404
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1124,9 +1112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 0
-  alpha: 0
 --- !u!23 &49791047
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1292,9 +1277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 3
-  alpha: 9
 --- !u!23 &50899843
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1406,9 +1388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 2
-  alpha: 0
 --- !u!23 &52173899
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1520,9 +1499,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 3
-  alpha: 12
 --- !u!23 &56172563
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2068,7 +2044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d0d550ef3a684b854e01e7f5a666f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rpm: 2
 --- !u!1 &105442062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2115,9 +2090,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 6
 --- !u!23 &105442065
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2448,9 +2420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 6
 --- !u!23 &123709789
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2548,9 +2517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 3
-  alpha: 15
 --- !u!23 &133255488
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2662,9 +2628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 2
-  alpha: 10
 --- !u!23 &149974690
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2975,9 +2938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 9
-  d: 1
-  alpha: 2
 --- !u!23 &163625256
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3557,9 +3517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 3
-  alpha: 9
 --- !u!23 &204940273
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3642,9 +3599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 1
-  alpha: 0
 --- !u!23 &210809069
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3954,9 +3908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 1
-  alpha: 4
 --- !u!23 &241513897
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4354,9 +4305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 0
-  alpha: 0
 --- !u!23 &288813559
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4633,9 +4581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 2
 --- !u!23 &320833641
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4816,9 +4761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 2
-  alpha: 2
 --- !u!23 &340075920
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4929,9 +4871,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 1
 --- !u!23 &340169614
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5194,9 +5133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 0
 --- !u!23 &354004801
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5371,7 +5307,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377254910}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.000000568248, z: 16}
+  m_LocalPosition: {x: 0, y: 0, z: 16}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5460,9 +5396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 5
-  d: 0
-  alpha: 0
 --- !u!23 &381980917
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6311,9 +6244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 8
-  d: 0
-  alpha: 0
 --- !u!23 &427919200
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6995,9 +6925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: -1
-  d: 1
-  alpha: 2
 --- !u!23 &482613753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7674,9 +7601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 4
 --- !u!23 &533504930
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7857,9 +7781,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 1
-  alpha: 2
 --- !u!23 &556153184
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7972,9 +7893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 4
 --- !u!23 &557880981
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -8127,9 +8045,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 0
-  alpha: 0
 --- !u!23 &562722966
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8294,9 +8209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 1
-  alpha: 0
 --- !u!23 &585271519
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8426,9 +8338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 1
-  alpha: 1
 --- !u!23 &603830357
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8540,9 +8449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 1
-  alpha: 2
 --- !u!23 &604284368
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9084,9 +8990,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 6
 --- !u!23 &634632327
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -9225,9 +9128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 11
 --- !u!23 &639811026
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9338,9 +9238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 3
-  alpha: 9
 --- !u!23 &640226559
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9438,9 +9335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 4
-  d: 0
-  alpha: 0
 --- !u!23 &646758909
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9551,9 +9445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 5
 --- !u!23 &648294241
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9734,9 +9625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 1
-  alpha: 3
 --- !u!23 &663097824
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9930,9 +9818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 1
-  alpha: 4
 --- !u!23 &671162467
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10027,14 +9912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51d8f199491e494c84b99fc29c44858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCullingMasks: 0
-  hexSize: 0.4
-  hexH: 4
-  mapRadius: 1
-  mapH: 1
-  type: 1
-  drawMargin: 0.22
-  thiccness: 0.01
 --- !u!4 &675439003
 Transform:
   m_ObjectHideFlags: 0
@@ -10414,9 +10291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 2
-  alpha: 2
 --- !u!23 &688260753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10844,9 +10718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 7
-  d: 0
-  alpha: 0
 --- !u!23 &712904656
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11107,9 +10978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 2
-  alpha: 8
 --- !u!23 &722326787
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11304,9 +11172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 10
 --- !u!23 &736132890
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11418,9 +11283,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 1
-  alpha: 1
 --- !u!23 &738156608
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11630,9 +11492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 4
 --- !u!23 &746506916
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -11796,7 +11655,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 748793101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442c629702f77b34692efe86a5eee2d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 846baa6ad938d854598cda5ff264752f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <ArcSegments>k__BackingField: 12
@@ -11995,7 +11854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d0d550ef3a684b854e01e7f5a666f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rpm: 1
 --- !u!1 &782379999
 GameObject:
   m_ObjectHideFlags: 0
@@ -12028,9 +11886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 1
-  alpha: 5
 --- !u!23 &782380001
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12331,9 +12186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 5
-  d: 0
-  alpha: 0
 --- !u!4 &799286561
 Transform:
   m_ObjectHideFlags: 0
@@ -13458,9 +13310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 1
-  alpha: 3
 --- !u!23 &901805942
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14038,9 +13887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 12
-  d: 0
-  alpha: 0
 --- !u!23 &958376823
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14498,9 +14344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 0
 --- !u!23 &994525763
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14583,9 +14426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 3
 --- !u!23 &996967322
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14779,9 +14619,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 9
 --- !u!23 &1001277475
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15694,9 +15531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 6
-  d: 0
-  alpha: 0
 --- !u!23 &1025205149
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15890,9 +15724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 9
-  d: 1
-  alpha: 4
 --- !u!23 &1036677666
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16156,9 +15987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 2
 --- !u!23 &1053148046
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16269,9 +16097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 3
 --- !u!23 &1054532891
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16451,9 +16276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 0
 --- !u!23 &1068385283
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16551,9 +16373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 1
-  alpha: 0
 --- !u!23 &1074038700
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17449,9 +17268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 0
 --- !u!23 &1109441219
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -17721,9 +17537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 4
-  alpha: 0
 --- !u!23 &1130927203
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17821,9 +17634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 0
 --- !u!23 &1134487547
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -18147,7 +17957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d0d550ef3a684b854e01e7f5a666f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rpm: -2
 --- !u!1 &1162675703
 GameObject:
   m_ObjectHideFlags: 0
@@ -18346,9 +18155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 1
-  alpha: 5
 --- !u!23 &1174097687
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18460,9 +18266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 2
-  alpha: 6
 --- !u!23 &1178949293
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18574,9 +18377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 1
-  alpha: 4
 --- !u!23 &1186206183
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18701,7 +18501,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d0d550ef3a684b854e01e7f5a666f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rpm: 0.3
 --- !u!1 &1195036101
 GameObject:
   m_ObjectHideFlags: 0
@@ -18817,9 +18616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 1
-  alpha: 0
 --- !u!23 &1199259560
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20055,9 +19851,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 1
-  alpha: 5
 --- !u!23 &1273454918
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20537,9 +20330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 3
-  alpha: 15
 --- !u!23 &1294013744
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20683,9 +20473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 1
-  alpha: 3
 --- !u!23 &1296807343
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20895,9 +20682,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 10
 --- !u!23 &1310146037
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -21382,9 +21166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 0
 --- !u!23 &1326167246
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -21741,13 +21522,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359191012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442c629702f77b34692efe86a5eee2d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 846baa6ad938d854598cda5ff264752f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <ArcSegments>k__BackingField: 12
   <SpineSegments>k__BackingField: 15
   <Radius>k__BackingField: 1
-  <SpinalDistanceMultiplier>k__BackingField: 1.5
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1361204872
 GameObject:
   m_ObjectHideFlags: 0
@@ -22223,9 +22004,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 3
-  alpha: 3
 --- !u!23 &1389873400
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22420,9 +22198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 7
 --- !u!23 &1393983408
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22533,9 +22308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 9
-  d: 1
-  alpha: 0
 --- !u!23 &1394263985
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22871,10 +22643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da2338c62c4425e49b8e96cecae749bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 7
-  d: 0
-  alpha: 0
-  angleOffset: 90
 --- !u!1 &1410381937
 GameObject:
   m_ObjectHideFlags: 0
@@ -23256,9 +23024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 3
-  alpha: 3
 --- !u!23 &1442129559
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23370,9 +23135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: -1
-  d: 1
-  alpha: 0
 --- !u!23 &1442291249
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23650,9 +23412,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 11
-  d: 0
-  alpha: 0
 --- !u!23 &1445744771
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23764,9 +23523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 9
 --- !u!23 &1459313726
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24063,9 +23819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 1
-  alpha: 5
 --- !u!23 &1487974899
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24177,9 +23930,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 2
-  alpha: 10
 --- !u!23 &1511757738
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24540,9 +24290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 1
-  alpha: 2
 --- !u!23 &1541588809
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24654,9 +24401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 4
 --- !u!23 &1541893191
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24815,9 +24559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 2
 --- !u!23 &1542556276
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -25172,9 +24913,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 8
 --- !u!23 &1576579577
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -25502,7 +25240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171d0d550ef3a684b854e01e7f5a666f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rpm: -1
 --- !u!1 &1591123956
 GameObject:
   m_ObjectHideFlags: 0
@@ -25790,9 +25527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 8
 --- !u!23 &1609806123
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -25972,9 +25706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 7
 --- !u!23 &1620938935
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26072,9 +25803,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 8
 --- !u!23 &1625920096
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26251,9 +25979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 0
-  alpha: 0
 --- !u!64 &1629491941
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26549,9 +26274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 3
-  alpha: 9
 --- !u!23 &1642315155
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26926,9 +26648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 0
-  alpha: 0
 --- !u!23 &1644944238
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27043,9 +26762,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 0
 --- !u!23 &1651088268
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27357,9 +27073,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 4
 --- !u!23 &1687992413
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27587,9 +27300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 3
-  alpha: 0
 --- !u!23 &1719403730
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27725,9 +27435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 1
-  d: 0
-  alpha: 0
 --- !u!23 &1728629086
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -28090,9 +27797,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 3
 --- !u!23 &1753777223
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -28605,9 +28309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 1
-  alpha: 3
 --- !u!23 &1790313681
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -28837,9 +28538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 0
-  alpha: 0
 --- !u!23 &1797099159
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29034,9 +28732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 2
-  alpha: 6
 --- !u!23 &1813411892
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29247,9 +28942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 4
-  alpha: 12
 --- !u!23 &1816251524
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29497,9 +29189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 0
 --- !u!23 &1840865193
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29597,9 +29286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 0
-  alpha: 0
 --- !u!23 &1841165260
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29710,9 +29396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 3
-  alpha: 0
 --- !u!23 &1841925596
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -30413,9 +30096,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 6
 --- !u!23 &1870826960
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -30595,9 +30275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 5
-  d: 1
-  alpha: 3
 --- !u!23 &1882285076
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -30695,9 +30372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 9
-  d: 0
-  alpha: 0
 --- !u!23 &1894288095
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31871,14 +31545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51d8f199491e494c84b99fc29c44858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCullingMasks: 0
-  hexSize: 1
-  hexH: 4
-  mapRadius: 2
-  mapH: 1
-  type: 1
-  drawMargin: 0.3
-  thiccness: 0.01
 --- !u!4 &1944691133
 Transform:
   m_ObjectHideFlags: 0
@@ -31925,10 +31591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da2338c62c4425e49b8e96cecae749bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 7
-  d: 0
-  alpha: 0
-  angleOffset: 90
 --- !u!23 &1946925755
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -32197,9 +31859,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 10
 --- !u!23 &1969183227
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -32629,9 +32288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 3
-  d: 1
-  alpha: 1
 --- !u!23 &1980644471
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -32774,9 +32430,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 2
-  alpha: 11
 --- !u!23 &1984504587
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -32853,6 +32506,7 @@ GameObject:
   - component: {fileID: 1986310614}
   - component: {fileID: 1986310616}
   - component: {fileID: 1986310615}
+  - component: {fileID: 1986310617}
   m_Layer: 0
   m_Name: BaseTube
   m_TagString: Untagged
@@ -32906,6 +32560,22 @@ MonoBehaviour:
   <SpineSegments>k__BackingField: 20
   <Radius>k__BackingField: 0.5
   <SpinalDistanceMultiplier>k__BackingField: 2
+--- !u!114 &1986310617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986310613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846baa6ad938d854598cda5ff264752f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ArcSegments>k__BackingField: 0
+  <SpineSegments>k__BackingField: 0
+  <Radius>k__BackingField: 0
+  <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1989454596
 GameObject:
   m_ObjectHideFlags: 0
@@ -32938,9 +32608,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 2
 --- !u!23 &1989454598
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33067,9 +32734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 2
 --- !u!23 &1991586508
 MeshRenderer:
   m_ObjectHideFlags: 2
@@ -33208,9 +32872,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 2
-  alpha: 4
 --- !u!23 &1992525850
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33316,7 +32977,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999416588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.06}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33347,11 +33008,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1999416588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442c629702f77b34692efe86a5eee2d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 846baa6ad938d854598cda5ff264752f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ArcSegments>k__BackingField: 18
-  <SpineSegments>k__BackingField: 3
+  <ArcSegments>k__BackingField: 36
+  <SpineSegments>k__BackingField: 4
   <Radius>k__BackingField: 3
   <SpinalDistanceMultiplier>k__BackingField: 1
 --- !u!1 &1999661983
@@ -33386,9 +33047,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 5
 --- !u!23 &1999661985
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33500,9 +33158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 2
-  d: 1
-  alpha: 1
 --- !u!23 &2027542949
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33697,9 +33352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 3
-  alpha: 0
 --- !u!23 &2033599570
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33876,9 +33528,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 1
-  alpha: 3
 --- !u!23 &2048312986
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -34294,9 +33943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: -1
-  d: 0
-  alpha: 0
 --- !u!23 &2067354456
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -34462,9 +34108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 0
-  d: 2
-  alpha: 6
 --- !u!23 &2074526317
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -34741,9 +34384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 5
-  d: 1
-  alpha: 0
 --- !u!23 &2096594860
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35010,9 +34650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: -1
-  d: 0
-  alpha: 0
 --- !u!23 &2106365160
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35095,9 +34732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 10
-  d: 0
-  alpha: 0
 --- !u!23 &2109599967
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35209,9 +34843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 1
-  alpha: 2
 --- !u!23 &2116002138
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35572,9 +35203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 13
-  d: 1
-  alpha: 4
 --- !u!23 &2136185129
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -36474,9 +36102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 5
-  d: 0
-  alpha: 0
 --- !u!4 &9114874537906768226
 Transform:
   m_ObjectHideFlags: 0
@@ -36504,9 +36129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b0aa310ae16214eb717b7a911a90e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zed: 11
-  d: 0
-  alpha: 0
 --- !u!33 &9122175059959238385
 MeshFilter:
   m_ObjectHideFlags: 0
