@@ -95,26 +95,43 @@ Structural modules:
 - Maneuver control engines
 - Reservoir (storage)
 - Meteor shield
-
 - Berth (for mining ships)
-- Gantry
+- Gantry (for ship production)
+- Storm Shelter
+- Hangar Bay
 
-- Hangar module
 - Engineering module
     - materials lab
-    - zero-g industry
-    - microlathe 
-    - heavy Industry
-    - armament industry
-- Habitat module   
-    - bio-lab
-    - criogenic storage 
-    - nursery
-    - hospital
-    - organic recycler
+    - zero-g industry / lathe
+    - security station
+    - embedded habitat
+    - Superheated Centrifuge (requires module adjacent to heat )
 
-- Hydroponic module (facilities: algae tanks...)
-- Operations module (facilities: bridge, training grounds...)
+- Medical module
+    - cryogenic storage
+    - hospital
+    - nursery
+    - genetics lab
+
+- Habitat module
+    - parks and greenery
+    - cryogenic storage 
+    - medical 
+    - security station
+    - recreation center
+    - storage shell (doubles as situational shielding)
+
+- Hydroponic module
+    - bio-lab
+    - organic recycler
+    - algae tanks
+
+- Operations module
+    - bridge
+    - training grounds
+    - Containment / Brig
+    - Barracks
+    - Arsenal
 
 Minor structures:
 - Spinner
@@ -124,27 +141,17 @@ Minor structures:
 - Point defences
 - Missile bay
 - Large Antenna
+- maintenance hub
 
-Could be both structural or facilities:
-
-- Superheated Centrifuge
-- Radiation Shielding
-- Command module
-
-
-FACILITIES
-- Biotech lab
-- Cryogenic Storage
-- Nursery
-- Hospital
-- Organic Recycler
-- Materials lab 
-- Containment / Brig
-- Training ground
-- Storm shelter
-
-- Zero-G Industry
-- Microlathe spinner (manufactory)
+Not sure what to do with these concepts:
+- Observatory 
+- Hangar bay ( structural module? or part of Operations module)
+- Storm Shelter (could be a facility inside a habitat, or a module)
+- Arsenal
+- Particle Accelerator
+- Hydrolysis separator (this could be implied in life support)
+- Storage (is it just a module, like reservoirs? Or Storage Bay)
+- 
 
 
 SIMPLE CONSTRUCTION:
