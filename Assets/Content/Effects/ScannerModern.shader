@@ -45,29 +45,71 @@ Shader "Scanner/Cold Space"
 		return float3(HCV.x, S, L);
 	}
 
+	float4 maintex(float2 uv) {
+        return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
+    }
+
+    float remap(float value, float from, float to, float targetFrom, float targetTo) {
+        float t = (to - value) / (to - from);
+        return lerp(targetFrom, targetTo, t);
+    }
+
+	float remapClamped(float value, float from, float to, float targetFrom, float targetTo) {
+        float t = (to - value) / (to - from);
+        return lerp(targetFrom, targetTo, saturate(t));
+    }
+
 	float4 _ColorA;
 	float4 _ColorB;
 	float4 _Remap;
 
+	float _Aberration;
+
+	float4 _CorrectionRamp;
+
+	float _Scanline;
+
+	float3 correct(float3 color) {
+		float3 hsl = RGBtoHSL(color);
+		float lm = hsl.z;
+		float newHue = lerp(_Remap.x, _Remap.y, lm);
+		float newSat = saturate(lerp(_Remap.z, _Remap.w, lm));
+		float3 corrected = HSLtoRGB(float3(newHue, newSat, lm));
+
+		float correctionAmount = remapClamped(hsl.g, _CorrectionRamp.x, _CorrectionRamp.y, _CorrectionRamp.w, _CorrectionRamp.z);
+
+		correctionAmount = smoothstep(_CorrectionRamp.w, _CorrectionRamp.z, hsl.g);
+		correctionAmount = lerp(_CorrectionRamp.x, _CorrectionRamp.y, correctionAmount);
+		// if (hsl.g < _CorrectionRamp.x) correctionAmount = 0.0;
+		// if (hsl.g > _CorrectionRamp.y) correctionAmount = 
+
+		return lerp(color, corrected, saturate(correctionAmount));
+	}
+
 	float4 Frag(VaryingsDefault i) : SV_Target
 	{
 		float2 screenPos = _ScreenParams.xy;
-	
-		float2 sampleUV = i.texcoord;
-		float4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, sampleUV);
+		float2 uv = i.texcoord;
+		float2 screen = _ScreenParams.xy;
 
-		// float lm = dot(float3(0.299, 0.587, 0.114), color.rgb);
-		float3 hsl = RGBtoHSL(color);
+		float4 color = (0); 
+		if (_Aberration > 0) {
+			float2 offsetR = float2(-1,0);
+			float2 offsetG = float2(1,0);
+			float2 offsetB = (0); //float2(-2,0);
+			
+			float r = correct(maintex(uv + offsetR / screen * _Aberration)).r;
+			float g = correct(maintex(uv + offsetG / screen * _Aberration)).g;
+			float b = correct(maintex(uv + offsetB / screen * _Aberration)).b;
 
-		float lm = hsl.z;
-		
-		float hue = lerp(_Remap.x, _Remap.y, lm);
-		float sat = saturate(lerp(_Remap.z, _Remap.w, lm));
-		
-		color.rgb = HSLtoRGB(float3(hue, sat, lm));
+			color.rgb = float3(r,g,b);
+		} else {
+			float3 original = maintex(uv).rgb;
+			color.rgb = correct(original);
+		}
 
-		
-		
+		float mult = step((uv * screen).y % 2, 1.0);
+		color.rgb *= lerp(1.0, mult, _Scanline);
 
 		// color.rgb = lerp(_ColorA, _ColorB, luma1);
 		// color.rgb = float3(luma1, luma1, luma1);
@@ -75,6 +117,8 @@ Shader "Scanner/Cold Space"
 		// color.rgb = 1 - color.rgb;
 		return color; //  return half4(1, 0, 0, 1);
 	}
+
+
 
 	ENDHLSL
 

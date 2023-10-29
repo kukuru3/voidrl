@@ -118,8 +118,6 @@ Shader "Scanner/CRT"
 
         col = saturate(col*(1.0 - _ColorCurve) + _ColorCurve*col*col);
 
-        
-
         // vignette:
                 if (useVignette) {
             float vig = (0.0 + 1.0*16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y));
