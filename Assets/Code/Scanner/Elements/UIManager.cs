@@ -55,6 +55,7 @@ namespace Scanner {
 
         public static Vector3 GetDistortedCursorPos() {
             var p = Input.mousePosition;
+            return p;
             var distortion = 0.2f;
             if (Instance.effects != null) distortion = Instance.effects.Distortion;
 

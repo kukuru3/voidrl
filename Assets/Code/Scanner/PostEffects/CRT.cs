@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 namespace Scanner.PostEffects {
+
     [Serializable]
     [PostProcess(typeof(CRTRenderer), PostProcessEvent.AfterStack, "Scanner/CRT-ize", true)]
     internal class CRT : PostProcessEffectSettings {
