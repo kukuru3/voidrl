@@ -69,6 +69,9 @@ Shader "Scanner/Cold Space"
 
 	float _Scanline;
 
+	uniform float _HexAnimProgress;
+	uniform float _HexAnimSeed;
+
 	float3 correct(float3 color) {
 		float3 hsl = RGBtoHSL(color);
 		float lm = hsl.z;
@@ -80,19 +83,74 @@ Shader "Scanner/Cold Space"
 
 		correctionAmount = smoothstep(_CorrectionRamp.w, _CorrectionRamp.z, hsl.g);
 		correctionAmount = lerp(_CorrectionRamp.x, _CorrectionRamp.y, correctionAmount);
-		// if (hsl.g < _CorrectionRamp.x) correctionAmount = 0.0;
-		// if (hsl.g > _CorrectionRamp.y) correctionAmount = 
 
 		return lerp(color, corrected, saturate(correctionAmount));
 	}
 
+	float2 hexround(float2 pixel) {
+		
+		float q = round(pixel.x);
+		float r = round(pixel.y);
+		float initS = - pixel.x - pixel.y;
+
+		float s = round(initS);
+
+		float qdiff = abs(q - pixel.x);
+		float rdiff = abs(r - pixel.y);
+		float sdiff = abs(s - initS);
+
+		if (qdiff > rdiff && qdiff > sdiff) {
+			q = -r-s;
+		} else if (rdiff > sdiff) {
+			r = -q-s;
+		}
+
+		return float2(q, r);
+	}
+
+	// function flat_hex_to_pixel(hex):
+	// 	var x = size * (     3./2 * hex.q                    )
+	// 	var y = size * (sqrt(3)/2 * hex.q  +  sqrt(3) * hex.r)
+	// 	return Point(x, y)
+
+	// function pixel_to_flat_hex(point):
+    // var q = ( 2./3 * point.x                        ) / size
+    // var r = (-1./3 * point.x  +  sqrt(3)/3 * point.y) / size
+    // return axial_round(Hex(q, r))
+
+	float2 pixel_to_hex(float2 pt, float size) {
+		return float2( 
+			( 2.0/3 * pt.x                     ) / size,
+			(-1.0/3 * pt.x  +  sqrt(3)/3 * pt.y) / size
+		);
+	}
+
+	float2 hex_to_pixel(float2 hex, float size) {
+		float x = size * (     3.0 / 2 * hex.x                    );
+		float y = size * (sqrt(3)  / 2 * hex.x  +  sqrt(3) * hex.y);
+		return float2(x, y);
+	}
+
+	float random2(float2 uv)
+	{
+		return frac(sin(dot(uv,float2(12.9898,78.233)))*43758.5453123);
+	}
+
 	float4 Frag(VaryingsDefault i) : SV_Target
 	{
-		float2 screenPos = _ScreenParams.xy;
+
+		float hexSize = 8.0;
+
 		float2 uv = i.texcoord;
 		float2 screen = _ScreenParams.xy;
 
+		uv = pixel_to_hex(uv * screen, hexSize);
+		uv = hex_to_pixel(uv, hexSize) / screen;
+
+		float2 hex = hexround(  pixel_to_hex(uv * screen, hexSize) );
+
 		float4 color = (0); 
+
 		if (_Aberration > 0) {
 			float2 offsetR = float2(-1,0);
 			float2 offsetG = float2(1,0);
@@ -108,17 +166,20 @@ Shader "Scanner/Cold Space"
 			color.rgb = correct(original);
 		}
 
-		float mult = step((uv * screen).y % 2, 1.0);
+		// color.gb *= finalMul;
+
+		float mult = step((uv * screen).y % 2, 1.0) * (1.0 + pow(_Scanline, 0.33)); // dunno why the 0.2 works, it just does. 
 		color.rgb *= lerp(1.0, mult, _Scanline);
+		float randid = -1.0 + random2(hex + _HexAnimSeed) + _Time.y * 1.5 ;
 
-		// color.rgb = lerp(_ColorA, _ColorB, luma1);
-		// color.rgb = float3(luma1, luma1, luma1);
-
-		// color.rgb = 1 - color.rgb;
-		return color; //  return half4(1, 0, 0, 1);
+		if (randid  < 0) {
+			float2 centerOfHex = hex_to_pixel(hex, hexSize) / screen;			
+			float3 centerHexColor = correct(maintex(centerOfHex).rgb);
+			// color.rgb = lerp(color.rgb, centerHexColor, -randid);
+			color.rgb = centerHexColor;
+		} 
+		return color;
 	}
-
-
 
 	ENDHLSL
 

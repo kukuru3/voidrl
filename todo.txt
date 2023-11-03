@@ -261,3 +261,41 @@ Extremes should be viable - like having only 1 science and 5 military modules.
 RING modules may be spun (though it's not necessary)
 
 ====================================
+
+SEGMENT 1
+(Main Propulsion)
+PROPULSION RING (6 slots)
+- storage reservoir 
+- engineering bay 
+- distribution grid
+- injectors
+* Daedalus engines x 2
+
+SEGMENT 2 
+(Power)
+RING (6 slots)
+- reactor core x 3 
+- heat exchangers x 2
+- separation centrifuge 
+* Radiator x 2
+* 
+
+SEGMENT 3
+(Storage)
+- Reservoirs x 6
+
+SEGMENT 4,5 
+(Modules)
+12 slots 
+- materials laboratory
+-
+- 
+-
+-
+-
+-
+-
+-
+-
+-
+-
