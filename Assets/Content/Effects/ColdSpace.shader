@@ -2,31 +2,32 @@ Shader "Scanner/Cold Space"
 {
 	HLSLINCLUDE
 
-#include "Packages/com.unity.postprocessing/PostProcessing/Shaders/StdLib.hlsl"
+	#include "Packages/com.unity.postprocessing/PostProcessing/Shaders/StdLib.hlsl"
 
 	TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
 
-	float4 maintex(float2 uv) {
-        return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
-    }
-	
-	float4 _ColorA;
-	float4 _ColorB;
-	float4 _Remap;
+	uniform sampler2D _RenderMetadata;
 
-	float _Aberration;
-
-	float4 _CorrectionRamp;
-
-	float _Scanline;
-
-	float _HexRadius;
-	uniform float _HexAnimProgress;
-	uniform float _HexAnimSeed;
 
 	#include "Packages/com.k3.core/ShaderLib/utils.hlsl"
 	#include "Packages/com.k3.core/ShaderLib/colors.hlsl"
 	#include "Packages/com.k3.core/ShaderLib/hex.hlsl"
+
+	float4 maintex(float2 uv) {
+        return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
+    }
+	#define screen _ScreenParams.xy
+	float4 metadata(float2 uv) {
+		//float2 squareUV = uv;
+		// squareUV.x *= screen.y / screen.x;
+		return tex2D(_RenderMetadata, uv);
+	}
+	
+	float4 _Remap;
+	float4 _CorrectionRamp;
+
+	float _Aberration;
+
 
 	float3 correct(float3 color) {
 		float3 hsl = RGBtoHSL(color);
@@ -43,17 +44,19 @@ Shader "Scanner/Cold Space"
 		return lerp(color, corrected, saturate(correctionAmount));
 	}
 
-	#define screen _ScreenParams.xy
+
 
 	float3 SampleColor(float2 uv) {
-		if (_Aberration > 0) {
+				
+		float abb = _Aberration * (1.0 - metadata(uv).r);
+		if (abb > 0) {
 			float2 offsetR = float2(-1,0);
 			float2 offsetG = float2(1,0);
 			float2 offsetB = (0); //float2(-2,0);
 			
-			float r = correct(maintex(uv + offsetR / screen * _Aberration)).r;
-			float g = correct(maintex(uv + offsetG / screen * _Aberration)).g;
-			float b = correct(maintex(uv + offsetB / screen * _Aberration)).b;
+			float r = correct(maintex(uv + offsetR / screen * abb)).r;
+			float g = correct(maintex(uv + offsetG / screen * abb)).g;
+			float b = correct(maintex(uv + offsetB / screen * abb)).b;
 
 			return float3(r,g,b);
 		} else {
@@ -65,21 +68,8 @@ Shader "Scanner/Cold Space"
 	float4 Frag(VaryingsDefault i) : SV_Target
 	{
 		float2 uv = i.texcoord;
-		float2 hex = hexround(  pixel_to_hex(uv * screen, _HexRadius) );
 		float4 color = (0);
-		float randid = -1.0 + random2(hex + _HexAnimSeed) + _Time.y * 1.5 ;
 		color.rgb = SampleColor(uv);
-
-		if (_HexRadius > 0.01 && randid  < 0) {
-			float2 centerOfHex = hex_to_pixel(hex, _HexRadius) / screen;			
-			float3 centerHexColor = correct(maintex(centerOfHex).rgb);
-			// color.rgb = lerp(color.rgb, centerHexColor, -randid);
-			color.rgb = centerHexColor;
-		} 
-
-		float mult = step((uv * screen).y % 2, 1.0) * (1.0 + pow(_Scanline, 0.33)); // dunno why the 0.2 works, it just does. 
-		color.rgb *= lerp(1.0, mult, _Scanline);
-		
 		return color;
 	}
 
@@ -96,5 +86,6 @@ Shader "Scanner/Cold Space"
 				#pragma fragment Frag
 			ENDHLSL
 		}
+		
 	}
 }
