@@ -25,6 +25,8 @@ namespace Scanner.PostEffects {
 
         [Range(0,1)]public FloatParameter scanlineStrength = new FloatParameter { value = 0.2f };
 
+        [Range(0,30)]public FloatParameter hexRadius = new FloatParameter { value = 10f};
+
     }
     
     internal class ColdSpaceRenderer : PostProcessEffectRenderer<ColdSpace> {
@@ -42,6 +44,8 @@ namespace Scanner.PostEffects {
 
             sheet.properties.SetFloat("_Aberration", settings.aberration);
             sheet.properties.SetFloat("_Scanline", settings.scanlineStrength);
+
+            sheet.properties.SetFloat("_HexRadius", settings.hexRadius);
 
             context.command.BlitFullscreenTriangle(context.source, context.destination, sheet, 0);
         }

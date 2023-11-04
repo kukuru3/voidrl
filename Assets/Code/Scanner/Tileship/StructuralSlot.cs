@@ -3,23 +3,32 @@ using UnityEngine;
 
 namespace Scanner.Tileship {
     
-    internal class Ship {
+    public class Ship {
         List<ShipPart> parts;
     }
 
-    internal class Socket {
+
+
+    public class ShipPart {
+        internal readonly Ship ship;
+        internal readonly ShipPartDeclaration declaration;
+
+        public ShipPart(Ship ship, ShipPartDeclaration declaration) {
+            this.ship = ship;
+            this.declaration = declaration;
+        }
+    }
+
+    internal class SocketDeclaration {
         public string[] tags;
+        public Vector2 offset;
     }
 
-    internal class ShipPart {
-        
-    }
-
-    internal class ShipPartDeclaration {
+    public class ShipPartDeclaration {
         public string name;
         public bool hidden;
         internal SlottingDeclaration slotsInto = new();
-
+        internal List<SocketDeclaration> sockets = new();
     }
 
     internal class SlottingDeclaration {
@@ -37,12 +46,6 @@ namespace Scanner.Tileship {
         }
     }
 
-
-    internal struct SlottingData {
-        internal Socket socket;
-        internal Ship ship;
-    }
-
     static class HardcodedPartDeclarations {
         public static IEnumerable<ShipPartDeclaration> GetDeclarations() {
             yield return new ShipPartDeclaration() {
@@ -51,14 +54,39 @@ namespace Scanner.Tileship {
             };
 
             yield return new ShipPartDeclaration {
-                name = "spine",
-                slotsInto = new SlottingDeclaration { instructions = { new RequiresTag("spine")  } },
+                name = "spine segment",
+                slotsInto = new SlottingDeclaration { instructions = { new RequiresTag("spine-ext")  } },
+                sockets = new List<SocketDeclaration> { 
+                    new SocketDeclaration { tags = new[] {"spine-ext" }, offset = new Vector2(2,0) },
+                    new SocketDeclaration { tags = new[] {"spine-ext" }, offset = new Vector2(-2,0) },
+                    new SocketDeclaration { tags = new[] {"spine-attach"}},
+                },
             };
 
-            yield return new ShipPartDeclaration {
+            var sd = new ShipPartDeclaration {
                 name = "small ring",
-                slotsInto = new SlottingDeclaration { instructions = { new RequiresTag("spine") } }
+                slotsInto = new SlottingDeclaration { instructions = { new RequiresTag("spine-attach") } },
             };
+            sd.sockets.AddRange(GenerateSocketRect(1, 6, new Vector2(0,0), new Vector2(1,0), new Vector2(0,1), "facility-slot" ) );
+            yield return sd;
+        }
+
+        private static IEnumerable<SocketDeclaration> GenerateSocketRect(int countX, int countY, Vector2 center, Vector2 offsetX, Vector2 offsetY, params string[] tags) {
+            var zero = center - offsetX * (countX - 1f) / 2f - offsetY * (countY - 1f) / 2f;
+           
+            var arr = new SocketDeclaration[countX,countY];
+
+            for (var x = 0; x < countX; x++)
+            for (var y = 0; y < countY; y++) {
+                var s = new SocketDeclaration() { offset = zero + x * offsetX + y * offsetY, tags = tags };
+                arr[x,y] = s;
+            }
+
+            // todo handle adjacency
+            
+            for (var x = 0; x < countX; x++)
+                for (var y = 0; y < countY; y++) 
+                    yield return arr[x,y];
         }
     }
 

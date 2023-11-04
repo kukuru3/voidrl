@@ -1341,19 +1341,22 @@ MonoBehaviour:
     value: 0.04
   aberration:
     overrideState: 1
-    value: 0
+    value: 1
   preserveSaturationMin:
     overrideState: 1
     value: 0.4
   preserveSaturationMax:
     overrideState: 1
-    value: 1
+    value: 0.9
   desaturateAnyway:
     overrideState: 1
     value: 0.4
   scanlineStrength:
     overrideState: 1
-    value: 0.337
+    value: 0.4
+  hexRadius:
+    overrideState: 1
+    value: 8
 --- !u!114 &-4446958453748709951
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1419,7 +1422,7 @@ MonoBehaviour:
     value: 0
   intensity:
     overrideState: 1
-    value: 0.291
+    value: 0.3
   size:
     overrideState: 1
     value: 0.3

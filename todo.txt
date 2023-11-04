@@ -15,6 +15,8 @@ SCANNER: View layer UI elements, , Monobehaviours, Effect implementation, glitch
 
 - 
 Calaby-Yau-Podolsky Harmonic Electromagnetic Resonance : CYPHER
+Calabi-Yau Matrioska Resonance : CYMR
+
 Calabi Yau Resonant Oscillator : CYROS
 SCIMMR - self-contained internalized magnetic resonance
 RAMA - resonant 
@@ -23,8 +25,8 @@ HARM - harmonic resonance magnetism
 
 Relativistic Exit Velocity Degenerate Plasma Fusion Drive
 
-Omicron-Pinch Degenerate Plasma Pulse Aneutronic Fusion Drive
-AKA Omicron Drive.
+Omicron-Pinch Degenerate Plasma Pulse Aneutronic Fusion Drive using self-contained superconductors
+AKA Ouroboros Drive.
 
 Degenerate State Plasma 
 
@@ -286,16 +288,114 @@ SEGMENT 3
 
 SEGMENT 4,5 
 (Modules)
-12 slots 
+10 slots 
 - materials laboratory
--
-- 
--
--
--
--
--
--
--
--
--
+- engineering bay
+- production plant
+- manufactory 
+
+
+
+THE SHIP SHOULD HAVE:
+
+Interstellar engines x 1
+Storage reservoirs x 3
+Main reactor core
+Heat exchange turbines 
+
+Radiators
+(Engineering bay)
+
+Cryogenic storage 
+Hydroponic farm
+Medical center
+
+Biotech laboratory
+
+Education center
+
+Brig 
+
+
+Bridge
+Training center
+Simulator pods
+Troop Barracks
+
+Radiation shielding
+
+
+WHAT MAKES SENSE TO HAVE ON THE SHIP?
+Some buildings you will only ever need one of, and it's a no-brainer to build them.
+So what? That's how it's in Civilization. It does not detract from the design.
+It's not just HOW MANY you place.
+It's also WHERE you place them. 
+
+Their ship location will influence some events.
+
+
+It's a problem of varying layers of abstraction.
+
+PROPULSION
+ENGINEERING
+OPERATIONS
+HABITATION 
+HYDROPONICS 
+
+Whither : storage, reactor, science, radiators, hospitals, laboratories, manufacturies, simulator pods, education centers, barracks?
+
+So we need to distill this into building blocks:
+
+PROPULSION AND ENERGY
+  - engines 
+  - reactor core 
+  - (optional) parts that influence engine or reactor output, such as injectors
+  - radiators
+
+RESOURCE MANAGEMENT
+  - storage
+  - material recycler 
+  - hydrolisis plant 
+  - separation centrifuge
+
+HABITATION
+  most of these REQUIRE LIFE SUPPORT, REQUIRE PRESSURIZATION, REQUIRE GRAVITY
+  - life support - handles pressurization
+  - habitation complex (slums)
+  - medical center - heals injuries 
+  - nursery - can be folded into medical center, but you want your kids to grow up radiation free, right?
+  - education center
+  - recreation center
+
+
+FOOD PRODUCTION (entirety of food production can be folded into)
+  - hydroponic bay / aquaponic bay
+  - yeast tanks
+  - algae farms 
+  - insect bays 
+
+RESEARCH 
+  - genetic laboratory
+  - materials laboratory
+  - physics laboratory
+
+INDUSTRY
+  - industrial plant
+  - gantry for large ship production 
+  - microlathe (advanced industry)
+
+OPERATIONS 
+  - maintenance bay 
+  - rotator
+  - bridge 
+  - docking port (atop a long nonrotating shaft)
+  - sensor array (antennae)
+  - 
+
+MILITARY
+  - barracks 
+  - weapon bay (railgun, missile silo, point defence)
+  - arsenal (storage of volatile munitions)
+  - training center 
+  - simulator pods 
+  - hangar bay
