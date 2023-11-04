@@ -18,8 +18,7 @@ Shader "Scanner/Cold Space"
     }
 	#define screen _ScreenParams.xy
 	float4 metadata(float2 uv) {
-		//float2 squareUV = uv;
-		// squareUV.x *= screen.y / screen.x;
+		uv.x = 0.5 + (uv.x - 0.5) * screen.x / screen.y;
 		return tex2D(_RenderMetadata, uv);
 	}
 	
@@ -47,7 +46,6 @@ Shader "Scanner/Cold Space"
 
 
 	float3 SampleColor(float2 uv) {
-				
 		float abb = _Aberration * (1.0 - metadata(uv).r);
 		if (abb > 0) {
 			float2 offsetR = float2(-1,0);

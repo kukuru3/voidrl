@@ -68,7 +68,7 @@ namespace Scanner {
             }
             if (mdCam != null) {
                 mdCam.orthographicSize = UICamera.orthographicSize;
-                mdCam.targetTexture = GetAspectPreservingTexture(mdCam.targetTexture, UICamera, 0.5f);
+                // mdCam.targetTexture = GetAspectPreservingTexture(mdCam.targetTexture, UICamera, 0.5f);
                 Shader.SetGlobalTexture("_RenderMetadata", mdCam.targetTexture);
             }
         }
