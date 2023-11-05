@@ -5,9 +5,9 @@ namespace Scanner {
         [SerializeField] GameObject activeIndicator;
         public int IndexInCycler { get; private set; }
 
-        private Selector cycler;
+        private IHasCyclerIndex cycler;
 
-        internal void Init(Selector cycler, int index) {
+        internal void Init(IHasCyclerIndex cycler, int index) {
             IndexInCycler = index;
             this.cycler = cycler;
             GetComponent<Button>().Clicked += HandleClick;

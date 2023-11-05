@@ -43,8 +43,6 @@ Shader "Scanner/Cold Space"
 		return lerp(color, corrected, saturate(correctionAmount));
 	}
 
-
-
 	float3 SampleColor(float2 uv) {
 		float abb = _Aberration * (1.0 - metadata(uv).r);
 		if (abb > 0) {

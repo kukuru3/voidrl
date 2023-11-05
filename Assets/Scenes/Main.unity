@@ -4782,6 +4782,10 @@ MonoBehaviour:
       PublicKeyToken=null
   - assemblyQualifiedName: Scanner.PostEffects.CRT, Scanner, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  - assemblyQualifiedName: Scanner.PostEffects.ColdSpace, Scanner, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - assemblyQualifiedName: Scanner.PostEffects.SciFiOverlay, Scanner, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1606754584
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scanner.Socketship {
@@ -26,13 +27,13 @@ namespace Scanner.Socketship {
     }
 
     public interface IPlugCriterion {
-        bool Pass(PlugDecl plug, SocketDecl socket);
+        bool Pass(Contact plug, Contact socket);
     }
 
     class BothHaveTag : IPlugCriterion {
         public string tag;
 
-        public bool Pass(PlugDecl plug, SocketDecl socket) => plug.tags.Contains(tag) && socket.tags.Contains(tag);
+        public bool Pass(Contact plug, Contact socket) => plug.decl.tags.Contains(tag) && socket.decl.tags.Contains(tag);
     }
 
     static internal class Extensions {
@@ -70,9 +71,9 @@ namespace Scanner.Socketship {
 
         public static PartDeclaration CreatePart(this IList<PartDeclaration> list, string name) {
             var pd = new PartDeclaration() { name = name }; 
+            list.Add(pd);
             return pd;
         }
-
     }
 
     public static class Hardcoder {
@@ -84,18 +85,18 @@ namespace Scanner.Socketship {
             spine.AddPlug()
                 .WithTags("spine-ext")
                 .WithCriterion(new BothHaveTag() { tag = "spine-ext" })
-                .WithOffset(1, 0);
+                .WithOffset(-1, 0);
 
             spine.AddSocket()
                 .WithTags("spine-ext")
-                .WithOffset(-1, 0);
+                .WithOffset(1, 0);
 
             spine.AddSocket()
                 .WithTag("spine-attach")
                 .WithOffset(0,0);
 
             
-            var engineBlock = parts.CreatePart("Engine block");
+            var engineBlock = parts.CreatePart("Engine Block");
             engineBlock.AddSocket()
                 .WithTags("spine-ext")
                 .WithOffset(1, 0);
@@ -103,9 +104,9 @@ namespace Scanner.Socketship {
             
             var meteorShield = parts.CreatePart("Meteor Shield");
             meteorShield.AddPlug()
-                .WithOffset(-1, 0)
-                .WithTags("spine-ext")
-                .WithCriterion(new BothHaveTag() { tag = "spine-ext" });
+                .WithOffset(-0.33f, 0)
+                .WithTags("spine-attach")
+                .WithCriterion(new BothHaveTag() { tag = "spine-attach" });
 
             // small ring
             var smallRing = parts.CreatePart("Small Ring");
@@ -123,7 +124,19 @@ namespace Scanner.Socketship {
                 .WithOffset(0,1);
 
             for (var i = 0; i < 6; i++) 
-                smallRing.AddSocket().WithOffset(0,-i).WithTags("facility");
+                smallRing.AddSocket().WithOffset(0,-1 - i * 0.3f).WithTags("facility");
+
+            var habitat = parts.CreatePart("Hab module");
+            habitat.AddPlug()
+                .WithOffset(0, 0)
+                .WithTags("facility")
+                .WithCriterion(new BothHaveTag() { tag = "facility" });
+
+            var hydroponicBay = parts.CreatePart("Hydroponic bay");
+            hydroponicBay.AddPlug()
+                .WithOffset(0, 0)
+                .WithTags("facility")
+                .WithCriterion(new BothHaveTag() { tag = "facility" }); 
 
             // radiators:
             var radiator = parts.CreatePart("Radiator");
@@ -133,6 +146,11 @@ namespace Scanner.Socketship {
                 .WithOffset(0, 0);
 
             return parts;
+        }
+
+        internal static Ship HardcodeInitialShip(ShipBuilder builder) {
+            builder.GenerateShipPart("Engine Block");            
+            return builder.ship;
         }
     }
 }

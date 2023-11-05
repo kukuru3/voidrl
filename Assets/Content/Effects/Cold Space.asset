@@ -1351,7 +1351,7 @@ MonoBehaviour:
     value: 1
   hue:
     overrideState: 1
-    value: 0.451
+    value: 0.47
   hueSpan:
     overrideState: 1
     value: -0.04
@@ -1362,8 +1362,8 @@ MonoBehaviour:
     overrideState: 1
     value: 0.04
   aberration:
-    overrideState: 1
-    value: 0.6
+    overrideState: 0
+    value: 1.21
   preserveSaturationMin:
     overrideState: 1
     value: 0.4
@@ -1463,7 +1463,6 @@ MonoBehaviour:
   - {fileID: 383523926356119557}
   - {fileID: -4446958453748709951}
   - {fileID: -255622149858458835}
-  - {fileID: -7739842633828219299}
 --- !u!114 &383523926356119557
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1494,7 +1493,7 @@ MonoBehaviour:
     value: 65472
   diffusion:
     overrideState: 1
-    value: 8
+    value: 7.413
   anamorphicRatio:
     overrideState: 0
     value: 0

@@ -1,23 +1,16 @@
-﻿using System;
+﻿using Shapes;
 using System.Collections.Generic;
-using System.Linq;
-using Shapes;
+using System;
 using UnityEngine;
+using System.Linq;
 
 namespace Scanner {
-
-    public interface IHasCyclerIndex {
-        int CyclerIndex { get; set; }
-
-        event Action<int> IndexChanged;
-    }
-
-    class Selector : Element, IHasCyclerIndex {
+    class Selector2 : Element, IHasCyclerIndex {
         [SerializeField] GameObject regularMain;
         [SerializeField] GameObject activeMain;
 
-        [SerializeField] RegularPolygon triangleLeft;
-        [SerializeField] RegularPolygon triangleRight;
+        //[SerializeField] RegularPolygon triangleLeft;
+        //[SerializeField] RegularPolygon triangleRight;
 
         [SerializeField] Rectangle backgroundScreener;
 
@@ -64,9 +57,6 @@ namespace Scanner {
         }
 
         List<(string caption, object data)> data;
-
-        float rotationLerpProgress;
-        float _rlVel;
 
         enum SemanticHighlight {
             None,
@@ -135,8 +125,6 @@ namespace Scanner {
 
             if (IsHighlighted && framesHL < 11 && Time.frameCount % 4 < 2) centerFull = false;
 
-            triangleLeft.Border = !leftFull;
-            triangleRight.Border = !rightFull;
             activeMain.SetActive(centerFull);
             regularMain.SetActive(!centerFull);
 
@@ -145,20 +133,19 @@ namespace Scanner {
             if (!allowUnfold) arrowsDown = false;
 
             // rotationLerpProgress = Mathf.MoveTowards(rotationLerpProgress, shState == SemanticHighlight.Center ? 1f : 0f, Time.deltaTime * 3f);
-            rotationLerpProgress = Mathf.SmoothDamp(rotationLerpProgress, arrowsDown ? 1f : 0f, ref _rlVel, 0.025f);
+            
+            //var p = triangleLeft.transform.parent;
+            //var a = p.localRotation.eulerAngles;
+            //a.z = rotationLerpProgress * -30;            
+            //p.localRotation = Quaternion.Euler(a);
 
-            var p = triangleLeft.transform.parent;
-            var a = p.localRotation.eulerAngles;
-            a.z = rotationLerpProgress * -30;            
-            p.localRotation = Quaternion.Euler(a);
+            //a = p.localPosition; a.y = rotationLerpProgress * 3; p.localPosition= a;
 
-            a = p.localPosition; a.y = rotationLerpProgress * 3; p.localPosition= a;
-
-            p = triangleRight.transform.parent;
-            a = p.localRotation.eulerAngles;
-            a.z = rotationLerpProgress * 30;
-            p.localRotation = Quaternion.Euler(a);
-            a = p.localPosition; a.y = rotationLerpProgress * 3; p.localPosition = a;
+            //p = triangleRight.transform.parent;
+            //a = p.localRotation.eulerAngles;
+            //a.z = rotationLerpProgress * 30;
+            //p.localRotation = Quaternion.Euler(a);
+            //a = p.localPosition; a.y = rotationLerpProgress * 3; p.localPosition = a;
 
             if (unfolded) {
                 if (!IsHighlighted && !AnyChildHighlighted()) {
@@ -225,13 +212,14 @@ namespace Scanner {
         SemanticHighlight GetSemanticHighlight() {
             if (!IsHighlighted) return SemanticHighlight.None;
             if (unfolded) return SemanticHighlight.Center;
-            var t = LastCursorLocalPos.x;
-            if (t < -0.3f) return SemanticHighlight.Left;
-            if (t > 0.3f) return SemanticHighlight.Right;
+            //var t = LastCursorLocalPos.x;
+            //if (t < -0.3f) return SemanticHighlight.Left;
+            //if (t > 0.3f) return SemanticHighlight.Right;
             return SemanticHighlight.Center;
         }
 
         float timeLastClick = -1000f;
         private int cyclerIndex = 0;
     }
+    
 }
