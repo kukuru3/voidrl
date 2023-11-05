@@ -11,21 +11,19 @@ namespace Scanner.Plugship {
         internal IEnumerable<Module> ListDirectlyConnectedModules() {
             var set = new HashSet<Module>();
             foreach (var plug in AllPlugs) {
-                set.Add(plug.ConnectedToModule);
+                if (plug.IsConnected) set.Add(plug.ConnectedToModule);
             }
             return set;
         }
 
-        internal Ship Ship { get; private set; }
+        internal Ship Ship { get; set; }
 
-        private void Start() {
-            
-            AllPlugs = new List<IPlug>(GetComponentsInChildren<IPlug>(true));
-            Ship = GetComponentInParent<Ship>();
+        private void Start() {            
         }
 
         private void Awake() {
-            
+            AllPlugs = new List<IPlug>(GetComponentsInChildren<IPlug>(true));   
+            foreach (var plug in AllPlugs) ((BasePlug)plug).Module = this;
         }
     }
 }

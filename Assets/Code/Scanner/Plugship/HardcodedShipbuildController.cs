@@ -36,6 +36,7 @@ namespace Scanner.Plugship {
             phantomHolder = new GameObject("Phantoms").transform;
             phantomHolder.transform.parent = transform;
             foreach (var i in phantomModuleInstances) i.transform.parent = phantomHolder;
+            Builder.RegisterPhantoms(phantomModuleInstances);
 
             Builder.InsertModuleWithoutPlugs(GenerateModule("SpineSegment"));
         }

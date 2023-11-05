@@ -6,9 +6,40 @@ namespace Scanner.Plugship {
     internal class Ship : MonoBehaviour {
         List<Module> graphRoots = new();
         List<Joint> joints = new();
-        List<Module> crunchedModuleList = new();
+        List<Module> crunchedModuleList = null;
 
-        public void RecalculateCrunchedModuleList() {
+        public Joint TryGetJoint(IPlug a, IPlug b) {
+            foreach (var j in joints) {
+                if (j.IndexOf(a) > -1 && j.IndexOf(b) > -1) return j;
+            }
+            return default;
+        }
+
+        public IEnumerable<Joint> ListJoints(Module a, Module b) {
+            foreach (var j in joints) {
+                if (j.A.IsConnected && j.B.IsConnected) {
+                    if (j.A.Module == a && j.B.Module == b) yield return j;
+                    else if (j.A.Module == b && j.B.Module == a) yield return j;
+                }
+            }
+        }
+
+        public IEnumerable<Module> AllShipModules() {
+            if (crunchedModuleList == null) RecalculateCrunchedModuleList();
+            return crunchedModuleList;
+        }
+
+        public IEnumerable<IPlug> AllAttachedButUnconnectedPlugs() {
+            foreach (var module in AllShipModules()) {
+                foreach (var plug in module.AllPlugs) {
+                    if (plug.IsConnected) continue;
+                    if (plug.EvaluateConditions())
+                        yield return plug;
+                }
+            }
+        }
+
+        void RecalculateCrunchedModuleList() {
             var closedList = new HashSet<Module>(graphRoots);
             var queue = new Queue<Module>(graphRoots);
 
@@ -28,12 +59,28 @@ namespace Scanner.Plugship {
 
         public void AttachRootModule(Module m) {
             graphRoots.Add(m);
+            InvalidateModuleList();
         }
 
-        public void Connect(PointPlug a, PointPlug b) {
-            var joint = new Joint(a, b);
-            a.Joint = joint;
-            b.Joint = joint;
+        public void Connect(IPlug shipside, IPlug newPlug) {
+            var joint = new Joint(shipside, newPlug);
+            shipside.Joint = joint;
+            newPlug.Joint = joint;
+            Debug.Assert(shipside.Module.Ship == null, "shipside module doesn't belong to us???");
+            Debug.Assert(newPlug.Module.Ship == null, "Module already has a ship");
+            newPlug.Module.Ship = this;
+            InvalidateModuleList();
+        }
+
+        public void Break(Joint joint) {
+            Debug.Assert(joint.A.Module.Ship == this);
+            Debug.Assert(joint.B.Module.Ship == this);
+            joints.Remove(joint);
+            InvalidateModuleList();
+        }
+
+        private void InvalidateModuleList() {
+            crunchedModuleList = null;
         }
     }
 
@@ -59,7 +106,7 @@ namespace Scanner.Plugship {
         }
     }
 
-    internal enum Polarity {
+    public enum Polarity {
         In,
         Out,
         Both,

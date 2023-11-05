@@ -6,11 +6,18 @@ namespace Scanner.Plugship {
 
     public interface IPlug {
         public Module Module { get; }
-        public Joint Joint { get; }
+        public Joint Joint { get; set; }
         public bool IsConnected { get; }
+
+        public int IndexInParentModule { get; }
 
         public IPlug ConnectedTo { get; }
         public Module ConnectedToModule { get; }
+
+        bool EvaluateConditions();
+
+        public Polarity Polarity { get; }
+        public string SlotTag { get; }
     }
 
     internal abstract class BasePlug : MonoBehaviour, IPlug {
@@ -21,16 +28,23 @@ namespace Scanner.Plugship {
 
         internal List<PlugEnableCriterion> Criteria { get; private set; }
 
+        public int IndexInParentModule => Module?.AllPlugs.IndexOf(this) ?? -1;
+
         public Module Module { get; internal set; }
 
         public IPlug ConnectedTo => Joint?.Other(this);
         public Module ConnectedToModule => ConnectedTo?.Module;
 
-        public Joint Joint { get; internal set; }
+        public Joint Joint { get; set; }
 
-        
+        public bool EvaluateConditions() {
+            foreach(var criterion in Criteria) {
+                if (!criterion.Test(this)) return false;
+            }
+            return true;
+        }
 
-        protected virtual void Start() {
+        protected virtual void Awake() {
             Criteria = GetComponentsInChildren<PlugEnableCriterion>(true).ToList();
         }
     }
@@ -68,7 +82,7 @@ namespace Scanner.Plugship {
     }
 
     internal abstract class PlugEnableCriterion : MonoBehaviour {
-
+        public abstract bool Test(IPlug plug);
     }
 
     //#if UNITY_EDITOR
