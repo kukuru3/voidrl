@@ -149,6 +149,14 @@ namespace Scanner.Socketship {
             return default;
         }
 
+        public int PlugDepth() {
+            if (ship == null) return default;
+            var plug = FindAttachedPlug();
+            if (plug == null) return 0;            
+            return plug.connection.socket.part.PlugDepth() + 1;
+            
+        }
+
         public Vector2 ResultingPosition() {
             if (ship == null) return default;
             var plug = FindAttachedPlug();

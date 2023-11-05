@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,10 +10,16 @@ namespace Scanner.Socketship {
         [SerializeField] float distance;
 
         [Header("Prefabs")]
-        [SerializeField] ShipPartView partViewPrefab;
+        [SerializeField] GenericShipPartView partViewPrefab;
         [SerializeField] ContactView contactViewPrefab;
         [SerializeField] Button buildButtonPrefab;
-        
+
+        [Serializable]
+        struct SpecializedPrefab {
+            [SerializeField] internal string id;
+            [SerializeField] internal ShipPartView viewPrefab;
+        }
+        [SerializeField] SpecializedPrefab[] prefabs;
 
         ShipBuilder builder;
 
@@ -59,21 +66,37 @@ namespace Scanner.Socketship {
             }
 
             foreach (var vis in maintainedVisualisers) {
-                vis.Value.transform.localPosition = BuilderToLocal(vis.Key.ResultingPosition());
+                var t = vis.Value.transform;
+                var pos = BuilderToLocal(vis.Key.ResultingPosition());
+                t.localPosition = new Vector3(pos.x, pos.y, vis.Key.PlugDepth() * -5);
             }
             ClearButtons();
             UpdateContactVis();
         }
 
+        //int GetDepth(Transform trans) {
+        //    var d = 0; 
+        //    for (var t = trans; t != null; t = t.parent) {
+        //        d++;
+        //    }
+        //    return d;
+        //}
+
         private ShipPartView GeneratePartView(Part part) {
-            var partView = Instantiate(partViewPrefab, transform);
+
+            var p = prefabs.FirstOrDefault(p => p.id == part.declaration.name);
+            var prefab = p.viewPrefab ?? partViewPrefab;
+            
+            var partView = Instantiate(prefab, transform);
             partView.name = $"{part.declaration.name}";
             partView.Bind(this, part);
             var i = 0;
             foreach (var contact in part.contacts) {
                 var contactView = Instantiate(contactViewPrefab, partView.transform);
                 contactView.Bind(this, contact);
-                contactView.transform.localPosition = this.BuilderToLocal(contact.decl.offset);
+                var pos = this.BuilderToLocal(contact.decl.offset);
+                var depth = contact.part.PlugDepth() - 1;
+                contactView.transform.localPosition = new Vector3(pos.x, pos.y, (depth - 2) * -5);
                 contactView.name = contact.decl is PlugDecl ? $"Plug {i++}" : $"Socket {i++}";
             }
             return partView;
@@ -192,6 +215,8 @@ namespace Scanner.Socketship {
             foreach (var btn in maintainedButtons) Destroy(btn.gameObject);
             maintainedButtons.Clear();
         }
+
+
         
         private void RegenerateButtons(Contact activeContact, IEnumerable<ContactMatch> applicableStructures) { 
             ClearButtons();
@@ -199,7 +224,8 @@ namespace Scanner.Socketship {
             var i = 0; 
             foreach (var item in applicableStructures) { 
                 var btn = Instantiate(buildButtonPrefab, transform);
-                btn.transform.localPosition = BuilderToLocal(activeContact.part.ResultingPosition() + item.socket.decl.offset) + new Vector2(90, i-- * -35);
+                var p = BuilderToLocal(activeContact.part.ResultingPosition() + item.socket.decl.offset) + new Vector2(90, i-- * -35);
+                btn.transform.localPosition = new Vector3(p.x, p.y, -50);
                 btn.name = $"Construct Btn : {item.plug.part.declaration.name}";
                 btn.Clicked += () => Construct(item);
                 foreach (var txt in btn.GetComponentsInChildren<TMPro.TMP_Text>(true)) txt.text = item.plug.part.declaration.name;

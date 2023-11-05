@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Scanner.Socketship {
-    public class ContactView : MonoBehaviour, IPartOfShipbuilderView {
+    public class ContactView : MonoBehaviour {
         // public bool IsCandidate { get; set; }
 
         public enum States {

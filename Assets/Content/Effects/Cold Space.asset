@@ -1362,17 +1362,17 @@ MonoBehaviour:
     overrideState: 1
     value: 0.04
   aberration:
-    overrideState: 0
-    value: 1.21
+    overrideState: 1
+    value: 1
   preserveSaturationMin:
     overrideState: 1
-    value: 0.4
+    value: 0.635
   preserveSaturationMax:
     overrideState: 1
     value: 1
   desaturateAnyway:
     overrideState: 1
-    value: 0.4
+    value: 0.86
 --- !u!114 &-4446958453748709951
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1463,6 +1463,7 @@ MonoBehaviour:
   - {fileID: 383523926356119557}
   - {fileID: -4446958453748709951}
   - {fileID: -255622149858458835}
+  - {fileID: 1458809778236015198}
 --- !u!114 &383523926356119557
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1510,3 +1511,25 @@ MonoBehaviour:
   dirtIntensity:
     overrideState: 0
     value: 0
+--- !u!114 &1458809778236015198
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3f582dc61d8e14e9734901e5bdd2ed, type: 3}
+  m_Name: SciFiOverlay
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  scanlineStrength:
+    overrideState: 1
+    value: 0.4
+  hexRadius:
+    overrideState: 1
+    value: 10

@@ -121,10 +121,10 @@ namespace Scanner.Socketship {
 
             smallRing.AddSocket()
                 .WithTag("ring-surface")
-                .WithOffset(0,1);
+                .WithOffset(0,1.8f);
 
             for (var i = 0; i < 6; i++) 
-                smallRing.AddSocket().WithOffset(0,-1 - i * 0.3f).WithTags("facility");
+                smallRing.AddSocket().WithOffset(0,1.25f - i * 0.5f).WithTags("facility");
 
             var habitat = parts.CreatePart("Hab module");
             habitat.AddPlug()
