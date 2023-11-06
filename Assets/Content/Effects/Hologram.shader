@@ -31,6 +31,7 @@ Shader "Void/UIHolo"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float4 screenPos : TEXCOORD1;
                 float4 vertex : SV_POSITION;
             };
 
@@ -40,6 +41,7 @@ Shader "Void/UIHolo"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                o.screenPos = o.vertex;
                 return o;
             }
 

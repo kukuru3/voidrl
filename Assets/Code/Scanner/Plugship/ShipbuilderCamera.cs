@@ -50,7 +50,7 @@ namespace Scanner.Plugship {
             camParent.localPosition = new Vector3(AxisPan, 0, 0);
 
             Phi = Mathf.Clamp(Phi, -45, 80);
-            Theta = Mathf.Clamp(Theta, -35, 125);
+            //Theta = Mathf.Clamp(Theta, -35, 125);
             
             camParent.localRotation = Quaternion.Euler(Phi, Theta, 0);
             var dist = effectiveCamDist.Map(0f, 1f, distMin, distMax);

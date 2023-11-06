@@ -48,7 +48,11 @@ namespace Scanner.Plugship {
 
         private void UpdateElementVisibility() {
             if (uistate == IShipbuildingContext.UIStates.Tweaks) ReplaceActiveBuildGhost(null);
-            foreach (var go in maintainedBuildUI) go.SetActive(UIState == IShipbuildingContext.UIStates.ActionSelect);
+            if (maintainedBuildUI.Count > 1) {
+                foreach (var go in maintainedBuildUI) go.SetActive(UIState != IShipbuildingContext.UIStates.Tweaks);
+            } else {
+                foreach (var go in maintainedBuildUI) go.SetActive(UIState == IShipbuildingContext.UIStates.ActionSelect);
+            }
             confirmButton.gameObject.SetActive(UIState == IShipbuildingContext.UIStates.ActionConfirm);
             cancelButton.gameObject.SetActive(UIState != IShipbuildingContext.UIStates.Tweaks);
             Builder.ApplyUIMode(uistate);
@@ -139,7 +143,7 @@ namespace Scanner.Plugship {
             templateHolder.transform.parent = transform;
             foreach (var i in templateInstances) i.transform.parent = templateHolder;
             Builder.RegisterTemplates(templateInstances);
-            Builder.InsertModuleWithoutPlugs(GenerateModule("SpineSegment"));
+            Builder.InsertModuleWithoutPlugs(GenerateModule("Spine Cylinder"));
 
             confirmButton.Clicked += () => ConfirmCurrentOption();
             cancelButton.Clicked += () => CancelCurrentOption();

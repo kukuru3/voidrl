@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 using UnityEngine;
 
 namespace Scanner.Plugship {
@@ -39,7 +40,10 @@ namespace Scanner.Plugship {
     }
 
     public class AttachAndConstructButMustChoose : Tweak {
-        internal override void Execute() => throw new NotImplementedException();
+        internal override void Execute() {
+            Context.ShipbuildingContext.SelectActiveTweak(this);
+            Context.ShipbuildingContext.GenerateStructureButtons(attachments);
+        }
         public List<PotentialAttachment> attachments;
     }
 
