@@ -12,10 +12,9 @@ namespace Scanner.Plugship {
             ActionConfirm // additional step?
         }
 
-
         UIStates UIState { get; }
 
-        void GenerateUISelectionForAttachment(IEnumerable<PotentialAttachment> attachments);
+        void GenerateStructureButtons(IEnumerable<PotentialAttachment> attachments);
         void SelectActiveTweak(Tweak tweak);
     }
 
@@ -75,31 +74,42 @@ namespace Scanner.Plugship {
             return m;
         }
 
-        public void GenerateUISelectionForAttachment(IEnumerable<PotentialAttachment> attachments) { 
+        public Action ExecutionDelegate;
+
+        public void GenerateStructureButtons(IEnumerable<PotentialAttachment> attachments) { 
             UIState = IShipbuildingContext.UIStates.ActionSelect;
 
-            foreach (var obj in maintainedBuildUI) Destroy(obj);
+            foreach (var obj in maintainedBuildUI) Destroy(obj); 
             maintainedBuildUI.Clear();
 
             int counter = 0;
 
             foreach (var att in attachments) {
-                var btnGO = Instantiate(phantomBuildButtonPrefab, buildUIcontainerObject);
-                var btn = btnGO.GetComponentInChildren<Button>();
+                var btn = Instantiate(phantomBuildButtonPrefab, buildUIcontainerObject);
                 btn.transform.localPosition = Vector3.down * counter++ * 50;
                    
-                btn.Clicked += () => ProcessAttachmentPreview(att);
+                btn.Clicked += () => ActionPreview_ConstructStructure(att);
+                maintainedBuildUI.Add(btn.gameObject);
                 foreach (var lbl in btn.GetComponentsInChildren<TMPro.TMP_Text>(true)) lbl.text = $"Construct {att.phantom.Name}";
             }
+
+            ActionPreview_ConstructStructure(attachments.First());
         }
 
-        private void ProcessAttachmentPreview(PotentialAttachment att) {
+        private void ActionPreview_ConstructStructure(PotentialAttachment directive) {
             UIState = IShipbuildingContext.UIStates.ActionConfirm;            
-            ReplaceActiveBuildGhost(att.phantom);
+            ReplaceActiveBuildGhost(directive.phantom);
             var activeGhostModule = activeGhost.GetComponent<Module>();
             VisualUtils.AssignGhostShader(activeGhost.GetComponentInChildren<Module>());
-            Builder.PositionModuleForPlugInterface(activeGhostModule.AllPlugs[att.indexOfPlugInPhantomList], att.shipPlug);
+            Builder.PositionModuleForPlugInterface(activeGhostModule.AllPlugs[directive.indexOfPlugInPhantomList], directive.shipPlug);
+            ExecutionDelegate = () => {
+                var newModule = GenerateModule(directive.phantom.Name);
 
+                Builder.PositionModuleForPlugInterface(newModule.AllPlugs[directive.indexOfPlugInPhantomList], directive.shipPlug);
+                Builder.Connect(directive.shipPlug, newModule.AllPlugs[directive.indexOfPlugInPhantomList]);
+                Builder.ActiveTweak = null;
+                UIState = IShipbuildingContext.UIStates.Tweaks;
+            };
         }
 
         private void ReplaceActiveBuildGhost(Module template) {
@@ -140,7 +150,7 @@ namespace Scanner.Plugship {
         }
 
         private void ConfirmCurrentOption() {
-
+            ExecutionDelegate?.Invoke();
         }
     }
 }

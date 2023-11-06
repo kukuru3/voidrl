@@ -10,6 +10,7 @@ Shader "Void/UIHolo"
         LOD 100
 
         Blend SrcAlpha One
+        Cull Off ZWrite Off ZTest LEqual
 
         Pass
         {
@@ -17,7 +18,7 @@ Shader "Void/UIHolo"
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
-            #pragma multi_compile_fog
+            // #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 

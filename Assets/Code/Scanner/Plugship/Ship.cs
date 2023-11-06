@@ -63,11 +63,13 @@ namespace Scanner.Plugship {
         }
 
         public void Connect(IPlug shipside, IPlug newPlug) {
+            Debug.Assert(shipside.Module.Ship != null, "shipside module doesn't belong to a ship");
+            Debug.Assert(newPlug.Module.Ship == null, "Module already has a ship");
+
             var joint = new Joint(shipside, newPlug);
             shipside.Joint = joint;
             newPlug.Joint = joint;
-            Debug.Assert(shipside.Module.Ship == null, "shipside module doesn't belong to us???");
-            Debug.Assert(newPlug.Module.Ship == null, "Module already has a ship");
+            this.joints.Add(joint);
             newPlug.Module.Ship = this;
             InvalidateModuleList();
         }

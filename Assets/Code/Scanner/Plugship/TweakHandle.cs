@@ -32,7 +32,7 @@ namespace Scanner.Plugship {
     public class AttachAndConstructModule : Tweak {
         internal override void Execute() {
             Context.ShipbuildingContext.SelectActiveTweak(this);
-            Context.ShipbuildingContext.GenerateUISelectionForAttachment(new[] { attachment });
+            Context.ShipbuildingContext.GenerateStructureButtons(new[] { attachment });
         }
         public PotentialAttachment attachment;
         // this hinges on GetComponentsInChildren ordering being deterministic, which it should be? maybe? Question mark?
