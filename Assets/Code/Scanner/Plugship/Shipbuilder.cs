@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
+using Cysharp.Threading.Tasks.Triggers;
+using K3;
 using UnityEngine;
 
 namespace Scanner.Plugship {
@@ -9,6 +9,8 @@ namespace Scanner.Plugship {
         internal Ship PrimaryShip { get; set; }
 
         internal TweakMaintainer Tweaker { get; private set; }
+
+        public Tweak ActiveTweak { get; set; }
 
         void Awake() {
             var shipGO = new GameObject("Ship");
@@ -28,9 +30,19 @@ namespace Scanner.Plugship {
             Tweaker.Regenerate();
         }
 
+        public void PositionModuleForPlugInterface(IPlug dependentPlug, IPlug shipbornePlug) {
+            // both plug transforms need to coincide
+            TransformUtility.MoveAndRotateParentSoThatChildCoincidesWithReferenceTransform(
+               P: dependentPlug.Module.transform,
+               C: dependentPlug.OrientationMatchingTransform,
+               R: shipbornePlug.OrientationMatchingTransform
+            );
+
+        }
+
         public void Connect(IPlug a, IPlug b) {        
             if (a.Module.Ship != null && b.Module.Ship != null) {
-                throw new System.InvalidOperationException($"Cannot connect rigid module in two places");
+                throw new System.InvalidOperationException($"Cannot connect rigid module in two places... for now :3 ");
             }
 
             PrimaryShip.Connect(a, b);
@@ -38,8 +50,15 @@ namespace Scanner.Plugship {
         }
 
         internal List<Module> phantoms = new List<Module>();
-        public void RegisterPhantoms(IEnumerable<Module> phantomModuleInstances) {
+
+        public void RegisterTemplates(IEnumerable<Module> phantomModuleInstances) {
             this.phantoms = new List<Module>(phantomModuleInstances);
+        }
+
+        void IShipBuilder.ApplyUIMode(IShipbuildingContext.UIStates uistate) {
+            foreach (var tweak in Tweaker.currentHandles) {
+                tweak.gameObject.SetActive(uistate == IShipbuildingContext.UIStates.Tweaks);
+            }
         }
     }
 
@@ -51,6 +70,7 @@ namespace Scanner.Plugship {
             this.builder = builder;
         }
 
+
         public void Regenerate() {
             foreach (var handle in currentHandles) GameObject.Destroy(handle.gameObject);
             currentHandles.Clear();
@@ -59,14 +79,34 @@ namespace Scanner.Plugship {
             foreach (var tweak in tweaks) {
                 GenerateAndTrackHandle(tweak);
             }
-            
         }
 
+        HardcodedShipbuildController shipController;
         private TweakHandle GenerateAndTrackHandle(Tweak tweak) {
-            var go = new GameObject($"Tweak handle: {tweak.GetType().Name}");
-            var handle = go.AddComponent<TweakHandle>();
+
+            var idx = DecideTweakHandleIndex(tweak);
+            if (idx < 0) {
+                Debug.LogWarning($"No handle for tweak {tweak}");
+                return null;
+            }
+            shipController ??= GameObject.FindObjectOfType<HardcodedShipbuildController>();
+            var prefab = shipController.tweakHandlePrefabs[idx];
+            
+            var go = GameObject.Instantiate(prefab, builder.transform);
+            var handle = go.GetComponent<TweakHandle>();
+            handle.Tweak = tweak;
+            go.name = $"Tweak handle: {tweak.GetType().Name}";
             currentHandles.Add(handle);
+
+            foreach (var item in go.GetComponentsInChildren<ITweakComponent>(true)) item.Bind(tweak);
             return handle;
+        }
+
+        int DecideTweakHandleIndex(Tweak tweak) {
+            if (tweak is AttachAndConstructModule) return 1;
+            if (tweak is AttachAndConstructButMustChoose) return 1;
+            if (tweak is DeconstructModule) return 1;
+            return -1;
         }
 
         IEnumerable<Tweak> EvaluatePossibleTweaks() {
@@ -91,15 +131,15 @@ namespace Scanner.Plugship {
                 if (attachablePhantomPlugs.Count == 0) continue;
                 else if (attachablePhantomPlugs.Count == 1) {
                     yield return new AttachAndConstructModule() {
-                        attachment = new Attachment() { 
+                        attachment = new PotentialAttachment() { 
                             phantom = attachablePhantomPlugs[0].Module,
                             shipPlug = plug,
                             indexOfPlugInPhantomList = attachablePhantomPlugs[0].IndexInParentModule,
                         },
                     };
                 } else {
-                    yield return new AttachAndConstructChoice {
-                        attachments = attachablePhantomPlugs.Select(plg => new Attachment {
+                    yield return new AttachAndConstructButMustChoose {
+                        attachments = attachablePhantomPlugs.Select(plg => new PotentialAttachment {
                             phantom = plg.Module,
                             shipPlug = plug,
                             indexOfPlugInPhantomList = plg.IndexInParentModule,
@@ -127,8 +167,12 @@ namespace Scanner.Plugship {
     }
 
     public interface IShipBuilder {
+        Tweak ActiveTweak { get; set; }
+
+        void ApplyUIMode(IShipbuildingContext.UIStates uistate);
         void Connect(IPlug a, IPlug b);
         void InsertModuleWithoutPlugs(Module instance);
-        void RegisterPhantoms(IEnumerable<Module> phantomModuleInstances);
+        void PositionModuleForPlugInterface(IPlug dependentPlug, IPlug shipbornePlug);
+        void RegisterTemplates(IEnumerable<Module> phantomModuleInstances);
     }
 }

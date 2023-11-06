@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scanner.Plugship {
@@ -9,27 +10,41 @@ namespace Scanner.Plugship {
 
     public class TweakHandle : MonoBehaviour {
         public Tweak Tweak { get; set; }
+
+        void Start() {
+            GetComponentInChildren<Button>().Clicked += () => ExecuteTweak();
+        }
+
+        void ExecuteTweak() {
+            Tweak.Execute();
+        }
     }
 
     public abstract class Tweak {
-
+        internal abstract void Execute();
     }
 
-    public struct Attachment {
+    public struct PotentialAttachment {
         public IPlug shipPlug;
         public Module phantom;
         public int    indexOfPlugInPhantomList;
     }
     public class AttachAndConstructModule : Tweak {
-        public Attachment attachment;
+        internal override void Execute() {
+            Context.ShipbuildingContext.SelectActiveTweak(this);
+            Context.ShipbuildingContext.GenerateUISelectionForAttachment(new[] { attachment });
+        }
+        public PotentialAttachment attachment;
         // this hinges on GetComponentsInChildren ordering being deterministic, which it should be? maybe? Question mark?
     }
 
-    public class AttachAndConstructChoice : Tweak {
-        public List<Attachment> attachments;
+    public class AttachAndConstructButMustChoose : Tweak {
+        internal override void Execute() => throw new NotImplementedException();
+        public List<PotentialAttachment> attachments;
     }
 
     public class DeconstructModule : Tweak {
+        internal override void Execute() => throw new NotImplementedException();
         public Module shipModuleToBeDeconstructed;
     }
 }

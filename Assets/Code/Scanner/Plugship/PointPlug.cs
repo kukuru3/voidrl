@@ -14,6 +14,8 @@ namespace Scanner.Plugship {
         public IPlug ConnectedTo { get; }
         public Module ConnectedToModule { get; }
 
+        public Transform OrientationMatchingTransform { get; }
+
         bool EvaluateConditions();
 
         public Polarity Polarity { get; }
@@ -36,6 +38,8 @@ namespace Scanner.Plugship {
         public Module ConnectedToModule => ConnectedTo?.Module;
 
         public Joint Joint { get; set; }
+
+        public Transform OrientationMatchingTransform => transform;
 
         public bool EvaluateConditions() {
             foreach(var criterion in Criteria) {
