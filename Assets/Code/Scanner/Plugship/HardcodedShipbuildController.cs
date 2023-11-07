@@ -90,11 +90,11 @@ namespace Scanner.Plugship {
 
             foreach (var att in attachments) {
                 var btn = Instantiate(phantomBuildButtonPrefab, buildUIcontainerObject);
-                btn.transform.localPosition = Vector3.down * counter++ * 50;
+                btn.transform.localPosition = 50 * counter++ * Vector3.down;
                    
                 btn.Clicked += () => ActionPreview_ConstructStructure(att);
                 maintainedBuildUI.Add(btn.gameObject);
-                foreach (var lbl in btn.GetComponentsInChildren<TMPro.TMP_Text>(true)) lbl.text = $"Construct {att.phantom.Name}";
+                foreach (var lbl in btn.GetComponentsInChildren<TMPro.TMP_Text>(true)) lbl.text = $"{att.phantom.Name}";
             }
 
             ActionPreview_ConstructStructure(attachments.First());
