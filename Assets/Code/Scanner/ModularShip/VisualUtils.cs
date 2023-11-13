@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
     internal class VisualUtils {
         public static void AssignGhostShader(Module module) {
             var mrs = module.GetComponentsInChildren<MeshRenderer>();

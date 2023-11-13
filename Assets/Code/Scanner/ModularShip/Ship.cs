@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
     internal class Ship : MonoBehaviour {
         List<Module> graphRoots = new();
         List<Joint> joints = new();

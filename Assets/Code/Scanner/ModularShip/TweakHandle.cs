@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
 
     // TWEAKS are how you modify your ship.
     // plugs are not visible on the screen per se.

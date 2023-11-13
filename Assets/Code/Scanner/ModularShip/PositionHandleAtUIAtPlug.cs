@@ -1,7 +1,7 @@
 ﻿using Scanner.ScannerView;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
 
     public interface ITweakComponent {
         void Bind(Tweak tweak);

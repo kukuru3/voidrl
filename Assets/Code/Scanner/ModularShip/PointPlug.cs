@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
 
     public interface IPlug {
         public Module Module { get; }

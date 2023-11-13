@@ -3,7 +3,7 @@ using System.Linq;
 using K3;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
     internal class Shipbuilder : MonoBehaviour, IShipBuilder {
         internal Ship PrimaryShip { get; set; }
 

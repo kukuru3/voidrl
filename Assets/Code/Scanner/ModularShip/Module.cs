@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
     public class Module : MonoBehaviour {
 
         [field:SerializeField] public string Name { get; private set; }

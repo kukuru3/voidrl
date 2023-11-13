@@ -1,7 +1,7 @@
 ﻿using K3;
 using UnityEngine;
 
-namespace Scanner.Plugship {
+namespace Scanner.ModularShip {
     internal class ShipbuilderCamera : MonoBehaviour {
         [SerializeField] Transform camParent;
         [SerializeField] Transform camTransform;
