@@ -80,6 +80,8 @@ namespace Scanner.ModularShip {
 
         public Action ExecutionDelegate;
 
+        // when clicking on a tweak, this generates the buttons of all the structures you can build on that tweak.
+
         public void GenerateStructureButtons(IEnumerable<PotentialAttachment> attachments) { 
             UIState = IShipbuildingContext.UIStates.ActionSelect;
 

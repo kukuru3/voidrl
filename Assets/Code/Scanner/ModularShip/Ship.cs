@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Scanner.ModularShip {
     internal class Ship : MonoBehaviour {
         List<Module> graphRoots = new();
-        List<Joint> joints = new();
+
+        List<Connection> connections = new();
         List<Module> crunchedModuleList = null;
 
         public Joint TryGetJoint(IPlug a, IPlug b) {
-            foreach (var j in joints) {
-                if (j.IndexOf(a) > -1 && j.IndexOf(b) > -1) return j;
-            }
+            foreach (var c in connections)
+                foreach (var j in c.joints)
+                    if (j.IndexOf(a) > -1 && j.IndexOf(b) > -1) return j;
             return default;
         }
 
         public IEnumerable<Joint> ListJoints(Module a, Module b) {
-            foreach (var j in joints) {
-                if (j.A.IsConnected && j.B.IsConnected) {
-                    if (j.A.Module == a && j.B.Module == b) yield return j;
-                    else if (j.A.Module == b && j.B.Module == a) yield return j;
+            foreach (var c in connections) {
+                foreach (var j in c.joints) {
+                    if (j.A.IsConnected && j.B.IsConnected) {
+                        if (j.A.Module == a && j.B.Module == b) yield return j;
+                        else if (j.A.Module == b && j.B.Module == a) yield return j;
+                    }
                 }
             }
         }
@@ -86,6 +90,14 @@ namespace Scanner.ModularShip {
         }
     }
 
+    public class Connection {
+        public readonly Joint[] joints;
+        public Connection(IEnumerable<Joint> joints) {
+            this.joints = joints.ToArray();
+        }
+    }
+
+    // a single joint between two plugs
     public class Joint {
         public readonly IPlug A;
         public readonly IPlug B;
