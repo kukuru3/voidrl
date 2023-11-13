@@ -75,9 +75,6 @@ namespace Scanner.Plugship {
                     var id = Joint.IndexOf(this);
                     if (id == 1) Gizmos.DrawWireSphere(Vector3.zero, 0.25f);
                     if (id == 2) Gizmos.DrawSphere(Vector3.zero, 0.25f);
-                    //var id = Connection.ConnectionIndexOf(this);
-                    //if (id == 1) Gizmos.DrawWireSphere(Vector3.zero, 0.25f);
-                    //if (id == 2) Gizmos.DrawSphere(Vector3.zero, 0.2f);
                 } else {
                     Gizmos.DrawSphere(Vector3.zero, 0.22f);
                 }
@@ -88,15 +85,5 @@ namespace Scanner.Plugship {
     internal abstract class PlugEnableCriterion : MonoBehaviour {
         public abstract bool Test(IPlug plug);
     }
-
-    //#if UNITY_EDITOR
-    //[CanEditMultipleObjects]
-    //[CustomEditor(typeof(Plug))]
-    //class PlugInspector : Editor {
-    //    public override void OnInspectorGUI() {
-    //        base.OnInspectorGUI();
-    //    }
-    //}
-    //#endif
 
 }
