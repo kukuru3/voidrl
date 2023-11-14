@@ -6,26 +6,26 @@ using UnityEngine;
 namespace Scanner.ModularShip {
     internal class Ship : MonoBehaviour {
         List<Module> graphRoots = new();
-
-        List<Connection> connections = new();
+        List<Joint> connections = new();
         List<Module> crunchedModuleList = null;
 
         public Joint TryGetJoint(IPlug a, IPlug b) {
-            foreach (var c in connections)
-                foreach (var j in c.joints)
-                    if (j.IndexOf(a) > -1 && j.IndexOf(b) > -1) return j;
+            //foreach (var c in connections)
+            //    foreach (var j in c.joints)
+            //        if (j.IndexOf(a) > -1 && j.IndexOf(b) > -1) return j;
             return default;
         }
 
         public IEnumerable<Joint> ListJoints(Module a, Module b) {
             foreach (var c in connections) {
-                foreach (var j in c.joints) {
-                    if (j.A.IsConnected && j.B.IsConnected) {
-                        if (j.A.Module == a && j.B.Module == b) yield return j;
-                        else if (j.A.Module == b && j.B.Module == a) yield return j;
-                    }
-                }
+                //foreach (var j in c.joints) {
+                //    if (j.A.IsConnected && j.B.IsConnected) {
+                //        if (j.A.Module == a && j.B.Module == b) yield return j;
+                //        else if (j.A.Module == b && j.B.Module == a) yield return j;
+                //    }
+                //}
             }
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Module> AllShipModules() {
@@ -73,7 +73,7 @@ namespace Scanner.ModularShip {
             var joint = new Joint(shipside, newPlug);
             shipside.Joint = joint;
             newPlug.Joint = joint;
-            this.joints.Add(joint);
+            //this.joints.Add(joint);
             newPlug.Module.Ship = this;
             InvalidateModuleList();
         }
@@ -81,7 +81,7 @@ namespace Scanner.ModularShip {
         public void Break(Joint joint) {
             Debug.Assert(joint.A.Module.Ship == this);
             Debug.Assert(joint.B.Module.Ship == this);
-            joints.Remove(joint);
+            //joints.Remove(joint);
             InvalidateModuleList();
         }
 
