@@ -17,33 +17,25 @@ namespace Scanner.Megaship {
 
 
             foreach (var groupMS in groupsModuleside) {
-                var match = MatchGroupWithPool(groupMS.plugs, shipsideFreePlugs.Where(p => p.GroupID <= 0));
-                if (match != null) yield return match;
+                var matches = MatchGroupWithPool(groupMS.plugs, shipsideFreePlugs.Where(p => p.GroupID <= 0));
+                if (matches != null) foreach (var match in matches) yield return match;
             }
 
             // if this code runs, we allow for the possibility of a shipside group to match individual sockets from the pool
             // but it just seems to generate duplicates, especially in the most frequent use case of single items
-            var groupsShipSide = DistributeIntoGroups(shipsideFreePlugs);
-            foreach (var groupSS in groupsShipSide) {
-                var match = MatchGroupWithPool(groupSS.plugs, modulesideFreePlugs.Where(p => p.GroupID <= 0));
-                if (match != null) yield return match;
-            }
+            //var groupsShipSide = DistributeIntoGroups(shipsideFreePlugs);
+            //foreach (var groupSS in groupsShipSide) {
+            //    var matches = MatchGroupWithPool(groupSS.plugs, modulesideFreePlugs.Where(p => p.GroupID <= 0));
+            //    if (matches != null) foreach (var match in matches) yield return match;
+            //}
         }
 
-        static Linkage MatchGroupWithPool(IList<IPlug> group, IEnumerable<IPlug> pool) {
+        static IEnumerable<Linkage> MatchGroupWithPool(IList<IPlug> group, IEnumerable<IPlug> pool) {
             // for each plug in pool:
-
             // "slot" first plug in group into it (find pose of parent)
             var firstPlugInGroup = group[0];
-
-            if (firstPlugInGroup.Name == "PlugBck") {
-                Debug.Log("Foo");
-            }
-
             var prunedPool = pool.Where(item => IsCompatible(firstPlugInGroup, item));
-
             var isGroup = group.Count > 1;
-
             var matchedCandidatesInOrder = new List<IPlug>();
 
             foreach (var poolCandidate in prunedPool) {
@@ -57,13 +49,6 @@ namespace Scanner.Megaship {
 
                 var worldPoseOfModuleSoThatPlugsCoincide = worldPoseDestinationPlug.Mul(localPoseShipPlug.Inverse());
                 
-                //var poseOfParent = TransformUtility.GetPoseSuchThatChildCoincidesWithReferenceValues(
-                //    firstPlugInGroup.Module.transform,
-                //    (firstPlugInGroup as Component).transform,
-                //    pct.transform.rotation,
-                //    pct.transform.position
-                //);
-
                 bool allMatch = true;
                 matchedCandidatesInOrder.Clear();
                 matchedCandidatesInOrder.Add(poolCandidate); // this gets a bit confusing
@@ -72,43 +57,34 @@ namespace Scanner.Megaship {
                     // but is accurate nonetheless:
                     // first we add the pool candidate, then rely on spatial matches to find other pool candidates.
 
-                    Debug.Log($"  Group match START, first pairing = {firstPlugInGroup.Name} => {poolCandidate.Name}"
-                        + $"  For this pairing to work, the parent module {firstPlugInGroup.Module.Name} would need to be at worldpos {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}" 
-                        + $"  this would put "
-                    );
-
+                    //Debug.Log($"  Group match START, first pairing = {firstPlugInGroup.Name} => {poolCandidate.Name}"
+                    //    + $"  For this pairing to work, the parent module {firstPlugInGroup.Module.Name} would need to be at worldpos {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}" 
+                    //);
 
                     for (var i = 1; i < group.Count; i++) {
-
                         var wposeOfPlug = worldPoseOfModuleSoThatPlugsCoincide.Mul(group[i].RelativePose);
+                        // Debug.Log($"    Testing {group[i].Name} at tentative world pose {wposeOfPlug.Pretty()} against other potential spatial matches...");
 
-                        Debug.Log($"    Testing {group[i].Name} at tentative world pose {wposeOfPlug.Pretty()} against other potential spatial matches...");
-
+                        bool anyMatch = false;
                         foreach (var poolItem in prunedPool) {
-                            var worldPoseOfSocket = poolItem.Module.transform.ToPose().Mul(poolItem.RelativePose);
-                            var worldPoseOfSocket2 = (poolItem as Component).transform.ToPose();
-                            Debug.Assert(PoseUtility.Identical(worldPoseOfSocket, worldPoseOfSocket2), "Something wrong with your algo? poses not identical");
-
+                            var worldPoseOfSocket = (poolItem as Component).transform.ToPose();
+                            // var worldPoseOfSocket = poolItem.Module.transform.ToPose().Mul(poolItem.RelativePose);
                             if (PoseUtility.Identical(worldPoseOfSocket, wposeOfPlug)) {
-                                Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
+                                // Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
                                 matchedCandidatesInOrder.Add(poolItem);
-                            } else {
-                                Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... NO MATCH");
-                                allMatch = false;
+                                anyMatch = true;
                                 break;
+                            } else {
+                                // Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... NO MATCH");
                             }
                         }
-                        
-                        //var match = FindSpatialMatch(worldPoseOfModuleSoThatPlugsCoincide, group[i], prunedPool);
-                        //if (match == null) { allMatch = false; break; }
-                        //matchedCandidatesInOrder.Add(match);
+                        if (!anyMatch) { allMatch = false; break; }
                     }
                 }
                 if (allMatch) {
-                    return Linkage.FromCollections(group, matchedCandidatesInOrder);
+                    yield return Linkage.FromCollections(group, matchedCandidatesInOrder);
                 }
             }
-            return null;
         }
 
         private static bool IsCompatible(IPlug a, IPlug b) {
