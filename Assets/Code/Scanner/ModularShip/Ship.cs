@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Scanner.ModularShip {
     internal class Ship : MonoBehaviour {
-        List<Module> graphRoots = new();
+        List<OldModule> graphRoots = new();
         List<Joint> connections = new();
-        List<Module> crunchedModuleList = null;
+        List<OldModule> crunchedModuleList = null;
 
         public Joint TryGetJoint(IPlug a, IPlug b) {
             //foreach (var c in connections)
@@ -16,7 +16,7 @@ namespace Scanner.ModularShip {
             return default;
         }
 
-        public IEnumerable<Joint> ListJoints(Module a, Module b) {
+        public IEnumerable<Joint> ListJoints(OldModule a, OldModule b) {
             foreach (var c in connections) {
                 //foreach (var j in c.joints) {
                 //    if (j.A.IsConnected && j.B.IsConnected) {
@@ -28,7 +28,7 @@ namespace Scanner.ModularShip {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Module> AllShipModules() {
+        public IEnumerable<OldModule> AllShipModules() {
             if (crunchedModuleList == null) RecalculateCrunchedModuleList();
             return crunchedModuleList;
         }
@@ -44,10 +44,10 @@ namespace Scanner.ModularShip {
         }
 
         void RecalculateCrunchedModuleList() {
-            var closedList = new HashSet<Module>(graphRoots);
-            var queue = new Queue<Module>(graphRoots);
+            var closedList = new HashSet<OldModule>(graphRoots);
+            var queue = new Queue<OldModule>(graphRoots);
 
-            var l = new List<Module>();
+            var l = new List<OldModule>();
             while (queue.Count > 0) {
                 var m = queue.Dequeue();
                 l.Add(m);
@@ -61,7 +61,7 @@ namespace Scanner.ModularShip {
             crunchedModuleList = l;
         }
 
-        public void AttachRootModule(Module m) {
+        public void AttachRootModule(OldModule m) {
             graphRoots.Add(m);
             InvalidateModuleList();
         }

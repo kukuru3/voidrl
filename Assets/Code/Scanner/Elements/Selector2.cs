@@ -218,7 +218,7 @@ namespace Scanner {
             return SemanticHighlight.Center;
         }
 
-        float timeLastClick = -1000f;
+        // float timeLastClick = -1000f;
         private int cyclerIndex = 0;
     }
     

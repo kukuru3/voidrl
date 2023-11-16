@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Scanner.Megaship {
-    internal enum Polarities {
+    public enum Polarities {
         Male,
         Female,
         TwoWay,
@@ -22,6 +23,15 @@ namespace Scanner.Megaship {
             }
             return l;
         }
+
+        internal static Linkage FromCollections(IEnumerable<IPlug> a, IEnumerable<IPlug> b) {
+            var l = new Linkage();
+            using (var e1 = a.GetEnumerator()) 
+            using (var e2 = b.GetEnumerator())
+                while (e1.MoveNext() && e2.MoveNext()) l.pairings.Add((e1.Current, e2.Current));
+                
+            return l;
+        }
     }
 
     public interface IPlug {
@@ -29,7 +39,8 @@ namespace Scanner.Megaship {
         string Tag { get; }
         int    GroupID { get; }
         Linkage ActiveContact { get; set; }
+        Pose    RelativePose { get; }
+        Polarities Polarity { get; }
+        string Name { get; }
     }
-
-    
 }

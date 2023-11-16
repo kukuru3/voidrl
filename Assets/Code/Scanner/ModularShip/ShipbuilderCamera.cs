@@ -39,7 +39,7 @@ namespace Scanner.ModularShip {
             // project screenspace delta to worldspace
             if (Input.GetMouseButton(2)) {
                 var worldspaceMotion = camParent.TransformVector(new Vector3(mouseAxis.x, mouseAxis.y, 0));
-                AxisPan += worldspaceMotion.x * panDelta * effectiveCamDist.Map(0f, 1f, distMin, distMax);
+                AxisPan += worldspaceMotion.z * panDelta * effectiveCamDist.Map(0f, 1f, distMin, distMax);
             }
 
             var dz = Input.GetAxis("Mouse ScrollWheel") * deltas.z;
@@ -47,7 +47,7 @@ namespace Scanner.ModularShip {
             
             CamDistanceFactor = Mathf.Clamp01(CamDistanceFactor);
             effectiveCamDist = Mathf.SmoothDamp(effectiveCamDist, CamDistanceFactor, ref _cdVel, 0.2f);
-            camParent.localPosition = new Vector3(AxisPan, 0, 0);
+            camParent.localPosition = new Vector3(0, 0, AxisPan);
 
             Phi = Mathf.Clamp(Phi, -45, 80);
             //Theta = Mathf.Clamp(Theta, -35, 125);

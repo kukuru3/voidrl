@@ -29,7 +29,7 @@ namespace Scanner.ModularShip {
 
     internal class HardcodedShipbuildController : MonoBehaviour, IShipbuildingContext {
 
-        [SerializeField] Module[] modulePrefabs;
+        [SerializeField] OldModule[] modulePrefabs;
         [SerializeField] internal TweakHandle[] tweakHandlePrefabs;
         [SerializeField] internal Button phantomBuildButtonPrefab;
         [SerializeField] Button confirmButton;
@@ -38,7 +38,7 @@ namespace Scanner.ModularShip {
         [SerializeField] Material hologramMaterial;
 
         public IShipBuilder Builder { get; private set; }
-        List<Module> templateInstances = new List<Module>();
+        List<OldModule> templateInstances = new List<OldModule>();
 
         GameObject activeGhost;
         List<GameObject> maintainedBuildUI = new List<GameObject>();
@@ -69,7 +69,7 @@ namespace Scanner.ModularShip {
 
         Transform templateHolder;
 
-        Module GenerateTemplate(Module prefab) {
+        OldModule GenerateTemplate(OldModule prefab) {
             var m = Instantiate(prefab, transform);
             m.name = $"PHANTOM: [{prefab.name}]";
             m.transform.localPosition = new Vector3(1000, 0, 0);
@@ -105,8 +105,8 @@ namespace Scanner.ModularShip {
         private void ActionPreview_ConstructStructure(PotentialAttachment directive) {
             UIState = IShipbuildingContext.UIStates.ActionConfirm;            
             ReplaceActiveBuildGhost(directive.phantom);
-            var activeGhostModule = activeGhost.GetComponent<Module>();
-            VisualUtils.AssignGhostShader(activeGhost.GetComponentInChildren<Module>());
+            var activeGhostModule = activeGhost.GetComponent<OldModule>();
+            VisualUtils.AssignGhostShader(activeGhost.GetComponentInChildren<OldModule>());
             Builder.PositionModuleForPlugInterface(activeGhostModule.AllPlugs[directive.indexOfPlugInPhantomList], directive.shipPlug);
             ExecutionDelegate = () => {
                 var newModule = GenerateModule(directive.phantom.Name);
@@ -118,7 +118,7 @@ namespace Scanner.ModularShip {
             };
         }
 
-        private void ReplaceActiveBuildGhost(Module template) {
+        private void ReplaceActiveBuildGhost(OldModule template) {
             if (activeGhost != null) GameObject.Destroy(activeGhost);
             activeGhost = null;
             if (template != null) { 
@@ -129,7 +129,7 @@ namespace Scanner.ModularShip {
 
         int moduleID = 0;
 
-        Module GenerateModule(string name) {
+        OldModule GenerateModule(string name) {
             foreach (var p in modulePrefabs) if (p?.name == name || p.Name == name) { 
                 var m = Instantiate(p, transform);
                 m.gameObject.name = $"MODULE: {m.Name} [{++moduleID}]";

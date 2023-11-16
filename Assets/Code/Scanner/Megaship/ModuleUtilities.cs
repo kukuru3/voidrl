@@ -33,7 +33,9 @@ namespace Scanner.Megaship {
             return others;
         }
 
-        internal static IEnumerable<IPlug> ListUnoccupiedPlugs(Ship s) => s.AllShipModules().SelectMany(ListUnoccupiedPlugs);
+        internal static IEnumerable<IPlug> ListUnoccupiedPlugs(Ship s) => s.AllShipModules().SelectMany(ListUnoccupiedPlugs)
+            .ToArray()
+        ;
 
         internal static IEnumerable<IPlug> ListUnoccupiedPlugs(Module module) {
             return module

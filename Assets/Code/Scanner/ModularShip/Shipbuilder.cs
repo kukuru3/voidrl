@@ -21,7 +21,7 @@ namespace Scanner.ModularShip {
             Tweaker = new TweakMaintainer(this);
         }
 
-        public void InsertModuleWithoutPlugs(Module instance) {
+        public void InsertModuleWithoutPlugs(OldModule instance) {
             PrimaryShip.AttachRootModule(instance);
             instance.transform.parent = PrimaryShip.transform;
             instance.transform.localPosition = default;
@@ -48,10 +48,10 @@ namespace Scanner.ModularShip {
             Tweaker.Regenerate();
         }
 
-        internal List<Module> phantoms = new List<Module>();
+        internal List<OldModule> phantoms = new List<OldModule>();
 
-        public void RegisterTemplates(IEnumerable<Module> phantomModuleInstances) {
-            this.phantoms = new List<Module>(phantomModuleInstances);
+        public void RegisterTemplates(IEnumerable<OldModule> phantomModuleInstances) {
+            this.phantoms = new List<OldModule>(phantomModuleInstances);
         }
 
         void IShipBuilder.ApplyUIMode(IShipbuildingContext.UIStates uistate) {
@@ -170,8 +170,8 @@ namespace Scanner.ModularShip {
 
         void ApplyUIMode(IShipbuildingContext.UIStates uistate);
         void Connect(IPlug a, IPlug b);
-        void InsertModuleWithoutPlugs(Module instance);
+        void InsertModuleWithoutPlugs(OldModule instance);
         void PositionModuleForPlugInterface(IPlug dependentPlug, IPlug shipbornePlug);
-        void RegisterTemplates(IEnumerable<Module> phantomModuleInstances);
+        void RegisterTemplates(IEnumerable<OldModule> phantomModuleInstances);
     }
 }

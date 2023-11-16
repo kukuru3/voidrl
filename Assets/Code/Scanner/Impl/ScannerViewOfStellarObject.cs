@@ -108,9 +108,9 @@ namespace Scanner.Impl {
 
             if (offsets == null) GenerateOffsets();
             
-            var isPlanet = false;
+            // var isPlanet = false;
             if (count == 0) {
-                count = 1; isPlanet = true;
+                count = 1; // isPlanet = true;
             }
 
             var list = new List<Shapes.ShapeRenderer>();

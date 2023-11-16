@@ -2,14 +2,14 @@
 using UnityEngine;
 
 namespace Scanner.ModularShip {
-    public class Module : MonoBehaviour {
+    public class OldModule : MonoBehaviour {
 
         [field:SerializeField] public string Name { get; private set; }
 
         internal List<IPlug> AllPlugs { get; private set; }
 
-        internal IEnumerable<Module> ListDirectlyConnectedModules() {
-            var set = new HashSet<Module>();
+        internal IEnumerable<OldModule> ListDirectlyConnectedModules() {
+            var set = new HashSet<OldModule>();
             foreach (var plug in AllPlugs) {
                 if (plug.IsConnected) set.Add(plug.ConnectedToModule);
             }

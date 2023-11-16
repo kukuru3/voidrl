@@ -5,14 +5,14 @@ using UnityEngine;
 namespace Scanner.ModularShip {
 
     public interface IPlug {
-        public Module Module { get; }
+        public OldModule Module { get; }
         public Joint Joint { get; set; }
         public bool IsConnected { get; }
 
         public int IndexInParentModule { get; }
 
         public IPlug ConnectedTo { get; }
-        public Module ConnectedToModule { get; }
+        public OldModule ConnectedToModule { get; }
 
         public Transform OrientationMatchingTransform { get; }
 
@@ -32,10 +32,10 @@ namespace Scanner.ModularShip {
 
         public int IndexInParentModule => Module?.AllPlugs.IndexOf(this) ?? -1;
 
-        public Module Module { get; internal set; }
+        public OldModule Module { get; internal set; }
 
         public IPlug ConnectedTo => Joint?.Other(this);
-        public Module ConnectedToModule => ConnectedTo?.Module;
+        public OldModule ConnectedToModule => ConnectedTo?.Module;
 
         public Joint Joint { get; set; }
 

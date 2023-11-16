@@ -26,7 +26,7 @@ namespace Scanner.ModularShip {
 
     public struct PotentialAttachment {
         public IPlug shipPlug;
-        public Module phantom;
+        public OldModule phantom;
         public int    indexOfPlugInPhantomList;
     }
     public class AttachAndConstructModule : Tweak {
@@ -48,6 +48,6 @@ namespace Scanner.ModularShip {
 
     public class DeconstructModule : Tweak {
         internal override void Execute() => throw new NotImplementedException();
-        public Module shipModuleToBeDeconstructed;
+        public OldModule shipModuleToBeDeconstructed;
     }
 }
