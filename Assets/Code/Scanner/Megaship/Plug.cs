@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using K3;
 using UnityEngine;
 
 namespace Scanner.Megaship {
     // a Point Linkable
     internal class Plug : MonoBehaviour, IPlug {
+
+        public override string ToString() {
+            if (module == null) return $"[ORPHAN]:{Name}";
+            if (module.Ship == null) {
+                return $"[PHANTOM]:{Name}";
+            } else {
+                return $"{module.Name}:{Name}";
+            }
+        }
+
         [field:SerializeField] public Polarities Polarity { get; private set; }
         [field:SerializeField] public string Tag { get; private set; }
         public Module Module { get { module = module != null ? module : GetComponentInParent<Module>(); return module; } }
@@ -59,6 +70,14 @@ namespace Scanner.Megaship {
 
     }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    class PostprocessShipAttribute : Attribute {
+
+    }
+
+    internal interface IShipPostprocessor {
+        void Postprocess(Ship ship);
+    }
     
     internal interface IModificationRuleInjector {
         IEnumerable<ModificationOpportunity> Inject(Ship ship, LinkQueryContext context);
@@ -86,7 +105,8 @@ namespace Scanner.Megaship {
                             name = "Extend spine",
                             orientation = 0,
                             symmetry = 0,
-                            targetContact = match, 
+                            targetContact = match,
+                            phantomModule = pmodule,
                             type = OpportunityTypes.OfferTweak,
                         };
                     // }
@@ -95,6 +115,27 @@ namespace Scanner.Megaship {
 
             yield break;
         }
+    }
+
+    [InjectModificationRule]
+    public class DestroyModule : IModificationRuleInjector {
+        IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
+            // find all the modules that are "leaf" modules. Since the ship is a graph, "leaf" modules are
+            // all modules that would not result in the graph being split into two subgraphs.
+
+            // but for our purposes, we will be using a simpler definition: a leaf module is one that ONLY has male-type plugs active.
+
+            foreach (var module in ship.AllShipModules()) {
+                if (!ModuleUtilities.ListAllPlugs(module).Any(IsPlugProhibitivelyImportant)) {
+                    yield return new DestroyModuleOpportunity() {
+                        name = $"Destroy {module.Name}",
+                        targetModule = module,
+                    };
+                }
+            }
+        }
+
+        bool IsPlugProhibitivelyImportant(IPlug plug) => plug.Polarity != Polarities.Male && plug.ActiveContact != null;
     }
 
     [InjectModificationRule]
@@ -111,12 +152,56 @@ namespace Scanner.Megaship {
                 ;
 
                 foreach (var match in matches) {
-                    // if (MatchingUtility.AllPlugsContainTag(match, "spine-ext")) {
-                        yield return new BuildAndAttachOpportunity() {
-                            name = $"Attach to {MatchingUtility.ShipboardModuleOf(match)}",
+                    string n = "";
+                    try { 
+                        n = $"{MatchingUtility.AttachedModuleOf(match).Name} to {MatchingUtility.ShipboardModuleOf(match).Name}";
+                    } catch (NullReferenceException e) {
+                        Debug.LogError(e);
+                    }
+
+                    yield return new BuildAndAttachOpportunity() {
+                            name = n,
                             orientation = 0,
                             symmetry = 0,
                             targetContact = match, 
+                            phantomModule = pmodule,
+                            type = OpportunityTypes.OfferTweak,
+                        };
+                    // }
+                }
+            }
+
+            yield break;
+        }
+
+    }
+    [InjectModificationRule]
+    public class FacilityConstruction : IModificationRuleInjector {
+        IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
+            var collection = context.phantomModules;
+            if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
+            foreach (var pmodule in collection) {
+                var matches = MatchingUtility.FindPossibleMatches(
+                    ModuleUtilities.ListUnoccupiedPlugs(ship).Where(p => p.Tag == "facility"), 
+                    ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Tag == "facility")
+                )
+                .ToArray()
+                ;
+
+                foreach (var match in matches) {
+                    string n = "";
+                    try { 
+                        n = $"{MatchingUtility.AttachedModuleOf(match).Name} to {MatchingUtility.ShipboardModuleOf(match).Name}";
+                    } catch (NullReferenceException e) {
+                        Debug.LogError(e);
+                    }
+
+                    yield return new BuildAndAttachOpportunity() {
+                            name = $"Build facility {pmodule.Name} at {match.BSidePlugs.First().Name}",
+                            orientation = 0,
+                            symmetry = 0,
+                            targetContact = match, 
+                            phantomModule = pmodule,
                             type = OpportunityTypes.OfferTweak,
                         };
                     // }

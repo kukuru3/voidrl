@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using K3;
 using UnityEngine;
 
@@ -67,7 +66,7 @@ namespace Scanner.Megaship {
 
                         bool anyMatch = false;
                         foreach (var poolItem in prunedPool) {
-                            var worldPoseOfSocket = (poolItem as Component).transform.ToPose();
+                            var worldPoseOfSocket = PoseUtility.WorldPose((poolItem as Component).transform);
                             // var worldPoseOfSocket = poolItem.Module.transform.ToPose().Mul(poolItem.RelativePose);
                             if (PoseUtility.Identical(worldPoseOfSocket, wposeOfPlug)) {
                                 // Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
@@ -136,6 +135,13 @@ namespace Scanner.Megaship {
         internal static Module ShipboardModuleOf(Linkage linkage) {
             foreach (var plug in linkage.AllPlugs) {
                 if (!plug.Module.IsPhantom) return plug.Module;
+            }
+            return default;
+        }
+
+        internal static Module AttachedModuleOf(Linkage linkage) {
+            foreach (var plug in linkage.AllPlugs) {
+                if (plug.Module.IsPhantom) return plug.Module;
             }
             return default;
         }

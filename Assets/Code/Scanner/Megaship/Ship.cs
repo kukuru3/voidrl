@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Scanner.Megaship {
@@ -21,34 +22,34 @@ namespace Scanner.Megaship {
             InvalidateModuleList();
         }
 
+        public void RemoveRootModule(Module m) => rootModules.Remove(m);
+
+        public bool IsRootModule(Module m) => rootModules.Contains(m);
+
         public void AddLinkage(Linkage c) {
             if (!linkages.Contains(c)) linkages.Add(c);
             InvalidateModuleList();
         }
 
-        public void RemoveLinkage(Linkage c) {
-            if (linkages.Remove(c))
+        public void RemoveContact(Linkage c) {
+            if (linkages.Remove(c)) 
                 InvalidateModuleList();
         }
 
         private void InvalidateModuleList() => resolvedModuleList = null;
 
         private void ResolveModuleList() {
-            var closedList = new HashSet<Module>(rootModules);
-            var queue = new Queue<Module>(rootModules);
-
-            var l = new List<Module>();
-            while (queue.Count > 0) {
-                var activeModule = queue.Dequeue();
-                l.Add(activeModule);
-                var connectedToThisModule = ModuleUtilities.AllConnectedModules(activeModule);
-                foreach (var o in connectedToThisModule) {
-                    if (closedList.Contains(o)) continue;
-                    queue.Enqueue(o);
-                    closedList.Add(o);
-                }
+            // assumption: all modules are either root, or present via one of the linkages.
+            // assumption: there are no "invalid" linkages, linking a pair of modules of which 
+            // neither has a path to a root module.
+            resolvedModuleList = new List<Module>();
+            var set = new HashSet<Module>();
+            set.UnionWith(rootModules);
+            foreach (var item in linkages) {
+                set.UnionWith(item.pairings.Select(p => p.a.Module));
+                set.UnionWith(item.pairings.Select(p => p.b.Module));
             }
-            this.resolvedModuleList = l;
+            resolvedModuleList.AddRange(set);
         }
     }
 }

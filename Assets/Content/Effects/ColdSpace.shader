@@ -24,7 +24,6 @@ Shader "Scanner/Cold Space"
 	
 	float4 _Remap;
 	float4 _CorrectionRamp;
-
 	float _Aberration;
 
 
@@ -45,6 +44,7 @@ Shader "Scanner/Cold Space"
 
 	float3 SampleColor(float2 uv) {
 		float abb = _Aberration * (1.0 - metadata(uv).r);
+
 		if (abb > 0) {
 			float2 offsetR = float2(-1,0);
 			float2 offsetG = float2(1,0);

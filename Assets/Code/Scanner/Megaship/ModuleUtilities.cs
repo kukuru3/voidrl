@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Scanner.Megaship {
@@ -9,14 +10,14 @@ namespace Scanner.Megaship {
 
             HashSet<Module> allOthers = new();
             foreach (var contact in m.Ship.Linkages) {
-                if (contact.ModuleParticipatesInContact(m)) {
+                if (contact.Links(m)) {
                     allOthers.UnionWith(contact.OtherModulesInContact(m));
                 }
             }
             return allOthers;
         }
 
-        public static bool ModuleParticipatesInContact(this Linkage c, Module m) {
+        public static bool Links(this Linkage c, Module m) {
             foreach (var pairing in c.pairings) {
                 if (pairing.a.Module == m) return true;
                 if (pairing.b.Module == m) return true;
@@ -33,14 +34,37 @@ namespace Scanner.Megaship {
             return others;
         }
 
+        internal static IEnumerable<Linkage> AllShipLinkagesOf(Module m) {
+            if (m.Ship == null) yield break;
+            foreach (var l in m.Ship.Linkages) {
+                if (l.Links(m)) yield return l;
+            }
+        }
+
         internal static IEnumerable<IPlug> ListUnoccupiedPlugs(Ship s) => s.AllShipModules().SelectMany(ListUnoccupiedPlugs)
             .ToArray()
         ;
+
+        internal static IEnumerable<IPlug> ListAllPlugs(Module module) {
+               return module
+                .GetComponentsInChildren<IPlug>(true);
+        }
 
         internal static IEnumerable<IPlug> ListUnoccupiedPlugs(Module module) {
             return module
                 .GetComponentsInChildren<IPlug>(true)
                 .Where(p => p.ActiveContact == null);
+        }
+
+        internal static IPlug FindSurrogate(IPlug originalPlug, Module originalModule, Module replacementModule) {
+            var plugsA = originalModule.GetComponentsInChildren<IPlug>();
+            var plugsB = replacementModule.GetComponentsInChildren<IPlug>();
+            Debug.Assert(originalModule.Name == replacementModule.Name);
+            Debug.Assert(plugsA.Length == plugsB.Length, "Plugs mismatch!");
+            var idx = Array.IndexOf(plugsA, originalPlug);
+            Debug.Assert(idx >= 0, "Are you sure plug is there?");
+            Debug.Assert(plugsB[idx].Name == plugsA[idx].Name, "plug name mismatch?");
+            return plugsB[idx];
         }
     }
 }

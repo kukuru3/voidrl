@@ -36,7 +36,7 @@ namespace Scanner {
 
         private Camera GenerateRenderMetadataCamera() {
             var cloneCamera = Instantiate(explicitUIcamera);
-            cloneCamera.name = "Render metadata";
+            cloneCamera.name = "Render metadata camera";
             cloneCamera.clearFlags = CameraClearFlags.SolidColor;
             cloneCamera.cullingMask = LayerMask.GetMask("Rendering Metadata");
             var rt = new RenderTexture(512, 512, 16, RenderTextureFormat.Default) {
