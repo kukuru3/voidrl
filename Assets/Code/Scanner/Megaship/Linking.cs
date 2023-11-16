@@ -42,5 +42,6 @@ namespace Scanner.Megaship {
         Pose    RelativePose { get; }
         Polarities Polarity { get; }
         string Name { get; }
+        int SymmetryGroup { get; }
     }
 }

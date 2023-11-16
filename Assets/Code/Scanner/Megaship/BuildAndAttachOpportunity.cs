@@ -1,15 +1,29 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 namespace Scanner.Megaship {
-    public class BuildAndAttachOpportunity : ModificationOpportunity {
+
+    public class BuildMultipleOpportunity : ModificationOpportunity {
         internal OpportunityTypes type;
+        internal Module module;
+        internal Linkage primaryContact;
+        public override string Print() { 
+            var sb = new StringBuilder();
+            sb.Append("Attach MULTIPLE [");
+            foreach (var (a, b) in primaryContact.pairings) { 
+                sb.Append(DisplayHelper.PrettyPrintPairing(a, b));
+                sb.Append(',');
+            }
+            sb.Remove(sb.Length - 1, 1);
+            sb.Append(']');
+            return sb.ToString();
+        }
+    }
+
+    public class BuildAndAttachOpportunity : ModificationOpportunity {
+        // internal OpportunityTypes type;
         internal Module phantomModule;
         internal Linkage targetContact;
-        internal int symmetry;
-        internal int orientation; // bonus, can be anything.
-
         public override string Print() {
             var sb = new StringBuilder();
             sb.Append("Build/Attach [");
@@ -25,10 +39,7 @@ namespace Scanner.Megaship {
         internal BuildAndAttachOpportunity WithModuleTransfer(Module to) {
             var opp = new BuildAndAttachOpportunity {
                 name = this.name,
-                orientation = this.orientation,
-                symmetry = this.symmetry,
                 targetContact = this.targetContact,
-                type = this.type,
                 phantomModule = to,
             };
 

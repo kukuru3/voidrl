@@ -25,6 +25,7 @@ namespace Scanner.Megaship {
         Module module;
 
         [field:SerializeField] [field:Range(0, 6)] public int GroupID { get; private set; }
+        [field:SerializeField] [field:Range(0, 6)] public int SymmetryGroup { get; private set; }
 
         public Pose RelativePose => PoseUtility.GetRelativePose(Module.transform.WorldPose(), transform.WorldPose());
 
@@ -103,11 +104,8 @@ namespace Scanner.Megaship {
                     // if (MatchingUtility.AllPlugsContainTag(match, "spine-ext")) {
                         yield return new BuildAndAttachOpportunity() {
                             name = "Extend spine",
-                            orientation = 0,
-                            symmetry = 0,
                             targetContact = match,
                             phantomModule = pmodule,
-                            type = OpportunityTypes.OfferTweak,
                         };
                     // }
                 }
@@ -160,13 +158,10 @@ namespace Scanner.Megaship {
                     }
 
                     yield return new BuildAndAttachOpportunity() {
-                            name = n,
-                            orientation = 0,
-                            symmetry = 0,
-                            targetContact = match, 
-                            phantomModule = pmodule,
-                            type = OpportunityTypes.OfferTweak,
-                        };
+                        name = n,
+                        targetContact = match, 
+                        phantomModule = pmodule,
+                    };
                     // }
                 }
             }
@@ -198,11 +193,8 @@ namespace Scanner.Megaship {
 
                     yield return new BuildAndAttachOpportunity() {
                             name = $"Build facility {pmodule.Name} at {match.BSidePlugs.First().Name}",
-                            orientation = 0,
-                            symmetry = 0,
                             targetContact = match, 
                             phantomModule = pmodule,
-                            type = OpportunityTypes.OfferTweak,
                         };
                     // }
                 }
