@@ -7,8 +7,6 @@ namespace Scanner.Megaship {
         internal Module phantomModule;
         internal Linkage targetContact;
 
-        internal int symmetryGroup;
-
         public override string Print() {
             var sb = new StringBuilder();
             sb.Append("Build/Attach [");
@@ -26,7 +24,6 @@ namespace Scanner.Megaship {
                 name = this.name,
                 targetContact = this.targetContact,
                 phantomModule = to,
-                symmetryGroup = this.symmetryGroup,
             };
 
             opp.targetContact = new Linkage() {

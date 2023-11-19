@@ -24,16 +24,21 @@ namespace Scanner.Megaship {
         public Module Module { get { module = module != null ? module : GetComponentInParent<Module>(); return module; } }
 
         Module module;
+        private Linkage activeContact;
 
         [field:SerializeField] [field:Range(0, 6)] public int GroupID { get; private set; }
 
         [field:SerializeField] [field:Range(0, 6)] public int SymmetryGroup { get; private set; }
 
-        // [field:SerializeField] public bool Dependent { get; private set; }
-
         public Pose RelativePose => PoseUtility.GetRelativePose(Module.transform.WorldPose(), transform.WorldPose());
 
-        public Linkage ActiveContact { get; set; }
+        public Linkage ActiveContact { get => activeContact; set { if (value == activeContact) return; activeContact = value; PropagateContactChange(); } }
+
+        private void PropagateContactChange() {
+            foreach (var responder in GetComponents<IContactProcessor>()) {
+                responder.OnContactChanged(ActiveContact);
+            }
+        }
 
         void Awake() {
             module = GetComponentInParent<Module>();
@@ -68,6 +73,10 @@ namespace Scanner.Megaship {
                 }
             }
         }
+    }
+
+    interface IContactProcessor {
+        void OnContactChanged(Linkage activeContact);
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -153,8 +162,8 @@ namespace Scanner.Megaship {
             if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
             foreach (var pmodule in collection) {
                 var matches = MatchingUtility.FindPossibleMatches(
-                    ModuleUtilities.ListUnoccupiedPlugs(ship, Polarities.Female), 
-                    ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Polarity == Polarities.Male)
+                    ModuleUtilities.ListUnoccupiedPlugs(ship), 
+                    ModuleUtilities.ListUnoccupiedPlugs(pmodule) // .Where(p => p.Polarity == Polarities.Male)
                 )
                 .ToArray()
                 ;
