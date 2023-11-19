@@ -43,5 +43,6 @@ namespace Scanner.Megaship {
         Polarities Polarity { get; }
         string Name { get; }
         int SymmetryGroup { get; }
+        // bool Dependent { get; }
     }
 }

@@ -45,6 +45,13 @@ namespace Scanner.Megaship {
             .ToArray()
         ;
 
+        internal static IEnumerable<IPlug> ListUnoccupiedPlugs(Ship s, Polarities polarity) => 
+            s.AllShipModules()
+                .SelectMany(ListUnoccupiedPlugs)
+                .Where(p => p.Polarity == polarity)
+                .ToArray()
+        ;
+
         internal static IEnumerable<IPlug> ListAllPlugs(Module module) {
                return module
                 .GetComponentsInChildren<IPlug>(true);

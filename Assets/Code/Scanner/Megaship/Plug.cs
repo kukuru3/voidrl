@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using K3;
 using UnityEngine;
 
 namespace Scanner.Megaship {
+
     // a Point Linkable
     internal class Plug : MonoBehaviour, IPlug {
 
@@ -20,12 +20,16 @@ namespace Scanner.Megaship {
 
         [field:SerializeField] public Polarities Polarity { get; private set; }
         [field:SerializeField] public string Tag { get; private set; }
+        
         public Module Module { get { module = module != null ? module : GetComponentInParent<Module>(); return module; } }
 
         Module module;
 
         [field:SerializeField] [field:Range(0, 6)] public int GroupID { get; private set; }
+
         [field:SerializeField] [field:Range(0, 6)] public int SymmetryGroup { get; private set; }
+
+        // [field:SerializeField] public bool Dependent { get; private set; }
 
         public Pose RelativePose => PoseUtility.GetRelativePose(Module.transform.WorldPose(), transform.WorldPose());
 
@@ -84,36 +88,42 @@ namespace Scanner.Megaship {
         IEnumerable<ModificationOpportunity> Inject(Ship ship, LinkQueryContext context);
     }
 
-    // [InjectModificationRule]
-    public class SpineExtension : IModificationRuleInjector {
-
-        IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
-            // list all dangling link groups with the flavour "spine"
-
-            var collection = context.phantomModules;
-            if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
-            foreach (var pmodule in collection) {
-                var matches = MatchingUtility.FindPossibleMatches(
-                    ModuleUtilities.ListUnoccupiedPlugs(ship).Where(p => p.Tag == "spine-ext"), 
-                    ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Tag == "spine-ext")
-                )
-                .ToArray()
-                ;
-
-                foreach (var match in matches) {
-                    // if (MatchingUtility.AllPlugsContainTag(match, "spine-ext")) {
-                        yield return new BuildAndAttachOpportunity() {
-                            name = "Extend spine",
-                            targetContact = match,
-                            phantomModule = pmodule,
-                        };
-                    // }
-                }
-            }
-
-            yield break;
-        }
+    static class ModificationBuilders {
+        //public static BuildAndAttachOpportunity ConstructBuildModificationObject(string actionName, Linkage targetContact, Module phantomModule) {
+            
+        //}
     }
+
+    //[InjectModificationRule]
+    //public class SpineExtension : IModificationRuleInjector {
+
+    //    IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
+    //        // list all dangling link groups with the flavour "spine"
+
+    //        var collection = context.phantomModules;
+    //        if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
+    //        foreach (var pmodule in collection) {
+    //            var matches = MatchingUtility.FindPossibleMatches(
+    //                ModuleUtilities.ListUnoccupiedPlugs(ship).Where(p => p.Tag == "spine-ext"), 
+    //                ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Tag == "spine-ext")
+    //            )
+    //            .ToArray()
+    //            ;
+
+    //            foreach (var match in matches) {
+    //                // if (MatchingUtility.AllPlugsContainTag(match, "spine-ext")) {
+    //                    yield return new BuildAndAttachOpportunity() {
+    //                        name = "Extend spine",
+    //                        targetContact = match,
+    //                        phantomModule = pmodule,
+    //                    };
+    //                // }
+    //            }
+    //        }
+
+    //        yield break;
+    //    }
+    //}
 
     [InjectModificationRule]
     public class DestroyModule : IModificationRuleInjector {
@@ -137,14 +147,14 @@ namespace Scanner.Megaship {
     }
 
     [InjectModificationRule]
-    public class SpineAttachment : IModificationRuleInjector {
+    public class AttachViaPlugSpatialFit : IModificationRuleInjector {
         IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
             var collection = context.phantomModules;
             if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
             foreach (var pmodule in collection) {
                 var matches = MatchingUtility.FindPossibleMatches(
-                    ModuleUtilities.ListUnoccupiedPlugs(ship).Where(p => p.Tag == "spine-attach"), 
-                    ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Tag == "spine-attach")
+                    ModuleUtilities.ListUnoccupiedPlugs(ship, Polarities.Female), 
+                    ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Polarity == Polarities.Male)
                 )
                 .ToArray()
                 ;
@@ -170,40 +180,41 @@ namespace Scanner.Megaship {
         }
 
     }
-    [InjectModificationRule]
-    public class FacilityConstruction : IModificationRuleInjector {
-        IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
-            var collection = context.phantomModules;
-            if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
-            foreach (var pmodule in collection) {
-                var matches = MatchingUtility.FindPossibleMatches(
-                    ModuleUtilities.ListUnoccupiedPlugs(ship).Where(p => p.Tag == "facility"), 
-                    ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Tag == "facility")
-                )
-                .ToArray()
-                ;
 
-                foreach (var match in matches) {
-                    string n = "";
-                    try { 
-                        n = $"{MatchingUtility.AttachedModuleOf(match).Name} to {MatchingUtility.ShipboardModuleOf(match).Name}";
-                    } catch (NullReferenceException e) {
-                        Debug.LogError(e);
-                    }
+    //[InjectModificationRule]
+    //public class FacilityConstruction : IModificationRuleInjector {
+    //    IEnumerable<ModificationOpportunity> IModificationRuleInjector.Inject(Ship ship, LinkQueryContext context) {
+    //        var collection = context.phantomModules;
+    //        if (context.explicitModule != null) collection = new List<Module>() { context.explicitModule };
+    //        foreach (var pmodule in collection) {
+    //            var matches = MatchingUtility.FindPossibleMatches(
+    //                ModuleUtilities.ListUnoccupiedPlugs(ship).Where(p => p.Tag == "ring"), 
+    //                ModuleUtilities.ListUnoccupiedPlugs(pmodule).Where(p => p.Tag == "ring")
+    //            )
+    //            .ToArray()
+    //            ;
 
-                    yield return new BuildAndAttachOpportunity() {
-                            name = $"Build facility {pmodule.Name} at {match.BSidePlugs.First().Name}",
-                            targetContact = match, 
-                            phantomModule = pmodule,
-                        };
-                    // }
-                }
-            }
+    //            foreach (var match in matches) {
+    //                string n = "";
+    //                try { 
+    //                    n = $"{MatchingUtility.AttachedModuleOf(match).Name} to {MatchingUtility.ShipboardModuleOf(match).Name}";
+    //                } catch (NullReferenceException e) {
+    //                    Debug.LogError(e);
+    //                }
 
-            yield break;
-        }
+    //                yield return new BuildAndAttachOpportunity() {
+    //                        name = $"Build facility {pmodule.Name} at {match.BSidePlugs.First().Name}",
+    //                        targetContact = match, 
+    //                        phantomModule = pmodule,
+    //                    };
+    //                // }
+    //            }
+    //        }
+
+    //        yield break;
+    //    }
         
-    }
+    //}
 
 
     class PlugGroup {

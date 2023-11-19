@@ -99,7 +99,29 @@ namespace Scanner.Megaship {
                     opportunities.Add(op);
                 }
             }
+
+            ConcatenateOpportunitiesList(opportunities);
+
             return opportunities;
+        }
+
+        private void ConcatenateOpportunitiesList(List<ModificationOpportunity> opportunities) {
+
+            // Find attachment opportunities that would attach:
+            // - an identical module
+            // - to the plugs of the same symmetry group
+            // - the plugs having an identical SYMMETRY PATH (this is going to be an issue...)
+
+            foreach (var opportunity in opportunities) {
+                if (opportunity is BuildAndAttachOpportunity bao) {
+                    var sp = bao.targetContact.AllShipboardPlugs();
+                    if (sp.Count() == 1) { 
+                        if (sp.First().SymmetryGroup > 0) {
+
+                        }
+                    }
+                }
+            }
         }
 
         GameObject hologramModuleObject;

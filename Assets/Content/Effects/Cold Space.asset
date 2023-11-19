@@ -1362,8 +1362,8 @@ MonoBehaviour:
     overrideState: 1
     value: 0.04
   aberration:
-    overrideState: 1
-    value: 2
+    overrideState: 0
+    value: 1
   preserveSaturationMin:
     overrideState: 1
     value: 0.3

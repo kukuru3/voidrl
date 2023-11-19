@@ -3,27 +3,12 @@ using System.Text;
 
 namespace Scanner.Megaship {
 
-    public class BuildMultipleOpportunity : ModificationOpportunity {
-        internal OpportunityTypes type;
-        internal Module module;
-        internal Linkage primaryContact;
-        public override string Print() { 
-            var sb = new StringBuilder();
-            sb.Append("Attach MULTIPLE [");
-            foreach (var (a, b) in primaryContact.pairings) { 
-                sb.Append(DisplayHelper.PrettyPrintPairing(a, b));
-                sb.Append(',');
-            }
-            sb.Remove(sb.Length - 1, 1);
-            sb.Append(']');
-            return sb.ToString();
-        }
-    }
-
     public class BuildAndAttachOpportunity : ModificationOpportunity {
-        // internal OpportunityTypes type;
         internal Module phantomModule;
         internal Linkage targetContact;
+
+        internal int symmetryGroup;
+
         public override string Print() {
             var sb = new StringBuilder();
             sb.Append("Build/Attach [");
@@ -41,6 +26,7 @@ namespace Scanner.Megaship {
                 name = this.name,
                 targetContact = this.targetContact,
                 phantomModule = to,
+                symmetryGroup = this.symmetryGroup,
             };
 
             opp.targetContact = new Linkage() {
