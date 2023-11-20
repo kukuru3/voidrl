@@ -2,7 +2,7 @@ Shader "Void/UIHolo"
 {
     Properties
     {
-        _Color ("Tint", Color) = (1,1,1,1)
+        [HDR]_Color ("Tint", Color) = (1,1,1,1)
     }
     SubShader
     {

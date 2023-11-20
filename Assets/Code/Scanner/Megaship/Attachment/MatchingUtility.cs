@@ -56,25 +56,25 @@ namespace Scanner.Megaship {
                     // but is accurate nonetheless:
                     // first we add the pool candidate, then rely on spatial matches to find other pool candidates.
 
-                    Debug.Log($"  Group match START, first pairing = {firstPlugInGroup.Name} => {poolCandidate.Name}"
-                        + $"  For this pairing to work, the parent module {firstPlugInGroup.Module.Name} would need to be at worldpos {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}" 
-                    );
+                    // Debug.Log($"  Group match START, first pairing = {firstPlugInGroup.Name} => {poolCandidate.Name}"
+                    //     + $"  For this pairing to work, the parent module {firstPlugInGroup.Module.Name} would need to be at worldpos {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}" 
+                    // );
 
                     for (var i = 1; i < group.Count; i++) {
                         var wposeOfPlug = worldPoseOfModuleSoThatPlugsCoincide.Mul(group[i].RelativePose);
-                        Debug.Log($"    Testing {group[i].Name} at tentative world pose {wposeOfPlug.Pretty()} against other potential spatial matches...");
+                        //Debug.Log($"    Testing {group[i].Name} at tentative world pose {wposeOfPlug.Pretty()} against other potential spatial matches...");
 
                         bool anyMatch = false;
                         foreach (var poolItem in prunedPool) {
                             var worldPoseOfSocket = PoseUtility.WorldPose((poolItem as Component).transform);
                             // var worldPoseOfSocket = poolItem.Module.transform.ToPose().Mul(poolItem.RelativePose);
                             if (PoseUtility.Identical(worldPoseOfSocket, wposeOfPlug)) {
-                                Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
+                                // Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
                                 matchedCandidatesInOrder.Add(poolItem);
                                 anyMatch = true;
                                 break;
                             } else {
-                                Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... NO MATCH");
+                                //Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... NO MATCH");
                             }
                         }
                         if (!anyMatch) { allMatch = false; break; }

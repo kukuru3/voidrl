@@ -18,7 +18,13 @@ namespace Scanner.Megaship {
 
         private Module[] phantomModules;
         private IList<IModificationRuleInjector> ruleInjectors;
-        private List<IShipPostprocessor> postProcessors;
+        private List<IShipPostprocessor> postProcessors;       
+        
+        GameObject hologramModuleObject;
+
+        public Ship Ship { get; set; }
+
+        public IEnumerable<Module> Templates => phantomModules;
 
         private void Start() {
             // GeneratePhantoms();
@@ -57,7 +63,6 @@ namespace Scanner.Megaship {
             return go.GetComponent<Module>();
         }
 
-        public Ship Ship { get; set; }
 
         void GenerateInitialShip() {
             Ship = shipRoot.GetComponent<Ship>();
@@ -67,11 +72,11 @@ namespace Scanner.Megaship {
             HandleShipChanged();
         }
 
+        public event System.Action OnShipChanged;
+
         private void HandleShipChanged() {
             foreach (var pp in postProcessors) pp.Postprocess(Ship);
-            var opportunities = RegenerateModifications();
-            ui.RegenerateModificationButtons(opportunities);
-            ui.UpdateVolatileState();
+            OnShipChanged?.Invoke();
         }
 
         public Module GenerateModule(string name) {
@@ -83,17 +88,16 @@ namespace Scanner.Megaship {
             return copy;
         }
 
-        public IList<ModificationOpportunity> RegenerateModifications() {
-            var lqc = new LinkQueryContext() {
-                concreteSymmetry = 1,
-                explicitModule = null,
-                phantomModules = this.phantomModules.ToList(),
+        public IList<ModificationOpportunity> ListModificationsForTemplate(Module template) {
+            var lq = new LinkQueryContext() {
+                explicitModule = template, 
+                phantomModules = phantomModules.ToList(),
             };
 
             List<ModificationOpportunity> opportunities = new();
 
             foreach (var injector in ruleInjectors) {
-                var ops = injector.Inject(Ship, lqc);
+                var ops = injector.Inject(Ship, lq);
                 foreach (var op in ops) {
                     // Debug.Log($"Injector {injector.GetType().Name} injected opportunity: {op.name} ; {op.Print()}");
                     opportunities.Add(op);
@@ -103,7 +107,30 @@ namespace Scanner.Megaship {
             ConcatenateOpportunitiesList(opportunities);
 
             return opportunities;
+
         }
+
+        //public IList<ModificationOpportunity> RegenerateAllPossibleModifications() {
+        //    var lqc = new LinkQueryContext() {
+        //        concreteSymmetry = 1,
+        //        explicitModule = null,
+        //        phantomModules = this.phantomModules.ToList(),
+        //    };
+
+        //    List<ModificationOpportunity> opportunities = new();
+
+        //    foreach (var injector in ruleInjectors) {
+        //        var ops = injector.Inject(Ship, lqc);
+        //        foreach (var op in ops) {
+        //            // Debug.Log($"Injector {injector.GetType().Name} injected opportunity: {op.name} ; {op.Print()}");
+        //            opportunities.Add(op);
+        //        }
+        //    }
+
+        //    ConcatenateOpportunitiesList(opportunities);
+
+        //    return opportunities;
+        //}
 
         private void ConcatenateOpportunitiesList(List<ModificationOpportunity> opportunities) {
 
@@ -124,9 +151,7 @@ namespace Scanner.Megaship {
             }
         }
 
-        GameObject hologramModuleObject;
-
-        void ClearHologram() {
+        internal void ClearHologram() {
             if (hologramModuleObject != null) Destroy(hologramModuleObject); hologramModuleObject = null;
         }
 
@@ -141,7 +166,7 @@ namespace Scanner.Megaship {
             return hologramModuleObject.GetComponent<Module>();
         }
 
-        internal void PositionModuleToObeyLinkage(Module toPosition, Linkage targetContact) {
+        internal Pose ModulePoseToObeyLinkage(Module toPosition, Linkage targetContact) {
             var pairing = targetContact.pairings.First();
             IPlug shipPlug = pairing.a;
             IPlug attachedPlug = pairing.b;
@@ -151,12 +176,15 @@ namespace Scanner.Megaship {
 
             var worldPoseOfShipPlug = (shipPlug as Component).transform.WorldPose();
             var worldPoseOfModuleSoThatPlugsCoincide = worldPoseOfShipPlug.Mul(attachedPlug.RelativePose.Inverse());
-            // Debug.Log($"sp = {shipPlug}; attP={attachedPlug}; WP = {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}, wpsp = {worldPoseOfShipPlug.Pretty()}, aprp = {attachedPlug.RelativePose.Pretty()}");
-            toPosition.transform.AssumePose(worldPoseOfModuleSoThatPlugsCoincide);
+            return worldPoseOfModuleSoThatPlugsCoincide;
+        }
+
+        internal void PositionModuleToObeyLinkage(Module toPosition, Linkage targetContact) {
+            var desiredPose = ModulePoseToObeyLinkage(toPosition, targetContact);
+            toPosition.transform.AssumePose(desiredPose);
         }
 
         public ModificationOpportunity CurrentModification { get; private set; }
-
 
 
         internal void ClearTentativeModification() {
@@ -166,6 +194,7 @@ namespace Scanner.Megaship {
         internal void ConcretizeCurrentModification() {
             if (CurrentModification is BuildAndAttachOpportunity attach) {
 
+                if (hologramModuleObject == null) return;
                 var holoModule = hologramModuleObject.GetComponent<Module>();
                 var concreteModule = GenerateModule(holoModule.Name);
                 var concreteAttachment = attach.WithModuleTransfer(concreteModule);
@@ -226,6 +255,7 @@ namespace Scanner.Megaship {
             FinalizeModification();
         }
 
+        
         internal void HandleModificationClicked(ModificationOpportunity mod) {
             if (mod is BuildAndAttachOpportunity attach) {
                 GenerateAttachableHologram(attach);
