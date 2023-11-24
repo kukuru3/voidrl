@@ -144,6 +144,8 @@ namespace Scanner.Megaship {
             foreach (var candidate in currentModPool) {
 
                 if (candidate.opportunity is BuildAndAttachOpportunity attach) {
+                    Debug.Assert(attach.phantomModule != null, "Module null?");
+                    Debug.Assert(attach.phantomModule.MassComponent != null, "Mass null?");
                     foreach (var massPointInModuleSpace in attach.phantomModule.MassComponent.AllMassPointsInModuleSpace()) {
                         var worldPosOfMassPointInTransformedModuleSpace = candidate.pose.TransformPoint(massPointInModuleSpace.localPosition);
                         var ssPos = builderCam3d.WorldToScreenPoint(worldPosOfMassPointInTransformedModuleSpace);

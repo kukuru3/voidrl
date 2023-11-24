@@ -36,11 +36,8 @@ namespace Scanner.Megaship.ShipFunctions {
 
         List<IPointMassProvider> providers;
 
-        private void Start() {
-            providers = GetComponentsInChildren<IPointMassProvider>().ToList();
-        }
-
         public IEnumerable<PointMass> AllMassPointsInModuleSpace() {
+            if (providers == null)  providers = GetComponentsInChildren<IPointMassProvider>().ToList();
             foreach (var provider in providers) { 
                 // individual providers return points in their local space. 
                 var transformationMatrix = transform.worldToLocalMatrix * ((Component)provider).transform.localToWorldMatrix;

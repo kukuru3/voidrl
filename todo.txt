@@ -1,5 +1,5 @@
 SHIP CONSTRUCTION
-[ ] FACILITIES: 
+THE FACILITIES PROBLEM
     - engineering facilities 
     - population facilities
     - hydroponics facilities
@@ -9,13 +9,17 @@ SHIP CONSTRUCTION
     which are displayed via the UI somehow but still tied to a ship part
 
 
+Structures
+
+ - Radiation shielding
+ - Gantry 
+ - Maneuver thrusters
+ - 
 
 [ ] Colliders on elements for clicking
 [ ] Hologlitches of holoshader
-[ ] "mass distribution" point cloud
+[x] mass distribution "point cloud"
 [ ] Radial facility: habitation module 
-[ ] Structure: Maneuver ring
-[ ] Structure: Gantry 
 [ ] Solve problem : facility slots are slim
    [ ] Maybe there is no problem. Just enumerate all the facilities you think you need.
    [ ] Zero-G habitat ("small ring"), occupying a single section of a module, with a cylinder that has 6 facility slots
@@ -24,14 +28,6 @@ SHIP CONSTRUCTION
 
 [ ] Thinner ring spokes (looks better, and is probably more scientifically accurate)
 [ ] Autogreebler
-
-
-
-- we do not need an ECS it seems. Clean it up and transfer most functionality into 
-  entities. Entities should be CONTAIN-able by default.
-
-- Stellar Nav Camera, Zoomer, and various Surrogates are currently a mess.
-  Create a better code structure that integrates them
 
 
 CORE: some very, very basic stuff for use by all. Units, conversions, utilities, etc. A scripting API may or may not live in here.
