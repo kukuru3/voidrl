@@ -1,5 +1,6 @@
 ﻿using K3;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Scanner.ModularShip {
     internal class ShipbuilderCamera : MonoBehaviour {
@@ -12,6 +13,8 @@ namespace Scanner.ModularShip {
 
         [SerializeField] float distMin;
         [SerializeField] float distMax;
+
+        [SerializeField] PostProcessVolume targetVolume;
 
         public float CamDistanceFactor { get; set; }
 
@@ -55,6 +58,10 @@ namespace Scanner.ModularShip {
             camParent.localRotation = Quaternion.Euler(Phi, Theta, 0);
             var dist = effectiveCamDist.Map(0f, 1f, distMin, distMax);
             camTransform.localPosition = new Vector3(0, 0, -dist);
+
+            var distParam = targetVolume.profile.GetSetting<DepthOfField>().focusDistance;
+            
+            distParam.Override(dist);
         }
     }
 }

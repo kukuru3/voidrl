@@ -1,8 +1,7 @@
 ﻿using System;
 using Scanner.ScannerView;
 using UnityEngine;
-
-
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Scanner {
     [ExecuteAlways]
@@ -71,6 +70,7 @@ namespace Scanner {
                 // mdCam.targetTexture = GetAspectPreservingTexture(mdCam.targetTexture, UICamera, 0.5f);
                 Shader.SetGlobalTexture("_RenderMetadata", mdCam.targetTexture);
             }
+
         }
     }
 }

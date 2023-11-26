@@ -1,18 +1,55 @@
-SHIP CONSTRUCTION
-THE FACILITIES PROBLEM
-    - engineering facilities 
-    - population facilities
-    - hydroponics facilities
+COMPONENT CONSTRAINTS:
+  - must be axial (e.g. engines)
+  - requires supercooling connection, life support, etc.
 
-    Or, solve these by just assigning "modules"
+
+COMPONENT SETTINGS 
+  - rotation direction
+  - shielding thickness
+
+Functionalities:
+radiation focus
+Rad shielding
+
+Stuff:
+
+
+
+FACILITY VARIANTS:
+Habitat (small ring) vs Habitat (large ring) - they are different, but same.
+
+CONSIDER: 
+Would be nice if the INNER part of the small  rings had an additional circular facility slot.
+
+
+SMALL structural ring:
+
+INNER (3 or 6 facility slots)
+
+SURFACE 
+
+
+But
+
+spokes and side-spines!
+
+
+
+SHIP CONSTRUCTION
+THE FACILITIES PROBLEM    
+    - habitation-related facilities are the only ones that need taking care of.
+    - hydroponic and engineering facilities can be "hard-facilities".
+    - habitation modules can be large and have internal slots.
+
+    Or, solve these by just assigning bays and modules.
     which then open up INTERNAL SLOTS
     which are displayed via the UI somehow but still tied to a ship part
 
 
 Structures
-
+ - Parallel spines
  - Radiation shielding
- - Gantry 
+ - Gantry
  - Maneuver thrusters
  - 
 
