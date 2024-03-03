@@ -459,3 +459,187 @@ MILITARY
   - training center 
   - simulator pods 
   - hangar bay
+
+
+=======================================
+
+=======================================
+GREAT SIMPLIFICATION
+
+Game is named Void.
+
+Ship is represented by a paper doll.
+
+There is a SPINAL paper doll and a RING paper doll. (Rings are an additional paper doll that coexists with the spinal one, but only one is ever at full opacity when you inspect the ship).
+
+Adjacency-wise, a ring is considered adjacent to its related spinal segment.
+
+Two rings can be considered adjacent if they spin in the same direction and you have some technology or another.
+
+Ship is divided into longitudinal SEGMENTS
+
+Each SEGMENT can house up to 3 MODULES initially.
+
+MODULES can have ATTACHMENTS, FACILITIES, SPECIALIZATIONS
+
+Modules have a SURFACE slot too!
+
+Some modules gobble up surface slots (see: large radiators)
+
+Surface slot stuff: radiators, centrifuge, armour, ring spokes
+
+Undecided surface slots:
+ ? point defence (seems redundant)
+ ? surface hangar (req. hangar, greatly increases small craft & deploy speeds) - seems redundant.
+ ? berth (a place for large ships to dock)  - seems redundant, or can be a facility
+
+
+SAMPLE SHIP: 
+
+I Propulsion  
+
+3xDAEDALUS FUSION ENGINE
+
+II Energy 
+
+Reactor core
+Reservoirs 
+Large radiator assembly (+heat exchanger turbines)
+
+III Utility 
+Crio-pumps 
+Storage bay 
+[ FREE SLOT] 
+
+IV Habitation
+Utility: life support
+
+Hab (10 000 ppl) (w: nursery, storm shelter)
+Hab (w: laboratory, medical center)
+Hydroponics
+surface: rad shielding (or:  surface reservoirs)
+
+V Engineering
+engineering bay (zero-g) (w:  materials lab)
+storage 
+industrial plant 
+
+surface: centrifuge
+
+VI Operations
+
+bridge (w. advanced sensor array)
+reactor core (auxilliary mode - own cooling)
+hangars 
+
+VII: forward shield
+
+
+In this paradigm:
+
+- forward impact shield decides what your maximum V can be. 
+
+- putting surface reservoirs onto habitats is a two-for-one deal, but they are more vulnerable to impacts. 
+
+- life support is a baked-in, per-module activatable.
+
+- you can upgrade the number of modules per section to 4
+
+- maximum lenght of the ship in sections is subject to your materials research.
+
+- before full rings you can unlock the ability to construct minor rings, a 2-slot module adjacent to the main module. These cannot coexist with full 6-slot large rings
+
+- a counterweight module is needed if you don't have counterrotating rings, wasting precious space.
+
+- "Restricted module" or "Black-ops" module is where you put all your secret stuff. 
+
+
+
+Resources: 
+
+MAJOR resources
+Water - can be reprocessed 
+Resources - used for construction 
+Organics - carbohydrates, mostly.
+Heavy elements
+(Raw ore) - unused on its own. Reprocessed, it yields some Water, Resources, Organics, and Heavy Elements, depending on composition / source of the raw ore. 
+
+Specific resources: 
+He-3 fuel
+(and other fuels)
+
+
+PHOSPHOR is tracked as a "well-being" element. It's one of the doomsday clocks in the game, that prevents you from population booming.
+
+People and hydroponics bays take up a part of the "phosphor budget". There is no hard cap but shortages will have mild-to-increasingly-severe health consequences. 
+
+
+you can QUARANTINE modules to prevent outbreaks. 
+
+(we should also consider carefully a "wiring" paper doll for flow of heat, power, and crio)
+
+Alien artefacts (or one-off "eva angel cores" that can each be used for a one-off module / construction / tech ) take the form of Slay the Spire relics (run mutators, variety injectors, rule breakers).
+
+Some annexes:
+- integrated living 
+
+Restricted modules allow you to work on secret projects. 
+- alien containment
+- dimensional laboratory
+- private army 
+
+
+Later modules:
+
+- Artificial ocean (water storage, recreation area)
+
+
+ANNEXES: 
+Hydroponics module 
+  - insect farm 
+  - algae tanks 
+  - synthetic flesh farm
+  - service arachnid annex
+
+Habitation module
+  - Nursery 
+  - Medical center
+  - Storm shelter
+  - Recreation area
+  - "Slums" (not called that, but still)
+  - Utopia
+
+Comand module: 
+ - training center 
+ - simulator pods 
+ - computer cores
+
+Engineering module 
+  - zero-g lathe
+  - ore processor
+  - recycler
+  - gantry
+  - maintenance bay
+
+Hangar module: 
+  - surface hangars 
+  - ship berth 
+  - 
+
+
+Various technology unlocks, in no set order:
+  - Needle Fusion (engines that work on proton chain, without He3)
+  - Brains in Jars (pilots will be the first to complain that their physical bodies are preventing them from executing maneuvers; the rest of the ship might follow)
+  - Service Arachnids 
+
+
+Morale / Comfort
+
+
+
+
+BLACKOUT 
+  - you must be careful with how you distribute things, because in the middle of the battle they can encounter BLACKOUT if a critical power system is knocked out; 
+  DEPRESSURIZATION event if life support is knocked out or a hab is pierced
+  - early game, micrometeorite events are not as terrible. But as you increase your velocity, they will become more and more serious. This meshes nicely with our game design, as it allows us to ease the player into redundancy mode.
+  - 

@@ -36,13 +36,13 @@ namespace Scanner.Megaship {
 
     public interface IPlug {
         Module Module { get; }
-        string Tag { get; }
         int    GroupID { get; }
         Linkage ActiveContact { get; set; }
         Pose    RelativePose { get; }
         Polarities Polarity { get; }
         string Name { get; }
         int SymmetryGroup { get; }
-        // bool Dependent { get; }
+        ISet<string> IncompatibleTags { get; }
+        ISet<string> CompatibleTags { get; }
     }
 }

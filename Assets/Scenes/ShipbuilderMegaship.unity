@@ -123,6 +123,40 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!21 &9186075
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &9834318
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: simple
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!114 &13589384
@@ -627,7 +662,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &33577103
@@ -852,6 +888,40 @@ MonoBehaviour:
     radialOrigin: {x: 0, y: 0, z: 0}
     radialRadius: 148.7
   useFill: 0
+--- !u!21 &45019045
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &45971504
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +997,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 298581697}
+  - {fileID: 104783578}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1022,69 +1092,6 @@ Transform:
   m_Father: {fileID: 1504600534}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &73724768
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 73724769}
-  - component: {fileID: 73724770}
-  - component: {fileID: 73724771}
-  m_Layer: 0
-  m_Name: Plug
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &73724769
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73724768}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.75, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 490610567}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &73724770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73724768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1b712fee18bedc41a02c01b087def77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: structural
-  <GroupID>k__BackingField: 3
-  <SymmetryGroup>k__BackingField: 0
---- !u!114 &73724771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73724768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d15be1d4eba114eb0da57e0f09a76e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angle: 0
-  distance: 3.75
 --- !u!1 &83849743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,7 +1171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &96475795
@@ -1350,9 +1358,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
+--- !u!21 &104783578
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Disc Transparent [INNER_RADIUS] (instance)
+  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
+  m_ValidKeywords:
+  - INNER_RADIUS
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _StencilComp: 6
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &111423506
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,6 +1470,41 @@ MonoBehaviour:
   - One
   - Two
   - Three
+--- !u!21 &113286159
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Disc Transparent [INNER_RADIUS] (instance)
+  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
+  m_ValidKeywords:
+  - INNER_RADIUS
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _StencilComp: 8
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &117903870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,7 +1550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: radiator
+  <Tags>k__BackingField: radiator
+  <ProhibitedTags>k__BackingField: structure
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &133426399
@@ -1608,40 +1688,6 @@ Transform:
   m_Father: {fileID: 1504600534}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &142161237
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &143680204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,7 +1816,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: radiator
+  <Tags>k__BackingField: radiator
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &160898116
@@ -1972,13 +2019,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163919888}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.75, z: -0}
+  m_LocalRotation: {x: -0, y: 3.0330864e-25, z: 1, w: 1.7794643e-24}
+  m_LocalPosition: {x: 0, y: -0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1491451089}
-  m_RootOrder: 0
+  m_Father: {fileID: 634885589}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &163919890
 MonoBehaviour:
@@ -1993,7 +2040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: structural
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!114 &163919891
@@ -2348,7 +2396,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1087279963}
+  - {fileID: 910316813}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2592,7 +2640,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490610567}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!23 &206033837
 MeshRenderer:
@@ -2782,40 +2830,6 @@ MonoBehaviour:
     radialOrigin: {x: 0, y: 0, z: 0}
     radialRadius: 148.7
   useFill: 0
---- !u!21 &216912904
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &218480023
 GameObject:
   m_ObjectHideFlags: 0
@@ -2991,7 +3005,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &220148045
@@ -3033,7 +3048,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 824241871}
+  - {fileID: 113286159}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3511,7 +3526,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &236815110
@@ -3559,9 +3575,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
+--- !u!21 &246058910
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &252844909
 GameObject:
   m_ObjectHideFlags: 0
@@ -3779,7 +3830,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-ext
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &264560369
@@ -4049,7 +4101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: structural
+  <Tags>k__BackingField: structural;adapter
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!114 &266908399
@@ -4065,40 +4118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explicitParent: {fileID: 0}
---- !u!21 &273413878
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &282528256
 GameObject:
   m_ObjectHideFlags: 0
@@ -4279,41 +4298,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284105418}
   m_Mesh: {fileID: -2194342972169228491, guid: 865e246e88bf7c54588ac1bc51e71635, type: 3}
---- !u!21 &298581697
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent [INNER_RADIUS] (instance)
-  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords:
-  - INNER_RADIUS
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 6
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &299181129
 GameObject:
   m_ObjectHideFlags: 0
@@ -4442,6 +4426,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315345636}
   m_Mesh: {fileID: 4323819055556671413, guid: 865e246e88bf7c54588ac1bc51e71635, type: 3}
+--- !u!1 &318087387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 318087388}
+  - component: {fileID: 318087389}
+  m_Layer: 0
+  m_Name: CenterOfMass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &318087388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318087387}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1094982540}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &318087389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 318087387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c861db41f00820c46aa55d9bc9b9fc6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &362844253
 GameObject:
   m_ObjectHideFlags: 0
@@ -4626,7 +4654,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: simple
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!114 &363695060
@@ -4750,7 +4779,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490610567}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &387414229
 GameObject:
@@ -5089,7 +5118,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-ext
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &478465720
@@ -5384,9 +5414,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 73724769}
-  - {fileID: 859426889}
-  - {fileID: 962015736}
   - {fileID: 500103214}
   - {fileID: 386714924}
   - {fileID: 206033836}
@@ -5486,7 +5513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   massKilotons: 100
---- !u!21 &492164940
+--- !u!21 &490829926
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -5674,7 +5701,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490610567}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &503370254
 GameObject:
@@ -5719,6 +5746,7 @@ Transform:
   - {fileID: 1692260666}
   - {fileID: 1059483215}
   - {fileID: 1104986857}
+  - {fileID: 1094982540}
   m_Father: {fileID: 1648109839}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5734,7 +5762,7 @@ GameObject:
   - component: {fileID: 509675931}
   - component: {fileID: 509675930}
   m_Layer: 0
-  m_Name: 'Socket: Heat Ring'
+  m_Name: 'Socket: Ring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5782,7 +5810,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &514247988
@@ -5947,7 +5976,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &554190605
@@ -5995,7 +6025,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring;facility
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &565272347
@@ -6117,6 +6148,40 @@ Transform:
   m_Father: {fileID: 1648109839}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &575849717
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &580668791
 GameObject:
   m_ObjectHideFlags: 0
@@ -6390,6 +6455,40 @@ MonoBehaviour:
     radialOrigin: {x: 0, y: 0, z: 0}
     radialRadius: 148.7
   useFill: 0
+--- !u!21 &590778780
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &599570939
 GameObject:
   m_ObjectHideFlags: 0
@@ -6582,7 +6681,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 142161237}
+  - {fileID: 1864350115}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6678,7 +6777,7 @@ GameObject:
   - component: {fileID: 603175651}
   - component: {fileID: 603175650}
   m_Layer: 0
-  m_Name: 'Socket: Heat Ring'
+  m_Name: 'Socket: Ring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6726,7 +6825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &614971637
@@ -6904,7 +7004,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &630063066
@@ -6952,7 +7053,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &634885588
@@ -6986,8 +7088,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1767269916}
-  - {fileID: 1491451089}
+  - {fileID: 868395565}
+  - {fileID: 163919889}
   m_Father: {fileID: 2084664663}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7237,7 +7339,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &643102886
@@ -7471,40 +7574,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &648749690
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &652211094
 GameObject:
   m_ObjectHideFlags: 0
@@ -7550,43 +7619,139 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: structural
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
---- !u!21 &664057821
-Material:
-  serializedVersion: 8
+--- !u!1 &658995647
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 658995649}
+  - component: {fileID: 658995648}
+  m_Layer: 0
+  m_Name: Audio (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &658995648
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658995647}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 97a064dfbddedbd4293f5f9a07d519af, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.547
+  m_Pitch: 0.57
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &658995649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658995647}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 961430102}
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677367225
 GameObject:
   m_ObjectHideFlags: 0
@@ -13027,7 +13192,7 @@ GameObject:
   - component: {fileID: 722655166}
   - component: {fileID: 722655165}
   m_Layer: 0
-  m_Name: 'Socket: Heat Ring'
+  m_Name: 'Socket: Ring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13075,7 +13240,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &738924813
@@ -13123,7 +13289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &754969473
@@ -13325,7 +13492,7 @@ GameObject:
   - component: {fileID: 761201746}
   - component: {fileID: 761201745}
   m_Layer: 0
-  m_Name: Reactor
+  m_Name: Toroid Reactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13487,7 +13654,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &785675838
@@ -13535,7 +13703,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine
+  <Tags>k__BackingField: axis
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &790802153
@@ -13603,7 +13772,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490610567}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &800374683
 MonoBehaviour:
@@ -13618,7 +13787,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: structural
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &809402310
@@ -13706,7 +13876,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &810986049
@@ -13754,7 +13925,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: ring
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 1
 --- !u!1 &811978175
@@ -13876,41 +14048,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   massKilotons: 40
---- !u!21 &824241871
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent [INNER_RADIUS] (instance)
-  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords:
-  - INNER_RADIUS
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 8
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &826301425
 GameObject:
   m_ObjectHideFlags: 0
@@ -13942,8 +14079,9 @@ Transform:
   m_Children:
   - {fileID: 1294258850}
   - {fileID: 2104771795}
+  - {fileID: 1180819427}
   m_Father: {fileID: 1104986857}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &826301427
 MonoBehaviour:
@@ -13993,69 +14131,6 @@ Transform:
   m_Father: {fileID: 1344995431}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &859426888
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 859426889}
-  - component: {fileID: 859426891}
-  - component: {fileID: 859426890}
-  m_Layer: 0
-  m_Name: Plug (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &859426889
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859426888}
-  m_LocalRotation: {x: 0, y: 0, z: -0.86602545, w: 0.49999997}
-  m_LocalPosition: {x: 3.2475953, y: -1.8750002, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 490610567}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &859426890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859426888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d15be1d4eba114eb0da57e0f09a76e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angle: 120
-  distance: 3.75
---- !u!114 &859426891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859426888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1b712fee18bedc41a02c01b087def77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: structural
-  <GroupID>k__BackingField: 3
-  <SymmetryGroup>k__BackingField: 0
 --- !u!1 &868395564
 GameObject:
   m_ObjectHideFlags: 0
@@ -14081,12 +14156,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868395564}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.75, z: -0}
+  m_LocalRotation: {x: -0, y: -0, z: 1.7794643e-24, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1767269916}
+  m_Father: {fileID: 634885589}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &868395566
@@ -14102,7 +14177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: structural
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!114 &868395567
@@ -14172,7 +14248,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 492164940}
+  - {fileID: 590778780}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14383,7 +14459,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &876017856
@@ -14440,7 +14517,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 948820613}
+  - {fileID: 2064417949}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14821,7 +14898,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 902991255}
   m_LocalRotation: {x: -0, y: -0, z: 1.7794643e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14841,9 +14918,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
-  <GroupID>k__BackingField: 1
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
+  <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
+--- !u!21 &910316813
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Disc Transparent [INNER_RADIUS] (instance)
+  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
+  m_ValidKeywords:
+  - INNER_RADIUS
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _StencilComp: 8
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &916156913
 GameObject:
   m_ObjectHideFlags: 0
@@ -14935,7 +15048,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &924640228
@@ -15111,7 +15225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: structural;ring;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &936663847
@@ -15283,7 +15398,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490610567}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!23 &940075808
 MeshRenderer:
@@ -15473,40 +15588,6 @@ MonoBehaviour:
     radialOrigin: {x: 0, y: 0, z: 0}
     radialRadius: 148.7
   useFill: 0
---- !u!21 &948820613
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &958870743
 GameObject:
   m_ObjectHideFlags: 0
@@ -15539,7 +15620,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 30, y: 15, z: 0}
---- !u!1 &962015735
+--- !u!1 &961430101
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15547,61 +15628,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 962015736}
-  - component: {fileID: 962015738}
-  - component: {fileID: 962015737}
+  - component: {fileID: 961430102}
+  - component: {fileID: 961430103}
   m_Layer: 0
-  m_Name: Plug (2)
+  m_Name: Listener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &962015736
+--- !u!4 &961430102
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962015735}
-  m_LocalRotation: {x: 0, y: 0, z: -0.8660254, w: -0.50000006}
-  m_LocalPosition: {x: -3.2475953, y: -1.8749996, z: 0}
+  m_GameObject: {fileID: 961430101}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 490610567}
-  m_RootOrder: 2
+  m_Father: {fileID: 658995649}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &962015737
-MonoBehaviour:
+--- !u!81 &961430103
+AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962015735}
+  m_GameObject: {fileID: 961430101}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d15be1d4eba114eb0da57e0f09a76e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angle: 240
-  distance: 3.75
---- !u!114 &962015738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962015735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1b712fee18bedc41a02c01b087def77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: structural
-  <GroupID>k__BackingField: 3
-  <SymmetryGroup>k__BackingField: 0
 --- !u!1 &973589704
 GameObject:
   m_ObjectHideFlags: 0
@@ -15923,7 +15981,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine
+  <Tags>k__BackingField: axis
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &979570632
@@ -16143,7 +16202,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: radiator
+  <Tags>k__BackingField: radiator;
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &989119917
@@ -16191,7 +16251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: ring
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 1
 --- !u!1 &1001139821
@@ -16534,7 +16595,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1056194552
@@ -16790,7 +16852,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach;structural
+  <ProhibitedTags>k__BackingField: surface
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1064289697
@@ -17125,7 +17188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1068522593
@@ -17288,7 +17352,7 @@ Transform:
   - {fileID: 1681518053}
   - {fileID: 1913872665}
   m_Father: {fileID: 1104986857}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &1073444990
 MonoBehaviour:
@@ -17304,41 +17368,68 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fromLocal: {x: 0, y: 0, z: -1.3}
   toLocal: {x: 0, y: 0, z: 1.3}
---- !u!21 &1087279963
-Material:
-  serializedVersion: 8
+--- !u!1 &1094982539
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent [INNER_RADIUS] (instance)
-  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords:
-  - INNER_RADIUS
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 8
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1094982540}
+  - component: {fileID: 1094982542}
+  - component: {fileID: 1094982541}
+  m_Layer: 0
+  m_Name: Small Reservoir
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1094982540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094982539}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4, y: 8.271803e-25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1118730699}
+  - {fileID: 1755918762}
+  - {fileID: 318087388}
+  m_Father: {fileID: 503370255}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1094982541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094982539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0825f55d68644b941bb4d8584e4ac272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  massKilotons: 5.6
+--- !u!114 &1094982542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094982539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09ad31a25b5a94409fdc9fa678ffa43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Small Reservoir
 --- !u!1 &1096197128
 GameObject:
   m_ObjectHideFlags: 0
@@ -17529,7 +17620,7 @@ GameObject:
   - component: {fileID: 1104986859}
   - component: {fileID: 1104986858}
   m_Layer: 0
-  m_Name: TripleSpine
+  m_Name: RadialAdapter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17548,7 +17639,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 902991256}
-  - {fileID: 1544141963}
   - {fileID: 1679929795}
   - {fileID: 1558516711}
   - {fileID: 826301426}
@@ -17631,7 +17721,90 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104986856}
-  m_Mesh: {fileID: 9085457240018072271, guid: 865e246e88bf7c54588ac1bc51e71635, type: 3}
+  m_Mesh: {fileID: -8735947003886845606, guid: 865e246e88bf7c54588ac1bc51e71635, type: 3}
+--- !u!1 &1118730698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1118730699}
+  - component: {fileID: 1118730701}
+  - component: {fileID: 1118730700}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1118730699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118730698}
+  m_LocalRotation: {x: -0.7071068, y: 0.000000002634178, z: -0.0000000026341775, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1094982540}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1118730700
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118730698}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: e759df0737cdb374380af51a199783f3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1118730701
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118730698}
+  m_Mesh: {fileID: -2094118336264413680, guid: 865e246e88bf7c54588ac1bc51e71635, type: 3}
 --- !u!1 &1137444586
 GameObject:
   m_ObjectHideFlags: 0
@@ -17671,6 +17844,123 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 515112250938208543, guid: b0b9d5fcf1ca07f46821a38fab243ca9, type: 3}
   m_PrefabInstance: {fileID: 1394389058}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1180819426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1180819427}
+  - component: {fileID: 1180819429}
+  - component: {fileID: 1180819428}
+  m_Layer: 0
+  m_Name: Lattice (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1180819427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180819426}
+  m_LocalRotation: {x: -0, y: -0, z: 1.7794643e-24, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 826301426}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1180819428
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180819426}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: e759df0737cdb374380af51a199783f3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1180819429
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180819426}
+  m_Mesh: {fileID: -2194342972169228491, guid: 865e246e88bf7c54588ac1bc51e71635, type: 3}
+--- !u!21 &1185644594
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1195794470
 GameObject:
   m_ObjectHideFlags: 0
@@ -17716,43 +18006,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
---- !u!21 &1204455196
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1218969252
 GameObject:
   m_ObjectHideFlags: 0
@@ -17910,7 +18167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1222879305
@@ -18105,7 +18363,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2144545282}
+  - {fileID: 1995981828}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18900,7 +19158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1267715775
@@ -19098,7 +19357,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: simple
+  <Tags>k__BackingField: structure
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1276693854
@@ -19275,77 +19535,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!21 &1284467560
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent [INNER_RADIUS] (instance)
-  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords:
-  - INNER_RADIUS
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 6
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
---- !u!21 &1291942215
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent [INNER_RADIUS][SECTOR] (instance)
-  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords:
-  - INNER_RADIUS
-  - SECTOR
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _StencilComp: 6
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1294258849
 GameObject:
   m_ObjectHideFlags: 0
@@ -19648,7 +19837,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1318113128
@@ -20497,7 +20687,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: simple
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!114 &1382491208
@@ -20951,7 +21142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1421591759
@@ -21104,7 +21296,7 @@ GameObject:
   - component: {fileID: 1438936619}
   - component: {fileID: 1438936618}
   m_Layer: 0
-  m_Name: 'Socket: Heat Ring'
+  m_Name: 'Socket: Ring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21152,7 +21344,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1442403200
@@ -21476,7 +21669,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1472005402
@@ -21730,41 +21924,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
---- !u!1 &1491451088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1491451089}
-  m_Layer: 0
-  m_Name: SocketRoot (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1491451089
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1491451088}
-  m_LocalRotation: {x: -0, y: 3.0330864e-25, z: 1, w: 1.7794643e-24}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 163919889}
-  m_Father: {fileID: 634885589}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &1493463858
 GameObject:
   m_ObjectHideFlags: 0
@@ -22326,54 +22489,6 @@ MonoBehaviour:
   closed: 0
   thickness: 0.3
   thicknessSpace: 1
---- !u!1 &1544141962
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1544141963}
-  - component: {fileID: 1544141964}
-  m_Layer: 0
-  m_Name: Plug
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1544141963
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544141962}
-  m_LocalRotation: {x: -0, y: -0, z: 1.7794643e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1104986857}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1544141964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544141962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1b712fee18bedc41a02c01b087def77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
-  <GroupID>k__BackingField: 1
-  <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1551722240
 GameObject:
   m_ObjectHideFlags: 0
@@ -22718,7 +22833,7 @@ Transform:
   - {fileID: 1876617550}
   - {fileID: 93830510}
   m_Father: {fileID: 1104986857}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &1558516712
 MonoBehaviour:
@@ -22780,7 +22895,7 @@ GameObject:
   - component: {fileID: 1563605126}
   - component: {fileID: 1563605125}
   m_Layer: 0
-  m_Name: 'Socket: Heat Ring'
+  m_Name: 'Socket: Ring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22828,7 +22943,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1580719682
@@ -22891,7 +23007,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1581376667
@@ -22939,10 +23056,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
---- !u!21 &1600900251
+--- !u!21 &1606568021
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -23306,7 +23424,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 273413878}
+  - {fileID: 9186075}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23607,7 +23725,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1629917825
@@ -23670,7 +23789,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1630332955
@@ -23884,6 +24004,41 @@ MonoBehaviour:
     spacing: 4
     offset: 0
     shapeModifier: 1
+--- !u!21 &1641382867
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Disc Transparent [INNER_RADIUS] (instance)
+  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
+  m_ValidKeywords:
+  - INNER_RADIUS
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _StencilComp: 6
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1641925418
 GameObject:
   m_ObjectHideFlags: 0
@@ -23929,43 +24084,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: ring
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
---- !u!21 &1645950195
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1646636065
 GameObject:
   m_ObjectHideFlags: 0
@@ -24228,7 +24350,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1104986857}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1679929796
 MonoBehaviour:
@@ -24601,7 +24723,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1708651207
@@ -25180,7 +25303,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1748570239}
   - component: {fileID: 1748570238}
-  - component: {fileID: 1748570237}
   - component: {fileID: 1748570236}
   - component: {fileID: 1748570240}
   m_Layer: 0
@@ -25260,14 +25382,6 @@ MonoBehaviour:
       PublicKeyToken=null
   - assemblyQualifiedName: Scanner.PostEffects.SciFiOverlay, Scanner, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!81 &1748570237
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748570235}
-  m_Enabled: 1
 --- !u!20 &1748570238
 Camera:
   m_ObjectHideFlags: 0
@@ -25295,7 +25409,7 @@ Camera:
   far clip plane: 500
   field of view: 60
   orthographic: 1
-  orthographic size: 556
+  orthographic size: 484
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -25352,7 +25466,7 @@ GameObject:
   - component: {fileID: 1755484045}
   - component: {fileID: 1755484044}
   m_Layer: 0
-  m_Name: 'Socket: Heat Ring'
+  m_Name: 'Socket: Ring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25400,7 +25514,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: heatring
+  <Tags>k__BackingField: ring
+  <ProhibitedTags>k__BackingField: 
+  <GroupID>k__BackingField: 0
+  <SymmetryGroup>k__BackingField: 0
+--- !u!1 &1755918761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755918762}
+  - component: {fileID: 1755918763}
+  m_Layer: 0
+  m_Name: Plug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1755918762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755918761}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1094982540}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1755918763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755918761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b712fee18bedc41a02c01b087def77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Polarity>k__BackingField: 0
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1756923335
@@ -25467,7 +25631,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 490610567}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1760454618
 MonoBehaviour:
@@ -25482,41 +25646,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: structural
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
---- !u!1 &1767269915
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1767269916}
-  m_Layer: 0
-  m_Name: SocketRoot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1767269916
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767269915}
-  m_LocalRotation: {x: -0, y: -0, z: 1.7794643e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 868395565}
-  m_Father: {fileID: 634885589}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1771888770
 GameObject:
   m_ObjectHideFlags: 0
@@ -25692,43 +25825,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
---- !u!21 &1792470470
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Rect Additive (instance)
-  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 8
-    - _StencilComp: 8
-    - _StencilID: 0
-    - _StencilOp: 0
-    - _StencilOpPass: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1794235188
 GameObject:
   m_ObjectHideFlags: 0
@@ -26084,7 +26184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: simple
+  <Tags>k__BackingField: structure
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1820645510
@@ -26141,7 +26242,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1204455196}
+  - {fileID: 246058910}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26497,6 +26598,40 @@ Transform:
   m_Father: {fileID: 1504600534}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1864350115
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1876617549
 GameObject:
   m_ObjectHideFlags: 0
@@ -26625,7 +26760,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1888395455
@@ -27168,7 +27304,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 648749690}
+  - {fileID: 45019045}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27280,7 +27416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912412117}
   m_LocalRotation: {x: 0.000000021855694, y: -8.14188e-17, z: -0.0000000037252899, w: 1}
-  m_LocalPosition: {x: 1.3027008e-15, y: 0.00000017484555, z: -4}
+  m_LocalPosition: {x: -8, y: 0.0000002344502, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27308,7 +27444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09ad31a25b5a94409fdc9fa678ffa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Module
+  <Name>k__BackingField: Military Module
 --- !u!23 &1912412120
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27417,7 +27553,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1939684812
@@ -27459,7 +27596,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1284467560}
+  - {fileID: 1641382867}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27721,7 +27858,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1291942215}
+  - {fileID: 2009159429}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27870,7 +28007,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2007855853}
+  - {fileID: 2068093613}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -28167,7 +28304,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: 
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &1991632471
@@ -28300,6 +28438,40 @@ MonoBehaviour:
     spacing: 0.5
     offset: 0
     shapeModifier: 1
+--- !u!21 &1992284095
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1993429684
 GameObject:
   m_ObjectHideFlags: 0
@@ -28438,6 +28610,40 @@ MonoBehaviour:
     radialOrigin: {x: 0, y: 0, z: 0}
     radialRadius: 148.7
   useFill: 0
+--- !u!21 &1995981828
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Disc Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 0
+    - _StencilComp: 8
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1997257419
 GameObject:
   m_ObjectHideFlags: 0
@@ -28612,16 +28818,18 @@ MonoBehaviour:
     spacing: 4
     offset: 0
     shapeModifier: 1
---- !u!21 &2007855853
+--- !u!21 &2009159429
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent (instance)
+  m_Name: Disc Transparent [INNER_RADIUS][SECTOR] (instance)
   m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - INNER_RADIUS
+  - SECTOR
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -28634,11 +28842,11 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
+    - _ColorMask: 15
+    - _StencilComp: 6
     - _StencilID: 8
     - _StencilOp: 0
-    - _StencilOpPass: 2
+    - _StencilOpPass: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
     - _ZOffsetFactor: 0
@@ -29436,7 +29644,7 @@ PrefabInstance:
     - target: {fileID: 174169732047503097, guid: 9afefa123894b30418f327c3eeba9e35, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1645950195}
+      objectReference: {fileID: 1992284095}
     - target: {fileID: 1061544261885460881, guid: 9afefa123894b30418f327c3eeba9e35, type: 3}
       propertyPath: m_text
       value: 'Cancel
@@ -29609,6 +29817,74 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!21 &2064417949
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Rect Additive (instance)
+  m_Shader: {fileID: 4800000, guid: bd2222a9abe9bd6448228306ce43119d, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 8
+    - _StencilComp: 8
+    - _StencilID: 0
+    - _StencilOp: 0
+    - _StencilOpPass: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
+--- !u!21 &2068093613
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Disc Transparent (instance)
+  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 0
+    - _StencilComp: 8
+    - _StencilID: 8
+    - _StencilOp: 0
+    - _StencilOpPass: 2
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &2069949051
 GameObject:
   m_ObjectHideFlags: 0
@@ -29663,7 +29939,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 216912904}
+  - {fileID: 1606568021}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30059,7 +30335,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: facility
+  <Tags>k__BackingField: structural;surface
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &2104771794
@@ -30107,7 +30384,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 1
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: structural
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 0
   <SymmetryGroup>k__BackingField: 0
 --- !u!1 &2131126873
@@ -30144,40 +30422,6 @@ Transform:
   m_Father: {fileID: 2086917720}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &2144545282
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Disc Transparent (instance)
-  m_Shader: {fileID: 4800000, guid: 0736a017ee88a8741b09e7382339ab99, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 0
-    - _StencilComp: 8
-    - _StencilID: 8
-    - _StencilOp: 0
-    - _StencilOpPass: 2
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
-    - _ZTest: 4
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &2146610583
 GameObject:
   m_ObjectHideFlags: 0
@@ -30223,7 +30467,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Polarity>k__BackingField: 0
-  <Tag>k__BackingField: spine-attach
+  <Tags>k__BackingField: radial-attach
+  <ProhibitedTags>k__BackingField: 
   <GroupID>k__BackingField: 1
   <SymmetryGroup>k__BackingField: 0
 --- !u!1001 &9106569626736563857
@@ -30236,7 +30481,7 @@ PrefabInstance:
     - target: {fileID: 174169732047503097, guid: 9afefa123894b30418f327c3eeba9e35, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 664057821}
+      objectReference: {fileID: 1185644594}
     - target: {fileID: 1061544261885460881, guid: 9afefa123894b30418f327c3eeba9e35, type: 3}
       propertyPath: m_text
       value: Apply

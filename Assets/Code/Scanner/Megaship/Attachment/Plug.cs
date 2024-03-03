@@ -8,7 +8,6 @@ namespace Scanner.Megaship {
 
     // a Point Linkable
     internal class Plug : MonoBehaviour, IPlug {
-
         public override string ToString() {
             if (module == null) return $"[ORPHAN]:{Name}";
             if (module.Ship == null) {
@@ -19,8 +18,18 @@ namespace Scanner.Megaship {
         }
 
         [field:SerializeField] public Polarities Polarity { get; private set; }
-        [field:SerializeField] public string Tag { get; private set; }
-        
+        // [field:SerializeField] public string Tag { get; private set; }
+
+        // for sockets, provided tags; for plugs, required tags
+        [field:SerializeField] public string Tags { get; private set; }
+
+        [field:SerializeField] public string ProhibitedTags { get; private set; }
+
+        // public bool Compatible(string tag) => compatibleTags.Contains(tag) && !prohibitedTags.Contains(tag);
+
+        public ISet<string> CompatibleTags => compatibleTags;
+        public ISet<string> IncompatibleTags => prohibitedTagSet;
+
         public Module Module { get { module = module != null ? module : GetComponentInParent<Module>(); return module; } }
 
         Module module;
@@ -40,8 +49,13 @@ namespace Scanner.Megaship {
             }
         }
 
+        HashSet<string> compatibleTags = new HashSet<string>();
+        HashSet<string> prohibitedTagSet = new HashSet<string>();
+
         void Awake() {
             module = GetComponentInParent<Module>();
+            compatibleTags = Tags.Split(';').Select(s => s.Trim()).ToHashSet();
+            prohibitedTagSet = ProhibitedTags.Split(';').Select(s => s.Trim()).ToHashSet();
         }
 
         public string Name => name;

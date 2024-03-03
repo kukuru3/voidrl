@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using K3;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 namespace Scanner.Megaship {
@@ -56,25 +57,25 @@ namespace Scanner.Megaship {
                     // but is accurate nonetheless:
                     // first we add the pool candidate, then rely on spatial matches to find other pool candidates.
 
-                    // Debug.Log($"  Group match START, first pairing = {firstPlugInGroup.Name} => {poolCandidate.Name}"
-                    //     + $"  For this pairing to work, the parent module {firstPlugInGroup.Module.Name} would need to be at worldpos {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}" 
-                    // );
+                    Debug.Log($"  Group match START, first pairing = {firstPlugInGroup.Name} => {poolCandidate.Name}"
+                        + $"  For this pairing to work, the parent module {firstPlugInGroup.Module.Name} would need to be at worldpos {worldPoseOfModuleSoThatPlugsCoincide.Pretty()}" 
+                    );
 
                     for (var i = 1; i < group.Count; i++) {
                         var wposeOfPlug = worldPoseOfModuleSoThatPlugsCoincide.Mul(group[i].RelativePose);
-                        //Debug.Log($"    Testing {group[i].Name} at tentative world pose {wposeOfPlug.Pretty()} against other potential spatial matches...");
+                        Debug.Log($"    Testing {group[i].Name} at tentative world pose {wposeOfPlug.Pretty()} against other potential spatial matches...");
 
                         bool anyMatch = false;
                         foreach (var poolItem in prunedPool) {
                             var worldPoseOfSocket = PoseUtility.WorldPose((poolItem as Component).transform);
                             // var worldPoseOfSocket = poolItem.Module.transform.ToPose().Mul(poolItem.RelativePose);
                             if (PoseUtility.Identical(worldPoseOfSocket, wposeOfPlug)) {
-                                // Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
+                                Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... MATCH");
                                 matchedCandidatesInOrder.Add(poolItem);
                                 anyMatch = true;
                                 break;
                             } else {
-                                //Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... NO MATCH");
+                                Debug.Log($"      Testing socket {poolItem.Name} against {group[i].Name}... NO MATCH");
                             }
                         }
                         if (!anyMatch) { allMatch = false; break; }
@@ -85,9 +86,12 @@ namespace Scanner.Megaship {
                 }
             }
         }
-
         private static bool IsCompatible(IPlug a, IPlug b) {
-            if (a.Tag != b.Tag) return false;
+            
+            if (!a.CompatibleTags.Intersect(b.CompatibleTags).Any())  return false;
+            if (a.CompatibleTags.Intersect(b.IncompatibleTags).Any()) return false;
+            if (b.CompatibleTags.Intersect(a.IncompatibleTags).Any()) return false;
+            
             var polaritiesCompatible = (a.Polarity, b.Polarity) switch {
                 (Polarities.Male, Polarities.Female) => true,
                 (Polarities.Female, Polarities.Male) => true,
@@ -95,6 +99,10 @@ namespace Scanner.Megaship {
                 _ => false,
             };
             if (!polaritiesCompatible) return false;
+
+            // var (male, female) = a.Polarity == Polarities.Male ? (a, b) : (b, a);
+            // foreach (var tag in male.Tags) return female.Compatible(tag);
+
             return true;
         }
 
@@ -117,10 +125,6 @@ namespace Scanner.Megaship {
             }
 
             foreach (var key in groups.Keys.OrderBy(k => k)) yield return groups[key];            
-        }
-
-        internal static bool AllPlugsContainTag(Linkage link, string tag) {
-            return link.AllPlugs.All(p => p.Tag == tag);
         }
 
         internal static IEnumerable<IPlug> AllShipboardPlugs(this Linkage link) {

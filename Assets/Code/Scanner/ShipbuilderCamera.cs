@@ -16,13 +16,13 @@ namespace Scanner.ModularShip {
 
         [SerializeField] PostProcessVolume targetVolume;
 
-        public float CamDistanceFactor { get; set; }
+        public float CamDistanceFactor { get; set; } = 1f;
 
-        float effectiveCamDist;
+        float effectiveCamDist = 1f;
         float _cdVel;
 
-        public float Theta { get; set; }
-        public float Phi { get; set; }
+        public float Theta { get; set; } = -45;
+        public float Phi { get; set; } = 45;
 
 
         public float AxisPan { get; set; }
@@ -56,12 +56,12 @@ namespace Scanner.ModularShip {
             //Theta = Mathf.Clamp(Theta, -35, 125);
             
             camParent.localRotation = Quaternion.Euler(Phi, Theta, 0);
+
             var dist = effectiveCamDist.Map(0f, 1f, distMin, distMax);
             camTransform.localPosition = new Vector3(0, 0, -dist);
 
-            var distParam = targetVolume.profile.GetSetting<DepthOfField>().focusDistance;
-            
-            distParam.Override(dist);
+            //var distParam = targetVolume.profile.GetSetting<DepthOfField>().focusDistance;            
+            //distParam.Override(dist);
         }
     }
 }
