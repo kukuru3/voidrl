@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Scanner.Sweeteners {
+
     internal class CompositeShaker : MonoBehaviour {
 
         [Serializable] internal struct Factor {
@@ -18,6 +19,10 @@ namespace Scanner.Sweeteners {
         [SerializeField] float amplitude = 1f;
         [SerializeField] float frequency = 1f;
 
+        [SerializeField][Range(0f, 1f)] float rotationFactor = 0f;
+        [SerializeField][Range(0f, 1f)] float translationFactor = 1f;
+        
+
         Vector3 initialPos;
         private void Start() {
             initialPos = transform.localPosition;
@@ -27,8 +32,11 @@ namespace Scanner.Sweeteners {
             var x = Resolve(xRot);
             var y = Resolve(yRot);
             var z = Resolve(zRot);
-            transform.localPosition = initialPos + new Vector3(x,y,z); // Quaternion.Euler(x, y, z);
+            transform.localPosition = initialPos + new Vector3(x,y,z) * translationFactor; // Quaternion.Euler(x, y, z);
+            transform.localRotation = Quaternion.Euler(x * rotationFactor, y * rotationFactor, z * rotationFactor);
         }
+
+
 
         float Resolve(Factor[] factors) {
             var sum = 0f;
