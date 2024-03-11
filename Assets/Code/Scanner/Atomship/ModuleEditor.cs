@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Core.h3x;
 using K3.Hex;
 using UnityEngine;
-using static IronPython.Modules._ast;
 
 namespace Scanner.Atomship {
 
@@ -18,13 +17,13 @@ namespace Scanner.Atomship {
 
         [SerializeField] Transform root;
         
-        StructureModel currentModel;
+        public StructureModel CurrentModel { get; private set; }
 
         [SerializeField][Range(0.5f, 2f)] float radialDistance = 1f;
         [SerializeField][Range(0.5f, 2f)] float zedDistanceMultiplier = 1f;
 
-        void CreateNew() {
-            currentModel = new StructureModel() {
+        internal void CreateNew() {
+            CurrentModel = new StructureModel() {
                 features = new List<Feature> {
                     new Feature {
                         type = FeatureTypes.Part,
@@ -35,8 +34,6 @@ namespace Scanner.Atomship {
 
             SyncModel();
         }
-
-       
 
         // q+ : up-right
         // r+ : up
@@ -83,74 +80,116 @@ namespace Scanner.Atomship {
                 var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
                 if (Input.GetMouseButtonDown(0)) {
-                    if (Input.GetKey(KeyCode.P)) TryCreateProhibition(res.Value.coords + res.Value.dir.QRZOffset());
+                    if (Input.GetKey(KeyCode.Delete)) TryCreateProhibition(res.Value.coords + res.Value.dir.QRZOffset());
                     else if (shift)     TryRemovePart(res.Value.coords, res.Value.dir);
+                    else if (Input.GetKey(KeyCode.A)) SetAllForbiddenConnectionsPermissive(res.Value.coords);
+                    else if (Input.GetKey(KeyCode.P)) SetPrimaryConnection(res.Value.coords, res.Value.dir);
                     else CycleConnection(res.Value.coords, res.Value.dir);
+
                 } else if (Input.GetMouseButtonDown(2)) {
                     TryAddPart(res.Value.coords, res.Value.dir);
                 } 
             }
         }
 
+        private void SetAllForbiddenConnectionsPermissive(Hex3 coords) {
+            foreach (var dir in HexExpansions.AllDirections) {
+                var c = FindConnectionFeature(coords, dir, true);
+
+                if (c == null) {                    
+                    var ctype = InferConnectionType(coords, dir);
+                    if (ctype == ConnectionTypes.Forbidden) { 
+                        CurrentModel.features.Add(new Feature {
+                            coords = coords,
+                            direction = dir,
+                            connType = ConnectionTypes.Allowed,
+                            type = FeatureTypes.Connector,
+                        });
+                    }
+                }
+            }
+            SyncModel();
+        }
+
         private void TryCreateProhibition(Hex3 coords) {
             if (FindPartFeature(coords) != null) throw new System.Exception("already occupied");
-             currentModel.features.Add(new Feature {
+             CurrentModel.features.Add(new Feature {
                  coords = coords,
                  type = FeatureTypes.ProhibitedSpace,
              });
             SyncModel();
         }
 
+        void SetPrimaryConnection(Hex3 coords, QRZDir dir) {
+             var conn = FindConnectionFeature(coords, dir, true);
+            if (conn == null) {
+                conn = new Feature {
+                    type = FeatureTypes.Connector,
+                    coords = coords,
+                    direction = dir,
+                };
+                CurrentModel.features.Add(conn);
+            }
+            conn.connType = ConnectionTypes.Primary;
+            SyncModel();
+        }
+
         private void CycleConnection(Hex3 coords, QRZDir dir) {
             // var destination = value.coords + QRZOffset(value.dir);
-            var existingConnection = FindConnectionFeature(coords, dir);
+            var existingConnection = FindConnectionFeature(coords, dir, true);
             if (existingConnection == null) {
                 existingConnection = new Feature {
                     type = FeatureTypes.Connector,
                     coords = coords,
                     direction = dir,
-                    connType = ConnectionTypes.Allowed,
+                    connType = ConnectionTypes.Forbidden,
                 };
-                currentModel.features.Add(existingConnection);
+                CurrentModel.features.Add(existingConnection);
             }
             existingConnection.connType = NextInCycle(existingConnection.connType);
 
-            if (existingConnection.connType == ConnectionTypes.Allowed) {
-                currentModel.features.Remove(existingConnection);
+            if (existingConnection.connType == ConnectionTypes.Forbidden) {
+                CurrentModel.features.Remove(existingConnection);
             }
 
             SyncModel();
             
             ConnectionTypes NextInCycle(ConnectionTypes old) => old switch { 
                 ConnectionTypes.Allowed => ConnectionTypes.Forbidden,
-                ConnectionTypes.Forbidden => ConnectionTypes.Primary,
                 _ => ConnectionTypes.Allowed,
             };
         }
 
         private void TryAddPart(Hex3 coords, QRZDir dir) {
             var q = coords + dir.QRZOffset();
-            if (currentModel.features.Any(a => a.coords == q)) throw new Exception("Already occupied");
-            currentModel.features.Add(new Feature {
+            if (CurrentModel.features.Any(a => a.coords == q)) throw new Exception("Already occupied");
+            CurrentModel.features.Add(new Feature {
                 type = FeatureTypes.Part,
                 coords = q,
             });
             SyncModel();
         }
 
-        Feature FindConnectionFeature(Hex3 coords, QRZDir dir) =>
-            currentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.coords == coords && a.direction == dir);
+        Feature FindConnectionFeature(Hex3 coords, QRZDir dir, bool symmetrical = false) { 
+            var f = CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.coords == coords && a.direction == dir);
+            if (symmetrical) { 
+                coords += dir.QRZOffset();
+                dir = dir.Inverse();
+                f ??= CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.coords == coords && a.direction == dir);
+            }
+            return f;
+        }
 
         Feature FindPartFeature(Hex3 coords) =>
-            currentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Part && a.coords == coords);
+            CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Part && a.coords == coords);
 
         Feature FindProhibitionFeature(Hex3 coords) => 
-            currentModel.features.FirstOrDefault(a => a.type == FeatureTypes.ProhibitedSpace && a.coords == coords);
+            CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.ProhibitedSpace && a.coords == coords);
         private void TryRemovePart(Hex3 coords, QRZDir dir) { 
             if (coords == default) throw new Exception("Cannot remove the root module");
             var existingFeature = FindPartFeature(coords) ?? FindProhibitionFeature(coords);
             if (existingFeature == null) throw new Exception("No module or data to remove");
-            currentModel.features.Remove(existingFeature);
+            CurrentModel.features.Remove(existingFeature);
             RemoveOrphans();
             SyncModel();
         }
@@ -172,7 +211,7 @@ namespace Scanner.Atomship {
 
         void RemoveOrphans() {
             List<Feature> toRemove = new();
-            foreach (var f in currentModel.features) {
+            foreach (var f in CurrentModel.features) {
                 if (f.type == FeatureTypes.Connector) {
                     if (FindPartFeature(f.coords) == null) {
                         toRemove.Add(f);
@@ -180,7 +219,7 @@ namespace Scanner.Atomship {
                 }
             }
 
-            foreach (var item in toRemove) currentModel.features.Remove(item);
+            foreach (var item in toRemove) CurrentModel.features.Remove(item);
         }
 
 
@@ -192,7 +231,7 @@ namespace Scanner.Atomship {
 
             featureViews.Clear();
 
-            foreach (var feature in currentModel.features) {
+            foreach (var feature in CurrentModel.features) {
                 if (feature.type == FeatureTypes.Part) {
                     var prefab = partPrefabs[feature.graphicVariant];
                     var partView = Instantiate(prefab, root);
@@ -208,6 +247,9 @@ namespace Scanner.Atomship {
                     connView.name = $"Connector ({feature.connType}) @ {feature.coords} => {feature.coords + feature.direction.QRZOffset()}";
                     var dir = feature.direction;
 
+                    if (dir == QRZDir.Forward || dir == QRZDir.Backward)
+                        connView.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+
                     var p = _poses[dir];
                     connView.transform.SetPositionAndRotation(feature.coords.Cartesian() + p.position, p.rotation);
                     featureViews.Add((feature, connView));
@@ -221,10 +263,10 @@ namespace Scanner.Atomship {
                 }
             }
 
-            foreach (var partFeat in currentModel.features) {
+            foreach (var partFeat in CurrentModel.features) {
                 if (partFeat.type == FeatureTypes.Part) {
                     foreach (var dir in HexExpansions.AllDirections) {
-                        var alreadyExtantConnectionFeature = FindConnectionFeature(partFeat.coords, dir);
+                        var alreadyExtantConnectionFeature = FindConnectionFeature(partFeat.coords, dir, true);
                         if (alreadyExtantConnectionFeature == null) {
                             var ctype = InferConnectionType(partFeat.coords, dir);
                             var prefab = connectorPrefabs[(int)ctype];
@@ -237,14 +279,6 @@ namespace Scanner.Atomship {
                     }
                 }
             }
-
-            
-
-            // for each part:
-            //  for each direction:
-            //      check if connector exists
-            //          if yes, draw the connector (or don't if you already drew it)
-            //          if no, infer a connector type and draw a phantom as if the connector was declared.
         }
 
         Dictionary<QRZDir, Pose> _poses = new();
@@ -252,7 +286,12 @@ namespace Scanner.Atomship {
         private ConnectionTypes InferConnectionType(Hex3 coords, QRZDir dir) {
             var other = coords + dir.QRZOffset();
             if (FindPartFeature(other) != null) return ConnectionTypes.Implicit;
-            return ConnectionTypes.Allowed;
+            return ConnectionTypes.Forbidden;
+        }
+
+        internal void Replace(StructureModel sm) {
+            CurrentModel = sm;
+            SyncModel();
         }
     }
 
@@ -311,6 +350,14 @@ namespace Scanner.Atomship {
             return QRZDir.None;
         }
 
+        static internal QRZDir Inverse(this QRZDir dir) => dir switch { 
+            QRZDir.Forward => QRZDir.Backward, QRZDir.Backward => QRZDir.Forward, 
+            QRZDir.Top => QRZDir.Bottom, QRZDir.Bottom => QRZDir.Top, 
+            QRZDir.LeftBot => QRZDir.RightTop, QRZDir.RightTop => QRZDir.LeftBot, 
+            QRZDir.LeftTop => QRZDir.RightBot, QRZDir.RightBot => QRZDir.LeftTop, 
+            _ => QRZDir.None
+        };
+
         static  internal Vector3Int QRZOffset(this QRZDir dir) => dir switch {
             QRZDir.Forward => new Vector3Int(0, 0, 1),
             QRZDir.Backward => new Vector3Int(0, 0, -1),
@@ -327,5 +374,47 @@ namespace Scanner.Atomship {
         static QRZDir[] _dirlookup = new[] { QRZDir.LeftBot, QRZDir.Bottom, QRZDir.RightBot, QRZDir.RightTop, QRZDir.Top, QRZDir.LeftTop, QRZDir.Forward, QRZDir.Backward };
 
         static internal QRZDir[] AllDirections => _dirlookup;
+    }
+
+    static class ModelSerializer {
+        public static byte[] Serialize(StructureModel model) {
+            using var ms = new MemoryStream();
+            using var writer = new BinaryWriter(ms);
+            writer.Write(model.features.Count);
+            foreach (var feature in model.features) {
+                writer.Write((byte)feature.type);
+                writer.Write(feature.coords.hex.q);
+                writer.Write(feature.coords.hex.r);
+                writer.Write(feature.coords.zed);
+                writer.Write(feature.graphicVariant);
+                writer.Write((byte)feature.direction);
+                writer.Write((byte)feature.connType);
+            }
+            return ms.ToArray();
+        }
+
+        public static StructureModel Deserialize(byte[] blob) {
+            
+            using var ms = new MemoryStream(blob);
+            using var reader = new BinaryReader(ms);
+
+            var count = reader.ReadInt32();
+            var features = new List<Feature>(count);
+            for (int i = 0; i < count; i++) {
+                var type = (FeatureTypes)reader.ReadByte();
+                var coords = new Hex3(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+                var graphicVariant = reader.ReadInt32();
+                var direction = (QRZDir)reader.ReadByte();
+                var connType = (ConnectionTypes)reader.ReadByte();
+                features.Add(new Feature {
+                    type = type,
+                    coords = coords,
+                    graphicVariant = graphicVariant,
+                    direction = direction,
+                    connType = connType,
+                });
+            }
+            return new StructureModel { features = features };
+        }
     }
 }
