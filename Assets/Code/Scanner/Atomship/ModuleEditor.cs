@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Core.h3x;
 using K3.Hex;
 using UnityEngine;
+using static IronPython.Modules._ast;
 
 namespace Scanner.Atomship {
 
@@ -41,7 +42,38 @@ namespace Scanner.Atomship {
         // r+ : up
 
         private void Start() {
+
+            var hr3 = Mathf.Sqrt(3f) / 2f;
+            var margin = 0.1f;
+
+            _poses.Add(QRZDir.Top,      RadialPose(0,   hr3*radialDistance - margin));
+            _poses.Add(QRZDir.RightTop, RadialPose(60,  hr3*radialDistance - margin));
+            _poses.Add(QRZDir.RightBot, RadialPose(120, hr3*radialDistance - margin));
+            _poses.Add(QRZDir.Bottom,   RadialPose(180, hr3*radialDistance - margin));
+            _poses.Add(QRZDir.LeftBot,  RadialPose(240, hr3*radialDistance - margin));
+            _poses.Add(QRZDir.LeftTop,  RadialPose(300, hr3*radialDistance - margin));
+
+            _poses.Add(QRZDir.Forward, new Pose(
+                new Vector3(0,0, zedDistanceMultiplier/2-margin),
+                Quaternion.Euler(90, 0,0)
+            ));
+
+            _poses.Add(QRZDir.Backward, new Pose(
+                new Vector3(0,0, -zedDistanceMultiplier/2+margin),
+                Quaternion.Euler(-90, 0,0)
+            ));
+
             CreateNew();
+        }
+
+        Pose RadialPose(float angle, float distance) {
+            var rad = Mathf.Deg2Rad * angle;
+            var sin = Mathf.Sin(rad);
+            var cos = Mathf.Cos(rad);
+            return new Pose(
+                new Vector3(sin * distance, cos * distance, 0),
+                Quaternion.Euler(0,0, -angle)
+            );
         }
 
         private void Update() {
@@ -152,8 +184,10 @@ namespace Scanner.Atomship {
                     var prefab = connectorPrefabs[(int)feature.connType];
                     var connView = Instantiate(prefab, root);
                     connView.name = $"Connector ({feature.connType}) @ {feature.coords} => {feature.coords + feature.direction.QRZOffset()}";
-                    connView.transform.localPosition = feature.coords.Cartesian();
-                    connView.transform.localRotation = HexExpansions.Orientation(feature.direction);
+                    var dir = feature.direction;
+
+                    var p = _poses[dir];
+                    connView.transform.SetPositionAndRotation(feature.coords.Cartesian() + p.position, p.rotation);
                     featureViews.Add((feature, connView));
                 }
             }
@@ -167,14 +201,15 @@ namespace Scanner.Atomship {
                             var prefab = connectorPrefabs[(int)ctype];
                             var phantomView = Instantiate(prefab, root);
                             phantomView.name = $"(Phantom) Connector ({ctype}) @ {partFeat.coords} => {dir}";
-                            phantomView.transform.localPosition = partFeat.coords.Cartesian();
-                            phantomView.transform.localRotation = HexExpansions.Orientation(dir);
+
+                            var p = _poses[dir];
+                            phantomView.transform.SetPositionAndRotation(partFeat.coords.Cartesian() + p.position, p.rotation);
                         }
                     }
                 }
             }
 
-
+            
 
             // for each part:
             //  for each direction:
@@ -183,9 +218,11 @@ namespace Scanner.Atomship {
             //          if no, infer a connector type and draw a phantom as if the connector was declared.
         }
 
+        Dictionary<QRZDir, Pose> _poses = new();
+
         private ConnectionTypes InferConnectionType(Hex3 coords, QRZDir dir) {
             var other = coords + dir.QRZOffset();
-            if (FindPartFeature(coords) != null) return ConnectionTypes.Implicit;
+            if (FindPartFeature(other) != null) return ConnectionTypes.Implicit;
             return ConnectionTypes.Allowed;
         }
     }
@@ -258,7 +295,7 @@ namespace Scanner.Atomship {
             _ => default
         };
 
-        static QRZDir[] _dirlookup = new[] { QRZDir.LeftBot, QRZDir.Bottom, QRZDir.RightBot, QRZDir.RightTop, QRZDir.Top, QRZDir.LeftTop };
+        static QRZDir[] _dirlookup = new[] { QRZDir.LeftBot, QRZDir.Bottom, QRZDir.RightBot, QRZDir.RightTop, QRZDir.Top, QRZDir.LeftTop, QRZDir.Forward, QRZDir.Backward };
 
         static internal QRZDir[] AllDirections => _dirlookup;
     }

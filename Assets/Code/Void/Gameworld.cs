@@ -22,7 +22,6 @@ namespace Void {
             entities.Remove(e);
         }
 
-
         public Gameworld() {           
             
         }
