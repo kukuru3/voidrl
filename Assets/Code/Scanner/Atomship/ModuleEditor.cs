@@ -80,37 +80,45 @@ namespace Scanner.Atomship {
             var mp = editorCamera.ScreenPointToRay(Input.mousePosition);
             var res = RaycastModel(mp);
             if (res.HasValue) {
-
-                // left click: add module
-                // shift + left click: remove module (unless 0,0,0)
-
-                // right click: cycle connection types: allowed, forbidden, primary
-
                 var shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
-                if (Input.GetMouseButtonDown(0)) { // mark connector 
-                    if (shift)  TryRemovePart(res.Value);
-                    else        TryAddPart(res.Value);
-
+                if (Input.GetMouseButtonDown(0)) {
+                    if (Input.GetKey(KeyCode.P)) TryCreateProhibition(res.Value.coords + res.Value.dir.QRZOffset());
+                    else if (shift)     TryRemovePart(res.Value.coords, res.Value.dir);
+                    else CycleConnection(res.Value.coords, res.Value.dir);
                 } else if (Input.GetMouseButtonDown(2)) {
-                    CycleConnection(res.Value);
+                    TryAddPart(res.Value.coords, res.Value.dir);
                 } 
             }
         }
 
-        private void CycleConnection((Hex3 coords, QRZDir dir) value) {
+        private void TryCreateProhibition(Hex3 coords) {
+            if (FindPartFeature(coords) != null) throw new System.Exception("already occupied");
+             currentModel.features.Add(new Feature {
+                 coords = coords,
+                 type = FeatureTypes.ProhibitedSpace,
+             });
+            SyncModel();
+        }
+
+        private void CycleConnection(Hex3 coords, QRZDir dir) {
             // var destination = value.coords + QRZOffset(value.dir);
-            var existingConnection = FindConnectionFeature(value.coords, value.dir);
+            var existingConnection = FindConnectionFeature(coords, dir);
             if (existingConnection == null) {
                 existingConnection = new Feature {
                     type = FeatureTypes.Connector,
-                    coords = value.coords,
-                    direction = value.dir,
+                    coords = coords,
+                    direction = dir,
                     connType = ConnectionTypes.Allowed,
                 };
                 currentModel.features.Add(existingConnection);
             }
             existingConnection.connType = NextInCycle(existingConnection.connType);
+
+            if (existingConnection.connType == ConnectionTypes.Allowed) {
+                currentModel.features.Remove(existingConnection);
+            }
+
             SyncModel();
             
             ConnectionTypes NextInCycle(ConnectionTypes old) => old switch { 
@@ -120,8 +128,8 @@ namespace Scanner.Atomship {
             };
         }
 
-        private void TryAddPart((Hex3 coords, QRZDir dir) value) {
-            var q = value.coords + value.dir.QRZOffset();
+        private void TryAddPart(Hex3 coords, QRZDir dir) {
+            var q = coords + dir.QRZOffset();
             if (currentModel.features.Any(a => a.coords == q)) throw new Exception("Already occupied");
             currentModel.features.Add(new Feature {
                 type = FeatureTypes.Part,
@@ -135,22 +143,24 @@ namespace Scanner.Atomship {
 
         Feature FindPartFeature(Hex3 coords) =>
             currentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Part && a.coords == coords);
-        
-        private void TryRemovePart((Hex3 coords, QRZDir dir) value) { 
-            if (value.coords == default) throw new Exception("Cannot remove the root module");
-            var existingFeature = FindPartFeature(value.coords);
-            if (existingFeature == null) throw new Exception("No module to remove");
+
+        Feature FindProhibitionFeature(Hex3 coords) => 
+            currentModel.features.FirstOrDefault(a => a.type == FeatureTypes.ProhibitedSpace && a.coords == coords);
+        private void TryRemovePart(Hex3 coords, QRZDir dir) { 
+            if (coords == default) throw new Exception("Cannot remove the root module");
+            var existingFeature = FindPartFeature(coords) ?? FindProhibitionFeature(coords);
+            if (existingFeature == null) throw new Exception("No module or data to remove");
             currentModel.features.Remove(existingFeature);
+            RemoveOrphans();
             SyncModel();
         }
 
-
-        public (Hex3 coords, QRZDir dir)? RaycastModel(Ray worldRay) {
+        public (Hex3 coords, QRZDir dir, FeatureTypes t)? RaycastModel(Ray worldRay) {
             if (Physics.Raycast(worldRay, out var rayHit, 100f, 1 << 20, QueryTriggerInteraction.Collide)) {
                 var f = FindFeatureOf(rayHit.collider.gameObject);
                 if (f != null) {
                     var dir = HexExpansions.ComputeDirectionFromNormal(rayHit.normal);
-                    return (f.coords, dir);
+                    return (f.coords, dir, f.type);
                 }                
             }
             return null;
@@ -160,6 +170,18 @@ namespace Scanner.Atomship {
 
         Feature FindFeatureOf(GameObject view) => featureViews.FirstOrDefault(a => a.go == view).f;
 
+        void RemoveOrphans() {
+            List<Feature> toRemove = new();
+            foreach (var f in currentModel.features) {
+                if (f.type == FeatureTypes.Connector) {
+                    if (FindPartFeature(f.coords) == null) {
+                        toRemove.Add(f);
+                    }
+                }
+            }
+
+            foreach (var item in toRemove) currentModel.features.Remove(item);
+        }
 
 
         private void SyncModel() { 
@@ -189,6 +211,13 @@ namespace Scanner.Atomship {
                     var p = _poses[dir];
                     connView.transform.SetPositionAndRotation(feature.coords.Cartesian() + p.position, p.rotation);
                     featureViews.Add((feature, connView));
+                } else if (feature.type == FeatureTypes.ProhibitedSpace) {
+                    var prefab = prohibitorPrefab;
+                    var view = Instantiate(prefab, root);
+                    view.layer = 20;
+                    view.name = $"Prohibitor {feature.coords}";
+                    view.transform.SetPositionAndRotation(feature.coords.Cartesian(), Quaternion.identity);
+                    featureViews.Add((feature, view));
                 }
             }
 

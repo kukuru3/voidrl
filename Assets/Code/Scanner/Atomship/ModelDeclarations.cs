@@ -24,6 +24,7 @@ namespace Scanner.Atomship {
     public enum FeatureTypes {
         Part,
         Connector,
+        ProhibitedSpace,
     }
 
     public enum ConnectionTypes {
