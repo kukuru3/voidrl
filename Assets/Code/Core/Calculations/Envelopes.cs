@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Core.Units;
-using UnityEditor.SceneManagement;
 
 namespace Core.Calculations {
 
@@ -35,7 +34,7 @@ namespace Core.Calculations {
 
             // Halley's method via eqn (5.9) in Corless et al (1996)
             for (int i = 0; i < amountOfIterations; i++)
-                w = w - (w * Math.Exp(w) - x) / (Math.Exp(w) * (w + 1) - (w + 2) * (w * Math.Exp(w) - x) / (2 * w + 2));
+                w -= (w * Math.Exp(w) - x) / (Math.Exp(w) * (w + 1) - (w + 2) * (w * Math.Exp(w) - x) / (2 * w + 2));
 
             return w;
         }

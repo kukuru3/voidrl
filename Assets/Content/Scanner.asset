@@ -16,7 +16,7 @@ MonoBehaviour:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 1
+    _enabled: 0
     pattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
     magnetude: 0.025
     scale: {x: 4, y: 2}
@@ -26,40 +26,40 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     _enabled: 1
-    lineCount: 411
-    distortion: 0
+    lineCount: 232
+    distortion: 0.402
     artifact: 0
-    fringing: 0.538
-    bleeding: 0.419
+    fringing: 0
+    bleeding: 0
   _staticFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 1
+    _enabled: 0
     staticPattern: {fileID: 2800000, guid: 43a04c1efe2bb194e936e6b500cc884d, type: 3}
-    staticMagnitude: 0.034
-    staticScale: 2
-    staticOffset: 2195.991
+    staticMagnitude: 0
+    staticScale: 6.69
+    staticOffset: 2713.4004
     dirtPattern: {fileID: 2800000, guid: df0ffcc7ed4d822408d84a34b9d048e0, type: 3}
-    dirtMagnitude: 0.073
+    dirtMagnitude: 0.051
   _televisionFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 0
+    _enabled: 1
     lineCount: 224
     sync: {x: 0, y: 0}
     brightness: 0
-    contrast: 0.3
-    saturation: 0.495
-    sharpness: -1
+    contrast: 0.2
+    saturation: 0.4
+    sharpness: 0
   _chromaticAberrationFilter:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 1
+    _enabled: 0
     pattern: {fileID: 0}
-    magnetude: 0
+    magnetude: 0.603
   _scanlineFilter:
     _foldout: 1
     materials:
@@ -72,8 +72,8 @@ MonoBehaviour:
     _foldout: 1
     materials:
     - {fileID: 0}
-    _enabled: 1
+    _enabled: 0
     maskPattern: {fileID: 2800000, guid: 740e2a6166d12b5479fbc50eb9a1fc83, type: 3}
     reflexPattern: {fileID: 0}
-    distortionMagnitude: 0.16
+    distortionMagnitude: 0.3
     reflexMagnitude: 0.195

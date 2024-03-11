@@ -10,7 +10,7 @@ namespace Scanner {
         // [SerializeField] [Range(1,10)]int scanlineMult;
         [SerializeField] [Range(-10f, 10f)] float staticSpeed;
         [SerializeField] [Range(10, 120)] int frameRate;
-        [SerializeField] [Range(0.5f, 1.2f)] float compositeLineRatio;
+        [SerializeField] [Range(0.2f, 1.2f)] float compositeLineRatio;
         [SerializeField] [Range(0f, 1f)] float distortion;
 
         public float Distortion => distortion;

@@ -1,33 +1,20 @@
-﻿namespace Void.Colony {
+﻿using System.Collections.Generic;
 
-    // a part of the colony. Can be anything from struts to rotating cylinders.
-    internal class StructuralPart {
+namespace Void.Colony {
+    class Module {
+        public ModuleDeclaration declarations;
     }
 
-    internal class Slot {
-
+    class ColonyShip {
+        List<Section> sections = new();
     }
 
-    internal class Module {
-        public string ID { get; set; }
-
-        
+    class Section {
+        List<Module> modules = new();
     }
 
-    internal class ModularShip {
-        K3.Collections.SimpleTree<Module> tree = new();
 
-        public ModularShip() {
-            tree.CreateRoot(new Module() { ID = "ship root"});
-        }
+    struct ModuleDeclaration {
+        public string id;
     }
-
-    // root
-    //  spine slot
-    //  spine slot
-    //  spine slot
-    //  spine slot
-    //  spine slot
-    //  spine slot
-
 }

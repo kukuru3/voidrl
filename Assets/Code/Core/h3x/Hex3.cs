@@ -24,8 +24,14 @@ namespace Core.h3x {
 
         public static Hex3 operator +(Hex3 a, Hex3 b) => new Hex3(a.hex + b.hex, a.zed + b.zed);
 
+        public static Hex3 operator +(Hex3 a, Vector3Int qrzOffset) => a + new Hex3(qrzOffset.x, qrzOffset.y, qrzOffset.z);
+
+        public static bool operator ==(Hex3 a, Hex3 b) => a.QRZ == b.QRZ;
+        public static bool operator !=(Hex3 a, Hex3 b) => a.QRZ != b.QRZ;
         public override bool Equals(object other) => other is Hex3 hex && this.hex.Equals(hex.hex) && zed == hex.zed;
         public override int GetHashCode() => HashCode.Combine(hex.q, hex.r, zed);
+
+        public override string ToString() => $"{hex.q},{hex.r}, z:{zed}";
     }
 
     public static class Hex3Util {
