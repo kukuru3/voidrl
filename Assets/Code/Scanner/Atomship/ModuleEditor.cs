@@ -22,6 +22,10 @@ namespace Scanner.Atomship {
         [SerializeField][Range(0.5f, 2f)] float radialDistance = 1f;
         [SerializeField][Range(0.5f, 2f)] float zedDistanceMultiplier = 1f;
 
+
+        public Hex3 offset;
+        public int  hexrot;
+
         internal void CreateNew() {
             CurrentModel = new StructureModel() {
                 features = new List<Feature> {
@@ -90,6 +94,9 @@ namespace Scanner.Atomship {
                     TryAddPart(res.Value.coords, res.Value.dir);
                 } 
             }
+
+            if (Input.GetKeyDown(KeyCode.Q)) { hexrot--; SyncModel(); }
+            if (Input.GetKeyDown(KeyCode.E)) { hexrot++; SyncModel(); }
         }
 
         private void SetAllForbiddenConnectionsPermissive(Hex3 coords) {
@@ -231,11 +238,13 @@ namespace Scanner.Atomship {
 
             featureViews.Clear();
 
+            var comp = Quaternion.Euler(0, 0, 60 * hexrot);
+
             foreach (var feature in CurrentModel.features) {
                 if (feature.type == FeatureTypes.Part) {
                     var prefab = partPrefabs[feature.graphicVariant];
                     var partView = Instantiate(prefab, root);
-                    partView.transform.localPosition = feature.coords.Cartesian();
+                    partView.transform.localPosition = Cartesian(feature.coords);
                     partView.transform.localRotation = Quaternion.identity;
                     partView.layer = 20;
                     partView.name = $"Part @ {feature.coords}";
@@ -251,14 +260,16 @@ namespace Scanner.Atomship {
                         connView.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
 
                     var p = _poses[dir];
-                    connView.transform.SetPositionAndRotation(feature.coords.Cartesian() + p.position, p.rotation);
+                    connView.transform.SetPositionAndRotation(Cartesian(feature.coords) + comp * p.position, comp * p.rotation);
+
+
                     featureViews.Add((feature, connView));
                 } else if (feature.type == FeatureTypes.ProhibitedSpace) {
                     var prefab = prohibitorPrefab;
                     var view = Instantiate(prefab, root);
                     view.layer = 20;
                     view.name = $"Prohibitor {feature.coords}";
-                    view.transform.SetPositionAndRotation(feature.coords.Cartesian(), Quaternion.identity);
+                    view.transform.SetPositionAndRotation(Cartesian(feature.coords), comp * Quaternion.identity);
                     featureViews.Add((feature, view));
                 }
             }
@@ -274,13 +285,20 @@ namespace Scanner.Atomship {
                             phantomView.name = $"(Phantom) Connector ({ctype}) @ {partFeat.coords} => {dir}";
 
                             var p = _poses[dir];
-                            phantomView.transform.SetPositionAndRotation(partFeat.coords.Cartesian() + p.position, p.rotation);
+                            phantomView.transform.SetPositionAndRotation(Cartesian(partFeat.coords) + comp * p.position, comp * p.rotation);
                         }
                     }
                 }
             }
         }
 
+        Vector3 Cartesian(Hex3 hex) {
+            var h2 = Hexes.Rotate(hex.hex, hexrot);
+            var newHex = new Hex3(h2, hex.zed);
+            return (newHex + offset).Cartesian();
+        }
+
+        /// <summary>Cartesian offsets and rotations for each QRZDir</summary>
         Dictionary<QRZDir, Pose> _poses = new();
 
         private ConnectionTypes InferConnectionType(Hex3 coords, QRZDir dir) {

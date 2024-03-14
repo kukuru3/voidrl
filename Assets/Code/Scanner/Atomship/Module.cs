@@ -3,7 +3,6 @@ using System.Linq;
 using Core.h3x;
 
 namespace Scanner.Atomship {
-    // a MODULE is a single hexnode. 
     public class Node : IHasHex3Coords {
         public Hex3 HexCoords { get; }
        
@@ -43,7 +42,6 @@ namespace Scanner.Atomship {
         }
     }
 
-
     /// <summary>A tube always represents a connection between two ADJACENT hex coords.</summary>
     public class Tube {
         internal readonly Node moduleFrom;
@@ -74,32 +72,18 @@ namespace Scanner.Atomship {
 
         public Node GetNode(Hex3 hex) => nodeLookup.At(hex);
 
-        public void BuildStructure(StructureDeclaration decl, int variantIndex, Hex3 initialHex) {
-            var hexes = ShipBuildUtilities.GetHexes(decl.variants[variantIndex], initialHex);
-            foreach (var hex in hexes)
-                if (GetNode(hex) != null) 
-                    throw new System.Exception("Node already exists at " + hex);
-            
-            var generatedNodes = hexes.Select(h => new Node(this, h)).ToList();
-            var structure = new Structure(this, decl, variantIndex);
-            foreach (var node in generatedNodes) nodeLookup.TryInsert(node);
+        public void BuildStructure(StructureDeclaration decl, int variantIndex, Hex3 initialHex, int radialRotation) {
 
-            structure.AssignNodes(generatedNodes);
-
-            for (var i = 0; i < generatedNodes.Count; i++) {
-                var node = generatedNodes[i];
-                node.AssignStructure(structure, i);
-            }
         }
     }
 
-    public static class ShipBuildUtilities
-    {
-        public static IList<Hex3> GetHexes(StructureVariant variant, Hex3 initialHex) {
-            var n = variant.offsets.Count + 1;
+    //public static class ShipBuildUtilities
+    //{
+    //    public static IList<Hex3> GetHexes(StructureVariant variant, Hex3 initialHex) {
+    //        var n = variant.offsets.Count + 1;
 
-            var list = new List<Hex3>(n);             
-            return list;
-        }
-    }
+    //        var list = new List<Hex3>(n);             
+    //        return list;
+    //    }
+    //}
 }
