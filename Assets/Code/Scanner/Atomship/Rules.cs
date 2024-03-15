@@ -56,7 +56,7 @@ namespace Scanner.Atomship {
             return decl;
         }
 
-        public static void Hardcode() {
+        public static void HardcodeRules() {
 
             LoadRules();
 
@@ -85,6 +85,27 @@ namespace Scanner.Atomship {
             
             // Spine transfers Transit, Power, Heat, Life Support, and is Structural
             // CreateStructureDecl("spine");
+        }
+
+        public static Ship GenerateInitialShip() {
+            var ship = new Ship();
+
+            for (var zed = 0; zed < 5; zed++) {
+                ship.BuildStructure(Get("spine"), 0, (0,0,zed), 0);
+            }
+
+
+            for (var zed = 0; zed < 4; zed++) {
+                var a = ship.GetNode((0,0,zed));
+                var b = ship.GetNode((0,0,zed+1));
+                ship.BuildTube(a,b, "direct");
+            }
+
+            ship.BuildStructure(Get("bridge"), 0, (0, 1, 1), 0);
+
+            return ship;
+
+            StructureDeclaration Get(string id) => RuleContext.Repo.GetRule<StructureDeclaration>(id);
         }
 
         private static void LoadRules() {

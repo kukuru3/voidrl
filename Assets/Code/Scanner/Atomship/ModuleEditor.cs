@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Core;
 using Core.h3x;
 using K3.Hex;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace Scanner.Atomship {
                 features = new List<Feature> {
                     new Feature {
                         type = FeatureTypes.Part,
-                        coords = new Hex3(0, 0, 0),
+                        localCoords = new Hex3(0, 0, 0),
                     },
                 },
             };
@@ -107,8 +108,8 @@ namespace Scanner.Atomship {
                     var ctype = InferConnectionType(coords, dir);
                     if (ctype == ConnectionTypes.Forbidden) { 
                         CurrentModel.features.Add(new Feature {
-                            coords = coords,
-                            direction = dir,
+                            localCoords = coords,
+                            localDirection = dir,
                             connType = ConnectionTypes.Allowed,
                             type = FeatureTypes.Connector,
                         });
@@ -121,7 +122,7 @@ namespace Scanner.Atomship {
         private void TryCreateProhibition(Hex3 coords) {
             if (FindPartFeature(coords) != null) throw new System.Exception("already occupied");
              CurrentModel.features.Add(new Feature {
-                 coords = coords,
+                 localCoords = coords,
                  type = FeatureTypes.ProhibitedSpace,
              });
             SyncModel();
@@ -132,8 +133,8 @@ namespace Scanner.Atomship {
             if (conn == null) {
                 conn = new Feature {
                     type = FeatureTypes.Connector,
-                    coords = coords,
-                    direction = dir,
+                    localCoords = coords,
+                    localDirection = dir,
                 };
                 CurrentModel.features.Add(conn);
             }
@@ -147,8 +148,8 @@ namespace Scanner.Atomship {
             if (existingConnection == null) {
                 existingConnection = new Feature {
                     type = FeatureTypes.Connector,
-                    coords = coords,
-                    direction = dir,
+                    localCoords = coords,
+                    localDirection = dir,
                     connType = ConnectionTypes.Forbidden,
                 };
                 CurrentModel.features.Add(existingConnection);
@@ -169,29 +170,29 @@ namespace Scanner.Atomship {
 
         private void TryAddPart(Hex3 coords, QRZDir dir) {
             var q = coords + dir.QRZOffset();
-            if (CurrentModel.features.Any(a => a.coords == q)) throw new Exception("Already occupied");
+            if (CurrentModel.features.Any(a => a.localCoords == q)) throw new Exception("Already occupied");
             CurrentModel.features.Add(new Feature {
                 type = FeatureTypes.Part,
-                coords = q,
+                localCoords = q,
             });
             SyncModel();
         }
 
         Feature FindConnectionFeature(Hex3 coords, QRZDir dir, bool symmetrical = false) { 
-            var f = CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.coords == coords && a.direction == dir);
+            var f = CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.localCoords == coords && a.localDirection == dir);
             if (symmetrical) { 
                 coords += dir.QRZOffset();
                 dir = dir.Inverse();
-                f ??= CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.coords == coords && a.direction == dir);
+                f ??= CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Connector && a.localCoords == coords && a.localDirection == dir);
             }
             return f;
         }
 
         Feature FindPartFeature(Hex3 coords) =>
-            CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Part && a.coords == coords);
+            CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.Part && a.localCoords == coords);
 
         Feature FindProhibitionFeature(Hex3 coords) => 
-            CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.ProhibitedSpace && a.coords == coords);
+            CurrentModel.features.FirstOrDefault(a => a.type == FeatureTypes.ProhibitedSpace && a.localCoords == coords);
         private void TryRemovePart(Hex3 coords, QRZDir dir) { 
             if (coords == default) throw new Exception("Cannot remove the root module");
             var existingFeature = FindPartFeature(coords) ?? FindProhibitionFeature(coords);
@@ -206,7 +207,7 @@ namespace Scanner.Atomship {
                 var f = FindFeatureOf(rayHit.collider.gameObject);
                 if (f != null) {
                     var dir = HexExpansions.ComputeDirectionFromNormal(rayHit.normal);
-                    return (f.coords, dir, f.type);
+                    return (f.localCoords, dir, f.type);
                 }                
             }
             return null;
@@ -220,7 +221,7 @@ namespace Scanner.Atomship {
             List<Feature> toRemove = new();
             foreach (var f in CurrentModel.features) {
                 if (f.type == FeatureTypes.Connector) {
-                    if (FindPartFeature(f.coords) == null) {
+                    if (FindPartFeature(f.localCoords) == null) {
                         toRemove.Add(f);
                     }
                 }
@@ -244,23 +245,23 @@ namespace Scanner.Atomship {
                 if (feature.type == FeatureTypes.Part) {
                     var prefab = partPrefabs[feature.graphicVariant];
                     var partView = Instantiate(prefab, root);
-                    partView.transform.localPosition = Cartesian(feature.coords);
+                    partView.transform.localPosition = Cartesian(feature.localCoords);
                     partView.transform.localRotation = Quaternion.identity;
                     partView.layer = 20;
-                    partView.name = $"Part @ {feature.coords}";
+                    partView.name = $"Part @ {feature.localCoords}";
                     featureViews.Add((feature, partView));
                 } else if (feature.type == FeatureTypes.Connector) {
                     // Forbidden, Allowed, Implicit, Primary,
                     var prefab = connectorPrefabs[(int)feature.connType];
                     var connView = Instantiate(prefab, root);
-                    connView.name = $"Connector ({feature.connType}) @ {feature.coords} => {feature.coords + feature.direction.QRZOffset()}";
-                    var dir = feature.direction;
+                    connView.name = $"Connector ({feature.connType}) @ {feature.localCoords} => {feature.localCoords + feature.localDirection.QRZOffset()}";
+                    var dir = feature.localDirection;
 
                     if (dir == QRZDir.Forward || dir == QRZDir.Backward)
                         connView.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
 
                     var p = _poses[dir];
-                    connView.transform.SetPositionAndRotation(Cartesian(feature.coords) + comp * p.position, comp * p.rotation);
+                    connView.transform.SetPositionAndRotation(Cartesian(feature.localCoords) + comp * p.position, comp * p.rotation);
 
 
                     featureViews.Add((feature, connView));
@@ -268,8 +269,8 @@ namespace Scanner.Atomship {
                     var prefab = prohibitorPrefab;
                     var view = Instantiate(prefab, root);
                     view.layer = 20;
-                    view.name = $"Prohibitor {feature.coords}";
-                    view.transform.SetPositionAndRotation(Cartesian(feature.coords), comp * Quaternion.identity);
+                    view.name = $"Prohibitor {feature.localCoords}";
+                    view.transform.SetPositionAndRotation(Cartesian(feature.localCoords), comp * Quaternion.identity);
                     featureViews.Add((feature, view));
                 }
             }
@@ -277,15 +278,15 @@ namespace Scanner.Atomship {
             foreach (var partFeat in CurrentModel.features) {
                 if (partFeat.type == FeatureTypes.Part) {
                     foreach (var dir in HexExpansions.AllDirections) {
-                        var alreadyExtantConnectionFeature = FindConnectionFeature(partFeat.coords, dir, true);
+                        var alreadyExtantConnectionFeature = FindConnectionFeature(partFeat.localCoords, dir, true);
                         if (alreadyExtantConnectionFeature == null) {
-                            var ctype = InferConnectionType(partFeat.coords, dir);
+                            var ctype = InferConnectionType(partFeat.localCoords, dir);
                             var prefab = connectorPrefabs[(int)ctype];
                             var phantomView = Instantiate(prefab, root);
-                            phantomView.name = $"(Phantom) Connector ({ctype}) @ {partFeat.coords} => {dir}";
+                            phantomView.name = $"(Phantom) Connector ({ctype}) @ {partFeat.localCoords} => {dir}";
 
                             var p = _poses[dir];
-                            phantomView.transform.SetPositionAndRotation(Cartesian(partFeat.coords) + comp * p.position, comp * p.rotation);
+                            phantomView.transform.SetPositionAndRotation(Cartesian(partFeat.localCoords) + comp * p.position, comp * p.rotation);
                         }
                     }
                 }
@@ -312,87 +313,7 @@ namespace Scanner.Atomship {
             SyncModel();
         }
     }
-
-    public static class HexExpansions {
-
-        public static float RadialDistance = 1f;
-        public static float ZedDistance = 1f;
-        public static GridTypes gridType = GridTypes.FlatTop;
-
-        public static Vector3 Cartesian(this Hex3 hex) {
-            var (x, y) = Hexes.HexToPixel(hex.hex, gridType, RadialDistance);
-            return new Vector3(x, y, hex.zed * ZedDistance);
-        }
-
-        static (Vector3 away, Vector3 tangent) Vectors(this QRZDir dir) {
-            return dir switch {
-              QRZDir.Forward => (Vector3.forward, Vector3.down),
-              QRZDir.Backward => (Vector3.back, Vector3.up),
-              QRZDir.Top => (Vector3.up, Vector3.forward),
-              QRZDir.Bottom => (-Vector3.up, Vector3.forward),
-
-              QRZDir.LeftTop    => (Radial(-60), Vector3.forward),
-              QRZDir.RightTop   => (Radial(60), Vector3.forward),
-              QRZDir.LeftBot    => (Radial(-120), Vector3.forward),
-              QRZDir.RightBot   => (Radial(120), Vector3.forward),
-
-
-              _ => (Vector3.zero, Vector3.zero),
-            };
-            
-            Vector3 Radial(int degrees) {
-                var rads = degrees * Mathf.Deg2Rad;
-                return new Vector3(Mathf.Cos(rads), Mathf.Sin(rads), 0);
-            }
-
-            //var px = Hexes.PixelToHex(off.x, off.y, gridType, 1f);
-            //var up = Hexes.PixelToHex(0, 0, gridType, 1f);
-            //var forward = Hexes.PixelToHex(0, 0, gridType, 1f);
-            //return (up, forward);
-        }
-
-        public static Quaternion Orientation(this QRZDir dir) {        
-            if (dir == QRZDir.None) throw new Exception("Invalid direction NONE");
-            var vecs = Vectors(dir);
-            return Quaternion.LookRotation(vecs.away, vecs.tangent);
-        }
-
-        static internal QRZDir ComputeDirectionFromNormal(Vector3 normalFacing) {
-            if (normalFacing.z < - 0.5f) return QRZDir.Backward;
-            if (normalFacing.z >   0.5f) return QRZDir.Forward;
-
-            var angle = Mathf.Atan2(normalFacing.y, normalFacing.x) * Mathf.Rad2Deg;
-            var index = Mathf.RoundToInt((150 + angle)) / 60 ;
-
-            if (index >= 0 && index < _dirlookup.Length) return _dirlookup[index];
-            return QRZDir.None;
-        }
-
-        static internal QRZDir Inverse(this QRZDir dir) => dir switch { 
-            QRZDir.Forward => QRZDir.Backward, QRZDir.Backward => QRZDir.Forward, 
-            QRZDir.Top => QRZDir.Bottom, QRZDir.Bottom => QRZDir.Top, 
-            QRZDir.LeftBot => QRZDir.RightTop, QRZDir.RightTop => QRZDir.LeftBot, 
-            QRZDir.LeftTop => QRZDir.RightBot, QRZDir.RightBot => QRZDir.LeftTop, 
-            _ => QRZDir.None
-        };
-
-        static  internal Vector3Int QRZOffset(this QRZDir dir) => dir switch {
-            QRZDir.Forward => new Vector3Int(0, 0, 1),
-            QRZDir.Backward => new Vector3Int(0, 0, -1),
-            QRZDir.Top => new Vector3Int(0, 1, 0),
-            QRZDir.Bottom => new Vector3Int(0, -1, 0),
-            QRZDir.LeftBot => new Vector3Int(-1, 0, 0),
-            QRZDir.RightTop => new Vector3Int(1, 0, 0),
-
-            QRZDir.LeftTop => new Vector3Int(-1, 1, 0),
-            QRZDir.RightBot => new Vector3Int(1, -1, 0),
-            _ => default
-        };
-
-        static QRZDir[] _dirlookup = new[] { QRZDir.LeftBot, QRZDir.Bottom, QRZDir.RightBot, QRZDir.RightTop, QRZDir.Top, QRZDir.LeftTop, QRZDir.Forward, QRZDir.Backward };
-
-        static internal QRZDir[] AllDirections => _dirlookup;
-    }
+    
 
     static class ModelSerializer {
         public static byte[] Serialize(StructureModel model) {
@@ -401,11 +322,11 @@ namespace Scanner.Atomship {
             writer.Write(model.features.Count);
             foreach (var feature in model.features) {
                 writer.Write((byte)feature.type);
-                writer.Write(feature.coords.hex.q);
-                writer.Write(feature.coords.hex.r);
-                writer.Write(feature.coords.zed);
+                writer.Write(feature.localCoords.hex.q);
+                writer.Write(feature.localCoords.hex.r);
+                writer.Write(feature.localCoords.zed);
                 writer.Write(feature.graphicVariant);
-                writer.Write((byte)feature.direction);
+                writer.Write((byte)feature.localDirection);
                 writer.Write((byte)feature.connType);
             }
             return ms.ToArray();
@@ -426,9 +347,9 @@ namespace Scanner.Atomship {
                 var connType = (ConnectionTypes)reader.ReadByte();
                 features.Add(new Feature {
                     type = type,
-                    coords = coords,
+                    localCoords = coords,
                     graphicVariant = graphicVariant,
-                    direction = direction,
+                    localDirection = direction,
                     connType = connType,
                 });
             }

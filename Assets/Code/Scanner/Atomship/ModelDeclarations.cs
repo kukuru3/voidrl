@@ -1,4 +1,5 @@
-﻿using Core.h3x;
+﻿using Core;
+using Core.h3x;
 using System.Collections.Generic;
 
 namespace Scanner.Atomship {
@@ -15,11 +16,7 @@ namespace Scanner.Atomship {
 
     }
 
-    public enum QRZDir : byte{
-        None,
-        Top, RightTop, RightBot, Bottom, LeftBot, LeftTop, 
-        Forward, Backward
-    }
+   
 
     public enum FeatureTypes {
         Part,
@@ -36,11 +33,10 @@ namespace Scanner.Atomship {
 
     public class Feature {
         public FeatureTypes type;
-        public Hex3 coords;
+        public Hex3 localCoords;
+        public QRZDir localDirection;
         public int graphicVariant;
-        public QRZDir direction;
         public ConnectionTypes connType;
-        //public Constraint constraint;
     }
 
     public class StructureModel {

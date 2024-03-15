@@ -35,6 +35,10 @@ namespace Core.h3x {
     }
 
     public static class Hex3Util {
+        public static Hex3 Rotated(this Hex3 source, int rotation) {
+            return new Hex3(Hexes.Rotate(source.hex, rotation), source.zed);
+        }
+
         static Hex3[] directOffsets = new[] {
             new Hex3(Hexes.Neighbours[0], 0),
             new Hex3(Hexes.Neighbours[1], 0),
