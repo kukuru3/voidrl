@@ -28,17 +28,20 @@ namespace Scanner.Atomship {
     public class Structure {
         List<Node> nodes = new();
         public StructureDeclaration Declaration { get; }
+        public HexPose Pose { get; }
         public int VariantID { get; }
 
         public Ship Ship { get; }
         public IReadOnlyList<Node> Nodes => nodes;
 
+
         public void AssignNodes(IEnumerable<Node> nodes) => this.nodes = new(nodes);
 
-        public Structure(Ship ship, StructureDeclaration decl, int variant) {
-            this.Ship = ship;
-            this.Declaration = decl;
-            this.VariantID = variant;
+        public Structure(Ship ship, StructureDeclaration decl, int variant, HexPose pose) {
+            Ship = ship;
+            Declaration = decl;
+            VariantID = variant;
+            Pose = pose;
         }
     }
 
@@ -78,7 +81,7 @@ namespace Scanner.Atomship {
         public void BuildStructure(StructureDeclaration decl, int variantIndex, Hex3 pivot, int rotation) {
             var pose = new HexPose(pivot, rotation);
 
-            var structure = new Structure(this, decl, variantIndex);
+            var structure = new Structure(this, decl, variantIndex, new HexPose(pivot, rotation));
             
             var l = new List<Node>();
             foreach (var feature in decl.nodeModel.features) {
@@ -95,10 +98,16 @@ namespace Scanner.Atomship {
             foreach (var node in l) nodeLookup.TryInsert(node);
         }
 
-        public Tube BuildTube(Node from, Node to, string declaration) {
+        Tube BuildTube(Node from, Node to, string declaration) {
             var tube = new Tube(from, to, declaration);
             tubes.Add(tube);
             return tube;
+        }
+
+        public Tube BuildTube(Hex3 from, Hex3 to, string declaration) {
+            var fromNode = GetNode(from);
+            var toNode = GetNode(to);
+            return BuildTube(fromNode, toNode, declaration);
         }
     }
     

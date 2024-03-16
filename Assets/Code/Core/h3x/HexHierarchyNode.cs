@@ -57,13 +57,32 @@ namespace Core {
         public Pose Cartesian() => new Pose(position.Cartesian(), Quaternion.Euler(0,0,60 * rotation));
     }
 
-    public enum QRZDir : byte{
+    public enum Hex3Dir : byte{
         None,
         Top, RightTop, RightBot, Bottom, LeftBot, LeftTop, 
         Forward, Backward
     }
 
-    public static class HexExpansions {
+    public static class Hex3Utils {
+
+         public static Hex3 Rotated(this Hex3 source, int rotation) {
+            return new Hex3(Hexes.Rotate(source.hex, rotation), source.zed);
+        }
+
+        static Hex3[] directOffsets = new[] {
+            new Hex3(Hexes.Neighbours[0], 0),
+            new Hex3(Hexes.Neighbours[1], 0),
+            new Hex3(Hexes.Neighbours[2], 0),
+            new Hex3(Hexes.Neighbours[3], 0),
+            new Hex3(Hexes.Neighbours[4], 0),
+            new Hex3(Hexes.Neighbours[5], 0),
+            new Hex3(new Hex(), 1),
+            new Hex3(new Hex(), -1),
+        };
+
+        static public IEnumerable<Hex3> DirectNeighbours(Hex3 coords) {
+            foreach (var offset in directOffsets) yield return coords + offset;
+        }
 
         public static float RadialDistance = 1f;
         public static float ZedDistance = 1f;
@@ -74,17 +93,17 @@ namespace Core {
             return new Vector3(x, y, hex.zed * ZedDistance);
         }
 
-        static (Vector3 away, Vector3 tangent) Vectors(this QRZDir dir) {
+        static (Vector3 away, Vector3 tangent) Vectors(this Hex3Dir dir) {
             return dir switch {
-              QRZDir.Forward => (Vector3.forward, Vector3.down),
-              QRZDir.Backward => (Vector3.back, Vector3.up),
-              QRZDir.Top => (Vector3.up, Vector3.forward),
-              QRZDir.Bottom => (-Vector3.up, Vector3.forward),
+              Hex3Dir.Forward => (Vector3.forward, Vector3.down),
+              Hex3Dir.Backward => (Vector3.back, Vector3.up),
+              Hex3Dir.Top => (Vector3.up, Vector3.forward),
+              Hex3Dir.Bottom => (-Vector3.up, Vector3.forward),
 
-              QRZDir.LeftTop    => (Radial(-60), Vector3.forward),
-              QRZDir.RightTop   => (Radial(60), Vector3.forward),
-              QRZDir.LeftBot    => (Radial(-120), Vector3.forward),
-              QRZDir.RightBot   => (Radial(120), Vector3.forward),
+              Hex3Dir.LeftTop    => (Radial(-60), Vector3.forward),
+              Hex3Dir.RightTop   => (Radial(60), Vector3.forward),
+              Hex3Dir.LeftBot    => (Radial(-120), Vector3.forward),
+              Hex3Dir.RightBot   => (Radial(120), Vector3.forward),
 
 
               _ => (Vector3.zero, Vector3.zero),
@@ -101,46 +120,92 @@ namespace Core {
             //return (up, forward);
         }
 
-        public static Quaternion Orientation(this QRZDir dir) {        
-            if (dir == QRZDir.None) throw new Exception("Invalid direction NONE");
+        public static Quaternion Orientation(this Hex3Dir dir) {        
+            if (dir == Hex3Dir.None) throw new Exception("Invalid direction NONE");
             var vecs = Vectors(dir);
             return Quaternion.LookRotation(vecs.away, vecs.tangent);
         }
 
-        static public QRZDir ComputeDirectionFromNormal(Vector3 normalFacing) {
-            if (normalFacing.z < - 0.5f) return QRZDir.Backward;
-            if (normalFacing.z >   0.5f) return QRZDir.Forward;
+        static public Hex3Dir ComputeDirectionFromNormal(Vector3 normalFacing) {
+            if (normalFacing.z < - 0.5f) return Hex3Dir.Backward;
+            if (normalFacing.z >   0.5f) return Hex3Dir.Forward;
 
             var angle = Mathf.Atan2(normalFacing.y, normalFacing.x) * Mathf.Rad2Deg;
             var index = Mathf.RoundToInt((150 + angle)) / 60 ;
 
-            if (index >= 0 && index < _dirlookup.Length) return _dirlookup[index];
-            return QRZDir.None;
+            if (index 
+                
+                >= 0 && index < _dirlookup.Length) return _dirlookup[index];
+            return Hex3Dir.None;
         }
 
-        static public QRZDir Inverse(this QRZDir dir) => dir switch { 
-            QRZDir.Forward => QRZDir.Backward, QRZDir.Backward => QRZDir.Forward, 
-            QRZDir.Top => QRZDir.Bottom, QRZDir.Bottom => QRZDir.Top, 
-            QRZDir.LeftBot => QRZDir.RightTop, QRZDir.RightTop => QRZDir.LeftBot, 
-            QRZDir.LeftTop => QRZDir.RightBot, QRZDir.RightBot => QRZDir.LeftTop, 
-            _ => QRZDir.None
+        static public Hex3Dir Inverse(this Hex3Dir dir) => dir switch { 
+            Hex3Dir.Forward => Hex3Dir.Backward, Hex3Dir.Backward => Hex3Dir.Forward, 
+            Hex3Dir.Top => Hex3Dir.Bottom, Hex3Dir.Bottom => Hex3Dir.Top, 
+            Hex3Dir.LeftBot => Hex3Dir.RightTop, Hex3Dir.RightTop => Hex3Dir.LeftBot, 
+            Hex3Dir.LeftTop => Hex3Dir.RightBot, Hex3Dir.RightBot => Hex3Dir.LeftTop, 
+            _ => Hex3Dir.None
         };
 
-        static  public Vector3Int QRZOffset(this QRZDir dir) => dir switch {
-            QRZDir.Forward => new Vector3Int(0, 0, 1),
-            QRZDir.Backward => new Vector3Int(0, 0, -1),
-            QRZDir.Top => new Vector3Int(0, 1, 0),
-            QRZDir.Bottom => new Vector3Int(0, -1, 0),
-            QRZDir.LeftBot => new Vector3Int(-1, 0, 0),
-            QRZDir.RightTop => new Vector3Int(1, 0, 0),
+        static public int ToHexRotation(this Hex3Dir dir) => dir switch {            
+            Hex3Dir.Top => 0, 
+            Hex3Dir.RightTop => 1, 
+            Hex3Dir.RightBot => 2, 
+            Hex3Dir.Bottom => 3, 
+            Hex3Dir.LeftTop => 4,
+            Hex3Dir.LeftBot => 5,
+            _ => -1
+        };
 
-            QRZDir.LeftTop => new Vector3Int(-1, 1, 0),
-            QRZDir.RightBot => new Vector3Int(1, -1, 0),
+        static public Hex3Dir FromParameters(int hexRot, int zOff ) {
+            return (zOff, hexRot) switch {
+                (-1, _) => Hex3Dir.Backward,
+                ( 1, _) => Hex3Dir.Forward,
+                ( 0, _) => hexRot switch {
+                    0 => Hex3Dir.Top, 
+                    1 => Hex3Dir.RightTop, 
+                    2 => Hex3Dir.RightBot, 
+                    3 => Hex3Dir.Bottom, 
+                    4 => Hex3Dir.LeftTop, 
+                    5 => Hex3Dir.LeftBot, 
+                    _ => Hex3Dir.None
+                },
+                _ => Hex3Dir.None
+            };
+        }
+
+        static Hex3Dir RotatedOnceClockwise(this Hex3Dir dir) {
+            return dir switch { 
+                Hex3Dir.Top => Hex3Dir.RightTop,
+                Hex3Dir.RightTop => Hex3Dir.RightBot,
+                Hex3Dir.RightBot => Hex3Dir.Bottom,
+                Hex3Dir.Bottom => Hex3Dir.LeftBot,
+                Hex3Dir.LeftBot => Hex3Dir.LeftTop,
+                Hex3Dir.LeftTop => Hex3Dir.Top,
+                _ => dir 
+            };
+        }
+
+        public static Hex3Dir Rotated(this Hex3Dir dir, int rotation) {
+            rotation %= 6; if (rotation < 0) rotation += 6;
+            for (int i = 0; i < rotation; i++) dir = dir.RotatedOnceClockwise();
+            return dir;
+        }
+
+        static public Hex3 Offset(this Hex3Dir dir) => dir switch {
+            Hex3Dir.Forward => (0,0, 1),
+            Hex3Dir.Backward => (0,0, -1),
+            Hex3Dir.Top => (0, 1, 0),
+            Hex3Dir.Bottom => (0, -1, 0),
+            Hex3Dir.LeftBot => (-1, 0, 0),
+            Hex3Dir.RightTop => (1, 0, 0),
+            Hex3Dir.LeftTop => (-1, 1, 0),
+            Hex3Dir.RightBot => (1, -1, 0),
             _ => default
         };
 
-        static QRZDir[] _dirlookup = new[] { QRZDir.LeftBot, QRZDir.Bottom, QRZDir.RightBot, QRZDir.RightTop, QRZDir.Top, QRZDir.LeftTop, QRZDir.Forward, QRZDir.Backward };
+        static Hex3Dir[] _dirlookup = new[] { Hex3Dir.LeftBot, Hex3Dir.Bottom, Hex3Dir.RightBot, Hex3Dir.RightTop, Hex3Dir.Top, Hex3Dir.LeftTop, Hex3Dir.Forward, Hex3Dir.Backward };
 
-        static public QRZDir[] AllDirections => _dirlookup;
+        static public Hex3Dir[] AllDirections => _dirlookup;
     }
 }

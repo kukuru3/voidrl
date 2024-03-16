@@ -96,12 +96,14 @@ namespace Scanner.Atomship {
 
 
             for (var zed = 0; zed < 4; zed++) {
-                var a = ship.GetNode((0,0,zed));
-                var b = ship.GetNode((0,0,zed+1));
+                var a = (0,0,zed);
+                var b = (0,0,zed+1);
                 ship.BuildTube(a,b, "direct");
             }
 
             ship.BuildStructure(Get("bridge"), 0, (0, 1, 1), 0);
+
+            ship.BuildTube((0,0,1), (0,1,1), "direct");
 
             return ship;
 

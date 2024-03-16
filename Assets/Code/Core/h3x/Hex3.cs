@@ -24,7 +24,7 @@ namespace Core.h3x {
 
         public static Hex3 operator +(Hex3 a, Hex3 b) => new Hex3(a.hex + b.hex, a.zed + b.zed);
 
-        public static Hex3 operator +(Hex3 a, Vector3Int qrzOffset) => a + new Hex3(qrzOffset.x, qrzOffset.y, qrzOffset.z);
+        public static Hex3 operator +(Hex3 a, Hex3Dir offset) => a + offset.Offset();
 
         public static bool operator ==(Hex3 a, Hex3 b) => a.QRZ == b.QRZ;
         public static bool operator !=(Hex3 a, Hex3 b) => a.QRZ != b.QRZ;
@@ -32,27 +32,6 @@ namespace Core.h3x {
         public override int GetHashCode() => HashCode.Combine(hex.q, hex.r, zed);
 
         public override string ToString() => $"{hex.q},{hex.r}, z:{zed}";
-    }
-
-    public static class Hex3Util {
-        public static Hex3 Rotated(this Hex3 source, int rotation) {
-            return new Hex3(Hexes.Rotate(source.hex, rotation), source.zed);
-        }
-
-        static Hex3[] directOffsets = new[] {
-            new Hex3(Hexes.Neighbours[0], 0),
-            new Hex3(Hexes.Neighbours[1], 0),
-            new Hex3(Hexes.Neighbours[2], 0),
-            new Hex3(Hexes.Neighbours[3], 0),
-            new Hex3(Hexes.Neighbours[4], 0),
-            new Hex3(Hexes.Neighbours[5], 0),
-            new Hex3(new Hex(), 1),
-            new Hex3(new Hex(), -1),
-        };
-
-        static public IEnumerable<Hex3> DirectNeighbours(Hex3 coords) {
-            foreach (var offset in directOffsets) yield return coords + offset;
-        }
     }
 
     public interface IHasHex3Coords {
@@ -94,7 +73,7 @@ namespace Core.h3x {
         public IEnumerable<Hex3> OccupiedHexes => _grid.Keys;
 
         public IEnumerable<T> SolidNeighbours(Hex3 coords) {
-            var nn = Hex3Util.DirectNeighbours(coords);
+            var nn = Hex3Utils.DirectNeighbours(coords);
             foreach (var coord in nn) {
                 var item = At(coord);
                 if (item != null) yield return item;
@@ -102,7 +81,7 @@ namespace Core.h3x {
         }
 
         public IEnumerable<Hex3> EmptyNeighbours(Hex3 coords) {
-            var nn = Hex3Util.DirectNeighbours(coords);
+            var nn = Hex3Utils.DirectNeighbours(coords);
             foreach (var coord in nn) {
                 var item = At(coord);
                 if (item == null) yield return coord;

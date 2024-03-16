@@ -22,6 +22,11 @@ namespace Scanner {
         [SerializeField] GameObject regular;
         [SerializeField] GameObject active;
 
+        public string Label { 
+            get => GetComponentInChildren<TMPro.TMP_Text>().text ; 
+            set {  foreach (var text in GetComponentsInChildren<TMPro.TMP_Text>(true)) text.text = value; }
+        }
+
         int framesHL;
 
         private void LateUpdate() {

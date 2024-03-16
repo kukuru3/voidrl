@@ -34,7 +34,7 @@ namespace Scanner.Atomship {
     public class Feature {
         public FeatureTypes type;
         public Hex3 localCoords;
-        public QRZDir localDirection;
+        public Hex3Dir localDirection;
         public int graphicVariant;
         public ConnectionTypes connType;
     }
