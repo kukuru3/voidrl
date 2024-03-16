@@ -70,6 +70,9 @@ namespace Scanner.Atomship {
             DeclareStructure("hydroponics", "universal_single");
             DeclareStructure("small_engine", "small_engine");
 
+            DeclareStructure("large_engine", "large_engine");
+            DeclareStructure("double_long", "double_long");
+
             // in this order: 
             // spine
             // reactor
@@ -101,9 +104,13 @@ namespace Scanner.Atomship {
                 ship.BuildTube(a,b, "direct");
             }
 
-            ship.BuildStructure(Get("bridge"), 0, (0, 1, 1), 0);
+            //ship.BuildStructure(Get("bridge"), 0, (0, 1, 1), 0);
+            //ship.BuildTube((0,0,1), (0,1,1), "direct");
 
-            ship.BuildTube((0,0,1), (0,1,1), "direct");
+
+            //ship.BuildStructure(Get("engineering"), 0, (0,1,2),1);
+
+            //ship.BuildStructure(Get("hydroponics"), 0, (-1,1,1),2);
 
             return ship;
 

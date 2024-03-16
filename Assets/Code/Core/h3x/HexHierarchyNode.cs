@@ -53,7 +53,11 @@ namespace Core {
         public static HexPose operator *(HexPose a, HexPose b) {
             return new HexPose(a.position + b.position.Rotated(a.rotation), a.rotation + b.rotation);
         }
-        
+
+        public override readonly string ToString() {
+            return $"(hex:{position}, rot:{rotation})";
+        }
+
         public Pose Cartesian() => new Pose(position.Cartesian(), Quaternion.Euler(0,0,60 * rotation));
     }
 
@@ -100,11 +104,10 @@ namespace Core {
               Hex3Dir.Top => (Vector3.up, Vector3.forward),
               Hex3Dir.Bottom => (-Vector3.up, Vector3.forward),
 
-              Hex3Dir.LeftTop    => (Radial(-60), Vector3.forward),
               Hex3Dir.RightTop   => (Radial(60), Vector3.forward),
-              Hex3Dir.LeftBot    => (Radial(-120), Vector3.forward),
               Hex3Dir.RightBot   => (Radial(120), Vector3.forward),
-
+              Hex3Dir.LeftBot    => (Radial(-120), Vector3.forward),
+              Hex3Dir.LeftTop    => (Radial(-60), Vector3.forward),
 
               _ => (Vector3.zero, Vector3.zero),
             };
@@ -113,11 +116,6 @@ namespace Core {
                 var rads = degrees * Mathf.Deg2Rad;
                 return new Vector3(Mathf.Cos(rads), Mathf.Sin(rads), 0);
             }
-
-            //var px = Hexes.PixelToHex(off.x, off.y, gridType, 1f);
-            //var up = Hexes.PixelToHex(0, 0, gridType, 1f);
-            //var forward = Hexes.PixelToHex(0, 0, gridType, 1f);
-            //return (up, forward);
         }
 
         public static Quaternion Orientation(this Hex3Dir dir) {        
@@ -152,12 +150,13 @@ namespace Core {
             Hex3Dir.RightTop => 1, 
             Hex3Dir.RightBot => 2, 
             Hex3Dir.Bottom => 3, 
-            Hex3Dir.LeftTop => 4,
-            Hex3Dir.LeftBot => 5,
+            Hex3Dir.LeftBot => 4,
+            Hex3Dir.LeftTop => 5,
             _ => -1
         };
 
         static public Hex3Dir FromParameters(int hexRot, int zOff ) {
+            hexRot = hexRot % 6; if (hexRot < 0) hexRot += 6;
             return (zOff, hexRot) switch {
                 (-1, _) => Hex3Dir.Backward,
                 ( 1, _) => Hex3Dir.Forward,
@@ -166,8 +165,8 @@ namespace Core {
                     1 => Hex3Dir.RightTop, 
                     2 => Hex3Dir.RightBot, 
                     3 => Hex3Dir.Bottom, 
-                    4 => Hex3Dir.LeftTop, 
-                    5 => Hex3Dir.LeftBot, 
+                    4 => Hex3Dir.LeftBot, 
+                    5 => Hex3Dir.LeftTop, 
                     _ => Hex3Dir.None
                 },
                 _ => Hex3Dir.None
