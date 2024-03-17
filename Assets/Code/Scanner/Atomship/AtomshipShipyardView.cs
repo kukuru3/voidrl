@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Text;
-using System.Linq;
-using Core;
-using Core.h3x;
+﻿using Core;
+using Core.H3;
 using UnityEngine;
-using static IronPython.Modules._ast;
 
 namespace Scanner.Atomship {
+
     class AtomshipShipyardView : MonoBehaviour {
         [SerializeField] GameObject nodePrefab;
         [SerializeField] GameObject tubePrefab;
@@ -62,7 +58,7 @@ namespace Scanner.Atomship {
 
             foreach (var node in ship.Nodes) {
                 var p = node.Pose;
-                var cartesianPose = p.Cartesian();
+                var cartesianPose = p.CartesianPose();
                 cartesianPose.position.z *= 1.73f;
                 var go = Instantiate(nodePrefab, shipRoot);
                 go.transform.SetLocalPositionAndRotation(cartesianPose.position, cartesianPose.rotation);
@@ -71,8 +67,8 @@ namespace Scanner.Atomship {
             }
 
             foreach (var tube in ship.Tubes) {
-                var from = tube.moduleFrom.Pose.Cartesian().position;
-                var to = tube.moduleTo.Pose.Cartesian().position;
+                var from = tube.moduleFrom.Pose.CartesianPose().position;
+                var to = tube.moduleTo.Pose.CartesianPose().position;
                 from.z *= 1.73f;
                 to.z *= 1.73f;
                 var go = Instantiate(tubePrefab, shipRoot);
@@ -82,13 +78,13 @@ namespace Scanner.Atomship {
             }   
         }
 
-        void RegeneratePhantomView(StructureDeclaration decl, HexPose phantomPose) {
+        void RegeneratePhantomView(StructureDeclaration decl, H3Pose phantomPose) {
             
             foreach (Transform t in phantomRoot) Destroy(t.gameObject);
             foreach (var feat in decl.nodeModel.features) {
                 if (feat.type == FeatureTypes.Part) {
-                    var p = phantomPose * new HexPose(feat.localCoords, 0);
-                    var cartesianPose = p.Cartesian(); cartesianPose.position.z *= 1.73f;
+                    var p = phantomPose * new H3Pose(feat.localCoords, 0);
+                    var cartesianPose = p.CartesianPose(); cartesianPose.position.z *= 1.73f;
                     var go = Instantiate(phantomNodePrefab, phantomRoot);
                     go.transform.SetLocalPositionAndRotation(cartesianPose.position, cartesianPose.rotation);
                     go.name= $"Phantom node [{feat.localCoords}]";
@@ -96,7 +92,7 @@ namespace Scanner.Atomship {
             }
         }
 
-
+        
         private void Update() {
             var mousePos = Input.mousePosition;
             var ray = editorCamera.ScreenPointToRay(mousePos);
@@ -104,7 +100,7 @@ namespace Scanner.Atomship {
                 var go = hit.collider.gameObject;
                 var nv = go.GetComponentInParent<NodeView>();
                 var node = nv.Node;
-                var worldspaceDirection = Hex3Utils.ComputeDirectionFromNormal(hit.normal);
+                var worldspaceDirection = default(HexDir); // Hex3Utils.ComputeDirectionFromNormal(hit.normal);
 
                 // "node" and "dir" are sufficient for us
                 var attachmentPoint = fitter.FindAttachment(node.Pose.position, worldspaceDirection);
@@ -135,6 +131,8 @@ namespace Scanner.Atomship {
                         fitter.PreComputeAttachmentData(ship);
                     }
                 }
+            } else {
+                ClearPhantomView();
             }
         }
 

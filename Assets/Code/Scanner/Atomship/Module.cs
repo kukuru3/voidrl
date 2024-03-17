@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core;
-using Core.h3x;
+using Core.H3;
 
 namespace Scanner.Atomship {
-    public class Node : IHasHex3Coords {
+    public class Node : IHasH3Coords {
         public Ship Ship { get; }
 
         public Structure Structure { get; private set; }
 
         public int       IndexInStructure { get; private set; }
 
-        public HexPose Pose { get; }
-        public Hex3 Coords => Pose.position;
+        public H3Pose Pose { get; }
+        public H3 Coords => Pose.position;
 
-        public Node(Ship ship, HexPose pose) {
+        public Node(Ship ship, H3Pose pose) {
             Ship = ship;
             Pose = pose;
         }
@@ -28,7 +27,7 @@ namespace Scanner.Atomship {
     public class Structure {
         List<Node> nodes = new();
         public StructureDeclaration Declaration { get; }
-        public HexPose Pose { get; }
+        public H3Pose Pose { get; }
         public int VariantID { get; }
 
         public Ship Ship { get; }
@@ -37,7 +36,7 @@ namespace Scanner.Atomship {
 
         public void AssignNodes(IEnumerable<Node> nodes) => this.nodes = new(nodes);
 
-        public Structure(Ship ship, StructureDeclaration decl, int variant, HexPose pose) {
+        public Structure(Ship ship, StructureDeclaration decl, int variant, H3Pose pose) {
             Ship = ship;
             Declaration = decl;
             VariantID = variant;
@@ -58,8 +57,8 @@ namespace Scanner.Atomship {
             this.decl = declaration;
         }
 
-        public Hex3 CrdsFrom => moduleFrom.Coords;
-        public Hex3 CrdsTo => moduleTo.Coords;
+        public H3 CrdsFrom => moduleFrom.Coords;
+        public H3 CrdsTo => moduleTo.Coords;
         public Ship Ship { get; }
     }
 
@@ -67,26 +66,28 @@ namespace Scanner.Atomship {
     // a "module" occupies a single hex. 
     // large structures consist of multiple modules positioned in some arrangement.
     public class Ship {
-        Hex3SparseGrid<Node> nodeLookup = new();
+        H3SparseGrid<Node> nodeLookup = new();
         List<Tube> tubes = new();
+
         public IEnumerable<Node> Nodes { get {
             foreach (var item in nodeLookup.OccupiedHexes) yield return nodeLookup[item];
         } }
+
         public ICollection<Tube> Tubes => tubes;
         public IEnumerable<Structure> ListStructures() => Nodes.Select(n => n.Structure).Distinct();
 
-        public Node GetNode(Hex3 hex) => nodeLookup.At(hex);
+        public Node GetNode(H3 hex) => nodeLookup.At(hex);
 
         // does not check for adjacenty or fit concerns. Just plops the hexes there.
-        public void BuildStructure(StructureDeclaration decl, int variantIndex, Hex3 pivot, int rotation) {
-            var pose = new HexPose(pivot, rotation);
+        public void BuildStructure(StructureDeclaration decl, int variantIndex, H3 pivot, int rotation) {
+            var pose = new H3Pose(pivot, rotation);
 
-            var structure = new Structure(this, decl, variantIndex, new HexPose(pivot, rotation));
+            var structure = new Structure(this, decl, variantIndex, new H3Pose(pivot, rotation));
             
             var l = new List<Node>();
             foreach (var feature in decl.nodeModel.features) {
                 if (feature.type == FeatureTypes.Part) {
-                    var finalPose = pose * new HexPose(feature.localCoords, 0);
+                    var finalPose = pose * new H3Pose(feature.localCoords, 0);
                     l.Add(new Node(this, finalPose));
                 }
             }
@@ -104,7 +105,7 @@ namespace Scanner.Atomship {
             return tube;
         }
 
-        public Tube BuildTube(Hex3 from, Hex3 to, string declaration) {
+        public Tube BuildTube(H3 from, H3 to, string declaration) {
             var fromNode = GetNode(from);
             var toNode = GetNode(to);
             return BuildTube(fromNode, toNode, declaration);

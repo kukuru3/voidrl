@@ -40,7 +40,7 @@ namespace Scanner.Atomship {
         string currentName = "";
 
         void Save() {
-            var m = GetComponent<ModuleEditor>().CurrentModel;
+            var m = GetComponent<OldModuleEditor>().CurrentModel;
             var blob = ModelSerializer.Serialize(m);
             var path = Path.Combine(folder, $"{currentName}.structure");
             File.WriteAllBytes(path, blob);
@@ -49,7 +49,8 @@ namespace Scanner.Atomship {
 
         void New() {
             currentName = FindAvailableFileName();
-            GetComponent<ModuleEditor>().CreateNew();
+            throw new System.NotImplementedException("Reimplement pls");
+            // GetComponent<ModuleEditor>().CreateNew();
             Save();
         }
 
@@ -67,7 +68,8 @@ namespace Scanner.Atomship {
                 var blob = File.ReadAllBytes(fullName);
                 currentName = Path.GetFileNameWithoutExtension(fullName);
                 var sm = ModelSerializer.Deserialize(blob);
-                GetComponent<ModuleEditor>().Replace(sm);
+                throw new System.NotImplementedException("Reimplement pls");
+                // GetComponent<ModuleEditor>().Replace(sm);
             } catch (Exception e) {
                 Debug.LogException(e);
             }

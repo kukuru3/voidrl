@@ -93,15 +93,17 @@ namespace Scanner.Atomship {
         public static Ship GenerateInitialShip() {
             var ship = new Ship();
 
-            for (var zed = 0; zed < 5; zed++) {
-                ship.BuildStructure(Get("spine"), 0, (0,0,zed), 0);
-            }
+            //for (var zed = 0; zed < 5; zed++) {
+            //    ship.BuildStructure(Get("spine"), 0, (0,0,zed), 0);
+            //}
 
-            for (var zed = 0; zed < 4; zed++) {
-                var a = (0,0,zed);
-                var b = (0,0,zed+1);
-                ship.BuildTube(a,b, "direct");
-            }
+            //for (var zed = 0; zed < 4; zed++) {
+            //    var a = (0,0,zed);
+            //    var b = (0,0,zed+1);
+            //    ship.BuildTube(a,b, "direct");
+            //}
+
+            ship.BuildStructure(Get("spine"), 0, (0,0,0), 0);
 
             return ship;
 

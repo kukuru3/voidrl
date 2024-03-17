@@ -24,7 +24,7 @@ namespace Core.h3x {
 
         public static Hex3 operator -(Hex3 a, Hex3 b) => new Hex3(a.hex - b.hex, a.zed - b.zed);
 
-        public static Hex3 operator +(Hex3 a, Hex3Dir offset) => a + offset.Offset();
+        // public static Hex3 operator +(Hex3 a, Hex3Dir offset) => a + offset.Offset();
 
         public static bool operator ==(Hex3 a, Hex3 b) => a.hex == b.hex && a.zed == b.zed;
         public static bool operator !=(Hex3 a, Hex3 b) => a.hex != b.hex || a.zed != b.zed;
@@ -71,22 +71,5 @@ namespace Core.h3x {
         public void Clear() => _grid.Clear();
 
         public IEnumerable<Hex3> OccupiedHexes => _grid.Keys;
-
-        public IEnumerable<T> SolidNeighbours(Hex3 coords) {
-            var nn = Hex3Utils.DirectNeighbours(coords);
-            foreach (var coord in nn) {
-                var item = At(coord);
-                if (item != null) yield return item;
-            }
-        }
-
-        public IEnumerable<Hex3> EmptyNeighbours(Hex3 coords) {
-            var nn = Hex3Utils.DirectNeighbours(coords);
-            foreach (var coord in nn) {
-                var item = At(coord);
-                if (item == null) yield return coord;
-            }
-        }
-
     }
 }
