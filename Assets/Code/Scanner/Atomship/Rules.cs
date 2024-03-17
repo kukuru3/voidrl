@@ -97,20 +97,11 @@ namespace Scanner.Atomship {
                 ship.BuildStructure(Get("spine"), 0, (0,0,zed), 0);
             }
 
-
             for (var zed = 0; zed < 4; zed++) {
                 var a = (0,0,zed);
                 var b = (0,0,zed+1);
                 ship.BuildTube(a,b, "direct");
             }
-
-            //ship.BuildStructure(Get("bridge"), 0, (0, 1, 1), 0);
-            //ship.BuildTube((0,0,1), (0,1,1), "direct");
-
-
-            //ship.BuildStructure(Get("engineering"), 0, (0,1,2),1);
-
-            //ship.BuildStructure(Get("hydroponics"), 0, (-1,1,1),2);
 
             return ship;
 
