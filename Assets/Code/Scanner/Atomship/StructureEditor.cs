@@ -111,7 +111,7 @@ namespace Scanner.Atomship {
             // repopulate list
             foreach (Transform t in loadListContent) Destroy(t.gameObject);
             
-            var files = modelIO.EnumerateFiles("", "*.structure");
+            var files = modelIO.EnumerateStructures();
             foreach (var f in files) {
                 var bareFileName = Path.GetFileNameWithoutExtension(f);
                 var go = Instantiate(_listItemPrefab, loadListContent);
@@ -340,15 +340,13 @@ namespace Scanner.Atomship {
         public List<HexConnector> connections = new();
 
         [Serializable] public class HexNode {
-            public string specialID;
             public H3 hex;
-            public List<string> attributes = new();
         }
 
         [Serializable] public class HexConnector {
             public H3 sourceHex;
             public PrismaticHexDirection direction;
-            public List<string> attributes = new();
+            public int flags;
         }
     }
 }

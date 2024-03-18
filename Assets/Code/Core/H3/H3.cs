@@ -152,6 +152,8 @@ namespace Core.H3 {
             return (HexDir)idx;
         }
 
+       
+
         public static Vector3 CartesianPosition(this H3 h3) {
             var hexPos = h3.hex.HexToPixel(GridTypes.FlatTop, 1f);
             var zedPos = h3.zed * HexUtils.CartesianZMultiplier;
@@ -168,5 +170,47 @@ namespace Core.H3 {
             new Hex(-1, 0),
             new Hex(-1, 1)            
         };
+    }
+
+    public static class HexPack {
+         public static int PackSmallH3(H3 h3) {
+            return ToNibble(h3.hex.q, 0) | ToNibble(h3.hex.r, 1) | ToNibble(h3.zed, 2);
+        }
+
+        public static H3 UnpackSmallH3(int input) {
+            var q = FromNibble(input, 0); var r = FromNibble(input, 1); var z = FromNibble(input, 2);
+            return new H3(q, r, z);
+        }
+
+        public static int PackSmallH3AndDir(H3 h3, PrismaticHexDirection dir) {
+            return PackSmallH3(h3) | (PackPrismDir(dir)<<12);
+        }
+
+        public static (H3 prism, PrismaticHexDirection dir) UnpackSmallH3AndDir(int input) {
+            var h3 = UnpackSmallH3(input);
+            var prismByte = input >> 12;
+            var dir = prismByte switch {
+                7 => new PrismaticHexDirection(HexDir.None, 1),
+                8 => new PrismaticHexDirection(HexDir.None, -1),
+                _ => new PrismaticHexDirection((HexDir)prismByte, 0)
+            };
+            return (h3, dir);
+        }
+
+        static int PackPrismDir(PrismaticHexDirection dir) {
+            if (dir.longitudinal == 1) return 7;
+            if (dir.longitudinal == -1) return 8;
+            return (int)dir.radial;
+        }
+
+        static int ToNibble(int value, int nibbleIndex) {
+            if (value > 8 || value < -7) throw new Exception("Value too big for a nibble");
+            return (value + 7) << (nibbleIndex * 4);
+        }
+
+        static int FromNibble(int value, int nibbleIndex) {
+            var mask = 0xF << (nibbleIndex * 4);
+            return ((value & mask) >> (nibbleIndex * 4)) - 7;
+        }
     }
 }
