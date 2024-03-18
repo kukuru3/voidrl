@@ -17,6 +17,7 @@ namespace Scanner {
     }
 
     class Button : Element {
+        public bool Enabled { get; set; } = true;
         public event Action Clicked;
 
         [SerializeField] GameObject regular;
@@ -35,10 +36,10 @@ namespace Scanner {
             active.SetActive(vstate);
 
             if (IsHighlighted) framesHL++; else framesHL = 0;
+
+            if (!Enabled) return;
             
-            if (IsHighlighted && Input.GetMouseButtonDown(0)) {
-                Click();
-            }
+            if (IsHighlighted && Input.GetMouseButtonDown(0)) Click();
         }
 
         float timeLastClick = -1000f;
@@ -49,6 +50,8 @@ namespace Scanner {
         }
 
         private bool VisualState() {
+
+            if (!Enabled) return false;
 
             if (timeLastClick > Time.time - 0.3f) {
                 return Time.frameCount % 4 < 2;

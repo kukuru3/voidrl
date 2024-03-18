@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Scanner.Atomship {
+namespace Scanner.Atomship.Old {
     class ReadyAttachment {
         public Structure structure;
         public Feature   targetConnectorInModel;
@@ -19,37 +19,37 @@ namespace Scanner.Atomship {
     class Fitter {
 
          internal void PreComputeAttachmentData(Ship ship) { 
-            attachments.Clear();
+            //attachments.Clear();
 
-            foreach (var @struct in ship.ListStructures()) {
-                var pose0 = @struct.Pose;
-                var connectors = @struct.Declaration.nodeModel.features.Where(f => f.type == FeatureTypes.Connector).ToList();
-                foreach (var conn in connectors) {
+            //foreach (var @struct in ship.ListStructures()) {
+            //    var pose0 = @struct.Pose;
+            //    var connectors = @struct.Declaration.nodeModel.features.Where(f => f.type == FeatureTypes.Connector).ToList();
+            //    foreach (var conn in connectors) {
 
-                    var offZ = conn.localDirection.longitudinal;
+            //        var offZ = conn.localDirection.longitudinal;
 
-                    // here: get the final connector direction                    
-                    var connectorLocalPose = new H3Pose(conn.localCoords.hex, conn.localCoords.zed, conn.localDirection.radial);
+            //        // here: get the final connector direction                    
+            //        var connectorLocalPose = new H3Pose(conn.localCoords.hex, conn.localCoords.zed, conn.localDirection.radial);
 
-                    var finalPose = pose0 * connectorLocalPose;
+            //        var finalPose = pose0 * connectorLocalPose;
 
-                    // the final worldspace hextile of the connector, and its final worldspace direction
+            //        // the final worldspace hextile of the connector, and its final worldspace direction
 
-                    var connectorWorldspaceOriginHex = finalPose.position;
-                    var connectorWorldspaceDir = new PrismaticHexDirection(finalPose.RadialUp, offZ);
-                    var connectorWorldspaceTargetHex = finalPose.position + connectorWorldspaceDir;
+            //        var connectorWorldspaceOriginHex = finalPose.position;
+            //        var connectorWorldspaceDir = new PrismaticHexDirection(finalPose.RadialUp, offZ);
+            //        var connectorWorldspaceTargetHex = finalPose.position + connectorWorldspaceDir;
 
-                    attachments.Add(new ReadyAttachment {
-                        structure = @struct,
-                        targetConnectorInModel = conn,
-                        connectorWorldspaceDirection = connectorWorldspaceDir,
-                        sourceHexWS = connectorWorldspaceOriginHex,
-                        targetHexWS = connectorWorldspaceTargetHex,
-                    });
-                };
-            }
+            //        attachments.Add(new ReadyAttachment {
+            //            structure = @struct,
+            //            targetConnectorInModel = conn,
+            //            connectorWorldspaceDirection = connectorWorldspaceDir,
+            //            sourceHexWS = connectorWorldspaceOriginHex,
+            //            targetHexWS = connectorWorldspaceTargetHex,
+            //        });
+            //    };
+            //}
 
-            Debug.Log($"Precomputed attachment data, open attachment slots:{attachments.Count}");
+            //Debug.Log($"Precomputed attachment data, open attachment slots:{attachments.Count}");
         }
 
         internal ReadyAttachment FindAttachment(H3 nodePosition, HexDir direction) {
@@ -133,8 +133,6 @@ namespace Scanner.Atomship {
 
             var primaryConnectors = currentTool.nodeModel.features.Where(f => f.type == FeatureTypes.Connector && f.connType == ConnectionTypes.Primary).ToList();
             var normalConnectors = currentTool.nodeModel.features.Where(f => f.type == FeatureTypes.Connector && f.connType == ConnectionTypes.Allowed).ToList();
-
-            
 
             if (primaryConnectors.Count > 0) {
                 var primaryLogicalFitsWithTargetAttachment = new List<Feature>();

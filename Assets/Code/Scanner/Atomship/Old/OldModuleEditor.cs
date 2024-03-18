@@ -7,7 +7,7 @@ using Core.h3x;
 using K3.Hex;
 using UnityEngine;
 
-namespace Scanner.Atomship {
+namespace Scanner.Atomship.Old {
 
     internal class OldModuleEditor : MonoBehaviour {
 

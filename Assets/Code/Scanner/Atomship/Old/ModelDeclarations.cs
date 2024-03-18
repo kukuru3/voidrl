@@ -2,7 +2,7 @@
 using Core.H3;
 using System.Collections.Generic;
 
-namespace Scanner.Atomship {
+namespace Scanner.Atomship.Old {
     // always start with exactly one module at QRZ 0,0,0.
     // be able to raycast that gives us both the module hit and the "direction" of the ray.
     // requires

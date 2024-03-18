@@ -6,7 +6,7 @@ using UnityEngine;
 using ScannerBtn = Scanner.Button;
 using UnityBtn = UnityEngine.UI.Button;
 
-namespace Scanner.Atomship {
+namespace Scanner.Atomship.Old {
     internal class StructureBrowserView : MonoBehaviour {
         const string folder = "Data\\Structures";
         [SerializeField] RectTransform container;

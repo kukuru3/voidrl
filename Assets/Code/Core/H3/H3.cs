@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using K3.Hex;
 using UnityEngine;
 
 namespace Core.H3 {
 
+    [System.Serializable]
     /// <summary>A prismatic hex</summary>
     public struct H3 {
         public readonly Hex hex;
@@ -86,10 +86,15 @@ namespace Core.H3 {
             return new H3(radial.Offset(), longitudinal);
         }
 
+        public PrismaticHexDirection Inverse() => new PrismaticHexDirection(radial.Inverse(), -longitudinal);
+
         public PrismaticHexDirection RotatedRadially(int steps) {
             if (radial == HexDir.None) return this;
             return new PrismaticHexDirection(radial.Rotated(steps), longitudinal);
         }
+
+        public static bool operator == (PrismaticHexDirection a, PrismaticHexDirection b) => a.radial == b.radial && a.longitudinal == b.longitudinal;
+        public static bool operator != (PrismaticHexDirection a, PrismaticHexDirection b) => a.radial != b.radial || a.longitudinal != b.longitudinal;
     }
 
     
@@ -145,6 +150,12 @@ namespace Core.H3 {
             var idx = Array.IndexOf(offsets, offset);
             if (idx == -1) throw new System.Exception("Invalid direction");
             return (HexDir)idx;
+        }
+
+        public static Vector3 CartesianPosition(this H3 h3) {
+            var hexPos = h3.hex.HexToPixel(GridTypes.FlatTop, 1f);
+            var zedPos = h3.zed * HexUtils.CartesianZMultiplier;
+            return new Vector3(hexPos.x, hexPos.y, zedPos);
         }
 
         // each offset corresponds to direction:

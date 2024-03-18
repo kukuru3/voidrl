@@ -62,8 +62,6 @@ Structures
    [ ] Zero-G habitat ("small ring"), occupying a single section of a module, with a cylinder that has 6 facility slots
    [ ] 
 
-
-[ ] Thinner ring spokes (looks better, and is probably more scientifically accurate)
 [ ] Autogreebler
 
 
@@ -609,7 +607,7 @@ Habitation module
   - "Slums" (not called that, but still)
   - Utopia
 
-Comand module: 
+Command module: 
  - training center 
  - simulator pods 
  - computer cores
@@ -643,3 +641,51 @@ BLACKOUT
   DEPRESSURIZATION event if life support is knocked out or a hab is pierced
   - early game, micrometeorite events are not as terrible. But as you increase your velocity, they will become more and more serious. This meshes nicely with our game design, as it allows us to ease the player into redundancy mode.
   - 
+
+
+
+
+
+
+
+
+PREMADE SHIP
+
+Ship has a tree of so-called modules. These can represent anything from large structural parts, small facilities, specializations or annexes.
+You can build new modules if you have sufficient resources.
+
+PROPULSION SECTION
+Propulsion can be tweaked, annexed and upgraded
+Reactor core can be tweaked, annexed and upgraded
+Ouroboros ring can be tweaked, annexed and upgraded
+
+HABITAT RING SECTION:
+12 slots for habitation
+
+12 slots for "auxilliary" modules
+- hydroponics
+- laboratories
+- engineering bays
+- storm shelters
+
+can be upgraded with another habitat ring section. Potentially more!
+
+
+
+ENGINEERING SECTION:
+
+3 slots for industrial modules
+ - zero-g industry
+ - ore extraction, processing, recycling
+
+can be expanded as needed with more slots.
+
+OPERATIONS SECTION:
+
+slots for:
+- hangars
+- security troops 
+
+
+COMMAND  SECTION
+- bridge / control center

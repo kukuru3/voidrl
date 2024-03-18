@@ -79,24 +79,25 @@ namespace Scanner.Atomship {
         public Node GetNode(H3 hex) => nodeLookup.At(hex);
 
         // does not check for adjacenty or fit concerns. Just plops the hexes there.
-        public void BuildStructure(StructureDeclaration decl, int variantIndex, H3 pivot, int rotation) {
-            var pose = new H3Pose(pivot, rotation);
+        public void BuildStructure(StructureDeclaration decl, H3 pivot, int rotation) {
+            throw new System.NotImplementedException("Reimplement this");
+            //var pose = new H3Pose(pivot, rotation);
 
-            var structure = new Structure(this, decl, variantIndex, new H3Pose(pivot, rotation));
+            //var structure = new Structure(this, decl, variantIndex, new H3Pose(pivot, rotation));
             
-            var l = new List<Node>();
-            foreach (var feature in decl.nodeModel.features) {
-                if (feature.type == FeatureTypes.Part) {
-                    var finalPose = pose * new H3Pose(feature.localCoords, 0);
-                    l.Add(new Node(this, finalPose));
-                }
-            }
+            //var l = new List<Node>();
+            //foreach (var feature in decl.nodeModel.features) {
+            //    if (feature.type == FeatureTypes.Part) {
+            //        var finalPose = pose * new H3Pose(feature.localCoords, 0);
+            //        l.Add(new Node(this, finalPose));
+            //    }
+            //}
 
-            for (var i = 0; i < l.Count; i++) { var node = l[i]; node.AssignStructure(structure, i); }
+            //for (var i = 0; i < l.Count; i++) { var node = l[i]; node.AssignStructure(structure, i); }
 
-            structure.AssignNodes(l);
+            //structure.AssignNodes(l);
 
-            foreach (var node in l) nodeLookup.TryInsert(node);
+            //foreach (var node in l) nodeLookup.TryInsert(node);
         }
 
         Tube BuildTube(Node from, Node to, string declaration) {

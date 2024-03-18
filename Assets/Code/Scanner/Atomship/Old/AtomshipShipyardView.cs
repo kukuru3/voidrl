@@ -2,7 +2,7 @@
 using Core.H3;
 using UnityEngine;
 
-namespace Scanner.Atomship {
+namespace Scanner.Atomship.Old {
 
     class AtomshipShipyardView : MonoBehaviour {
         [SerializeField] GameObject nodePrefab;
@@ -122,13 +122,13 @@ namespace Scanner.Atomship {
 
                 if (Input.GetMouseButtonDown(0)) {
                     if (fit.fits) {
-                        ship.BuildStructure(currentBlueprint, 0,  fit.alignmentOfBlueprint.position, fit.alignmentOfBlueprint.rotation);
-                        foreach (var couple in fit.couplings) {
-                            ship.BuildTube(couple.attachment.sourceHexWS, couple.attachment.targetHexWS, "tube");
-                        }
-                        ClearPhantomView();
-                        RegenerateShipView();
-                        fitter.PreComputeAttachmentData(ship);
+                        //ship.BuildStructure(currentBlueprint, fit.alignmentOfBlueprint.position, fit.alignmentOfBlueprint.rotation);
+                        //foreach (var couple in fit.couplings) {
+                        //    ship.BuildTube(couple.attachment.sourceHexWS, couple.attachment.targetHexWS, "tube");
+                        //}
+                        //ClearPhantomView();
+                        //RegenerateShipView();
+                        //fitter.PreComputeAttachmentData(ship);
                     }
                 }
             } else {
