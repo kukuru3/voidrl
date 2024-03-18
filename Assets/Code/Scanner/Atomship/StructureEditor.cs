@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 using Core.H3;
 using K3.Hex;
@@ -13,23 +14,27 @@ namespace Scanner.Atomship {
     using static Scanner.Atomship.HexModelDefinition;
 
     internal class StructureEditor : MonoBehaviour {
-        [SerializeField] private GameObject _blankHexPrefab;
-        [SerializeField] private GameObject _directionPrefab;
-        [SerializeField] private GameObject _buttonPrefab;
+        [SerializeField] GameObject _blankHexPrefab;
+        [SerializeField] GameObject _directionPrefab;
+        [SerializeField] GameObject _buttonPrefab;
+        [SerializeField] GameObject _togglePrefab;
 
-        [SerializeField] private GameObject _listItemPrefab;
+        [SerializeField] GameObject _listItemPrefab;
 
-        [SerializeField] private GameObject _nodePrefab;
-        [SerializeField] private GameObject _connectorPrefab;
+        [SerializeField] GameObject _nodePrefab;
+        [SerializeField] GameObject _connectorPrefab;
 
-        [SerializeField] private Transform _modelRoot;
+        [SerializeField] Transform _modelRoot;
 
         [SerializeField] TMPro.TMP_Text     label;
         [SerializeField] TMPro.TMP_InputField shipNameInput;
 
-        [SerializeField] private Transform  uiRoot;
-        [SerializeField] private Transform  loadList;
-        [SerializeField] private RectTransform loadListContent;
+        [SerializeField] Transform  uiRoot;
+        [SerializeField] Transform  flagsUIRoot;
+        [SerializeField] Transform  loadList;
+        [SerializeField] RectTransform loadListContent;
+
+
 
         HexModelDefinition model;
         ModelIO modelIO;
@@ -71,7 +76,21 @@ namespace Scanner.Atomship {
             }, DoSaveModel);
 
             CreateButton("Load...", IsLoadWindowNotShown, ShowLoadWindow);
+            CreateButton("New", null, CreateNew);
 
+            CreateFlagToggle("Aligner");
+            CreateFlagToggle("Mandatory");
+            CreateFlagToggle("Socket");
+
+            CreateFlagToggle("Structural");
+
+            CreateFlagToggle("Flavour 1");
+            CreateFlagToggle("Flavour 2");
+            CreateFlagToggle("Flavour 3");
+            CreateFlagToggle("Flavour 4");
+            CreateFlagToggle("Flavour 5");
+            CreateFlagToggle("Flavour 6");
+            
             InjectValidator(m => { if (m == null) return (false, "Model is null"); return (true, ""); });
             InjectValidator(m => { 
                 var numRemoved = 0;
@@ -92,18 +111,45 @@ namespace Scanner.Atomship {
             });
         }
 
+        List<Toggle> flagToggles= new();
+
+        private void CreateFlagToggle(string name) { 
+            var obj = Instantiate(_togglePrefab, flagsUIRoot);
+            var toggle = obj.GetComponent<Toggle>();
+            var bit = flagToggles.Count;
+            flagToggles.Add(toggle);
+            toggle.ValueChanged += () => OnToggleValueChanged(bit, toggle.ToggleState);
+            obj.GetComponentInChildren<TMPro.TMP_Text>().text = name;
+            obj.transform.localPosition = new Vector3(0, (flagToggles.Count-1) * 30, 0);
+        }
+
+        private void OnToggleValueChanged(int bit, bool toggleState) {
+            var c = GetConnector(cursor3d, direction);
+            
+            if (toggleState)
+                c.flags |= 1 << bit;
+            else {
+                var mask = ~(1 << bit);
+                c.flags = c.flags & mask;
+            }
+
+            ModelChanged();
+        }
+
         private void DoSaveModel() {
             loadList.gameObject.SetActive(false);
             model.identity = ShipName;
             modelIO.SaveModel(model);
         }
 
-        private void DoLoadModel() {
-            
-        }
-
         BtnState IsLoadWindowNotShown() {
             return loadList.gameObject.activeInHierarchy ? BtnState.Hide: BtnState.ShowActive;
+        }
+
+        void CreateNew() {
+            shipNameInput.text = "";
+            model = new() { identity = "" };
+            ModelChanged();
         }
         
         void ShowLoadWindow() {
@@ -119,6 +165,7 @@ namespace Scanner.Atomship {
                 go.GetComponentInChildren<UnityEngine.UI.Button>().onClick.AddListener(() => {
                     model = modelIO.LoadModel(bareFileName);
                     ModelChanged();
+                    shipNameInput.text = model.identity;
                     loadList.gameObject.SetActive(false);
                 });  
             }
@@ -233,7 +280,20 @@ namespace Scanner.Atomship {
                 var pos = Vector3.Lerp(A, B, 0.5f);
                 var rot = Quaternion.LookRotation(B - A, Vector3.up);
                 go.transform.SetPositionAndRotation(pos, rot);
+                go.GetComponentInChildren<MeshRenderer>().material.color = GetConnectorColor(conn);
             }
+        }
+
+        private Color GetConnectorColor(HConnector conn) {
+            var c = new Color(0f, 1f, 0f);
+
+            if ((conn.flags & (1 << 1)) > 0) c = new Color(1f, 1f, 0); // plug
+            if ((conn.flags & (1 << 2)) > 0) c = new Color(1f, 0, 0f); // socket
+            if ((conn.flags & (1 << 3)) > 0) c = new Color(1f,1f,1f); // structural
+
+            if ((conn.flags & (1 << 0)) > 0) c += new Color(0f, 0f, 1f); // aligner
+
+            return c;
         }
 
         List<(Button b, Func<BtnState> condition, Action onclick)> buttons = new();
@@ -265,6 +325,9 @@ namespace Scanner.Atomship {
         }
 
         private void Update() {
+            var prevc3d = cursor3d;
+            var prevdir = direction;
+
             if (Input.GetKeyDown(KeyCode.W)) cursor3d += new H3(0,1, 0);
             if (Input.GetKeyDown(KeyCode.S)) cursor3d += new H3(0,-1, 0);
             if (Input.GetKeyDown(KeyCode.D)) cursor3d += new H3(1, 0, 0);
@@ -286,12 +349,27 @@ namespace Scanner.Atomship {
 
             PositionCursors();
 
+            if (cursor3d != prevc3d || direction != prevdir) {                
+                UpdateFlagsWindow();
+            }
+
             UpdateToolbar();
 
             if (needsToUpdateModelGeometry) {
                 needsToUpdateModelGeometry = false;
                 RegenerateModelGeometry();
+                UpdateFlagsWindow();
                 // update model geometry
+            }
+        }
+
+        private void UpdateFlagsWindow() {
+            var c = GetConnector(cursor3d, direction);
+            flagsUIRoot.gameObject.SetActive(c != null);
+            if (c != null) {
+                for (var i = 0 ; i < flagToggles.Count; i++) {
+                    flagToggles[i].ToggleState = (c.flags & (1 << i)) != 0;
+                }
             }
         }
 

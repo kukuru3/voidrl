@@ -75,7 +75,7 @@ namespace Core.H3 {
         TopLeft,
     }
 
-    public struct PrismaticHexDirection {
+    public readonly struct PrismaticHexDirection {
         public readonly HexDir radial;
         public readonly int longitudinal;
         public PrismaticHexDirection(HexDir dir, int zOffset) {
@@ -92,6 +92,9 @@ namespace Core.H3 {
             if (radial == HexDir.None) return this;
             return new PrismaticHexDirection(radial.Rotated(steps), longitudinal);
         }
+
+        public override bool Equals(object obj) => obj is PrismaticHexDirection direction && radial == direction.radial && longitudinal == direction.longitudinal;
+        public override int GetHashCode() => HashCode.Combine(radial, longitudinal);
 
         public static bool operator == (PrismaticHexDirection a, PrismaticHexDirection b) => a.radial == b.radial && a.longitudinal == b.longitudinal;
         public static bool operator != (PrismaticHexDirection a, PrismaticHexDirection b) => a.radial != b.radial || a.longitudinal != b.longitudinal;
@@ -151,8 +154,6 @@ namespace Core.H3 {
             if (idx == -1) throw new System.Exception("Invalid direction");
             return (HexDir)idx;
         }
-
-       
 
         public static Vector3 CartesianPosition(this H3 h3) {
             var hexPos = h3.hex.HexToPixel(GridTypes.FlatTop, 1f);
