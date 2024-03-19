@@ -259,7 +259,6 @@ namespace Scanner.Atomship {
                 ValidateModel();
                 ModelChanged();
             }
-
         }
 
         private void RegenerateModelGeometry() { 
@@ -417,10 +416,12 @@ namespace Scanner.Atomship {
         public List<HexConnector> connections = new();
 
         [Serializable] public class HexNode {
+            public int index;
             public H3 hex;
         }
 
         [Serializable] public class HexConnector {
+            public int index;
             public H3 sourceHex;
             public PrismaticHexDirection direction;
             public int flags;

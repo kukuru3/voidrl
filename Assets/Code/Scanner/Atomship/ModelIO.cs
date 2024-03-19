@@ -38,7 +38,7 @@ namespace Scanner.Atomship {
             for (var i = 0; i < n; i++) {
                 var p = reader.ReadInt32();
                 var h = HexPack.UnpackSmallH3(p);
-                result.nodes.Add(new HexModelDefinition.HexNode { hex = h });
+                result.nodes.Add(new HexModelDefinition.HexNode { index = result.nodes.Count, hex = h });
             }
 
             n = reader.ReadInt32();
@@ -47,7 +47,7 @@ namespace Scanner.Atomship {
                 var p = reader.ReadInt32();
                 (var h3, var prism) = HexPack.UnpackSmallH3AndDir(p); 
                 var flags = reader.ReadInt32();
-                var cd = new HexModelDefinition.HexConnector { sourceHex = h3, direction = prism, flags = flags };
+                var cd = new HexModelDefinition.HexConnector { index = result.connections.Count, sourceHex = h3, direction = prism, flags = flags };
                 result.connections.Add(cd);
             }
             return result;

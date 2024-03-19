@@ -31,11 +31,11 @@ namespace Scanner.Atomship {
             // fill toolbar with blueprints
             GenerateDeclarations();
             GenerateUI();
+            fitter = new ModuleToShipFitter();
 
             ship = GenerateShipStub();
+
             HandleShipModelChanged();
-            fitter = new ModuleToShipFitter();
-            fitter.PrecomputeAttachpoints(ship);
         }
 
         private void Update() {
@@ -48,7 +48,13 @@ namespace Scanner.Atomship {
                 var dir = GetDirectionFromCartesianFacing(normal);
                 Debug.Log($"{node.Structure.name} [node {node.IndexInStructure}] : {dir}");
 
-                fitter.GetFit(currentBlueprint, node.Pose.position, dir);
+                var fit = fitter.TryGetFit(currentBlueprint, node.Pose.position, dir);
+                if (fit.success)
+                    PositionPhantom(fit.poseOfPhantom);
+                else 
+                    PositionPhantom(new H3Pose((0,0,5)));
+                
+                Debug.Log(fit.remarks);
             }
         }
 
@@ -77,12 +83,16 @@ namespace Scanner.Atomship {
 
         private void SelectDeclaration(StructureDeclaration decl) {
             currentBlueprint = decl;
-            ConstructPhantom(decl, new H3Pose(new H3(0,0,5), 0));
+            ConstructPhantom(decl);
+            PositionPhantom(
+                new H3Pose((0,0,4), 0)
+            );
         }
 
         private void GenerateDeclarations() {
             DeclareStructure("Spine Segment", "spine");
             DeclareStructure("Habitat module", "omni");
+            DeclareStructure("Radiator", "radiator3");
         }
 
         private void DeclareStructure(string structureID, string modelID) {
@@ -104,12 +114,28 @@ namespace Scanner.Atomship {
         void HandleShipModelChanged() {
             RegenerateShipVisuals();
             fitter.PrecomputeAttachpoints(ship);
+            RegenerateShipAttachPoints();
+        }
+
+        private void RegenerateShipAttachPoints() {
+            foreach (var att in fitter.attachments) {
+                var p1 = att.connectorWorldspaceOriginHex.CartesianPosition();
+                var p2 = (att.connectorWorldspaceOriginHex + att.connectorWorldspaceDirection).CartesianPosition();
+                var p = Vector3.Lerp(p1, p2, 0.5f);
+                var dir = Quaternion.LookRotation(p2 - p1);
+
+                var holoInstance = Instantiate(tubePrefab, root);
+                holoInstance.transform.SetLocalPositionAndRotation(p, dir);
+                foreach (var cmp in holoInstance.GetComponentsInChildren<MeshRenderer>()) cmp.sharedMaterial = hologram;
+                holoInstance.name = $"Attachment {att.structure.name}/{att.connector.index}/";
+            }
         }
 
         private void RegenerateShipVisuals() {
             foreach (var node in ship.Nodes) {
                 var p = node.Pose.CartesianPose();
-                var instance = Instantiate(nodePrefab, p.position, p.rotation, root);
+                var instance = Instantiate(nodePrefab, root);
+                instance.transform.SetLocalPositionAndRotation(p.position, p.rotation);
                 instance.GetComponent<NodeView>().Node = node;
                 instance.name = $"{node.Structure.name}[{node.IndexInStructure}]";
             }
@@ -134,7 +160,7 @@ namespace Scanner.Atomship {
         // if such a fit is possible, show the PHANTOM
         // phantom should be separate from the ship, should accept no raycasts, etc.
 
-        public void ConstructPhantom(StructureDeclaration declaration, H3Pose pose) {
+        public void ConstructPhantom(StructureDeclaration declaration) {
             
             foreach (Transform child in phantomRoot.transform) { Destroy(child.gameObject); }
 
@@ -165,7 +191,9 @@ namespace Scanner.Atomship {
                 foreach (var t in tubeInstance.GetComponentsInChildren<Transform>()) t.gameObject.layer = 0;
                 foreach (var mr in tubeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologram;
             }
+        }
 
+        void PositionPhantom(H3Pose pose) {
             var parentPose = pose.CartesianPose();
             phantomRoot.transform.SetLocalPositionAndRotation(parentPose.position, parentPose.rotation);
         }

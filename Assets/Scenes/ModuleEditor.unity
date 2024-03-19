@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.5
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_IndirectSpecularColor: {r: 0.015853995, g: 0.014024866, b: 0.012673152, a: 0.5}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5755,6 +5755,7 @@ MonoBehaviour:
   editorCamera: {fileID: 1862367227}
   uiRoot: {fileID: 2100855425}
   buttonPrefab: {fileID: 4405649098287407254, guid: f53afabac9204d74aaa7132b6b262e66, type: 3}
+  hologram: {fileID: 2100000, guid: f9efbc2ed764a6c44b5525cb407fa73a, type: 2}
 --- !u!1 &648733022
 GameObject:
   m_ObjectHideFlags: 0
