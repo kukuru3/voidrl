@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Messaging;
 using Core.H3;
 using K3.Hex;
 using UnityEngine;
 
+
 namespace Scanner.Atomship {
     using HNode = HexModelDefinition.HexNode;
     using HConnector = HexModelDefinition.HexConnector;
-    using static Scanner.Atomship.HexModelDefinition;
+
 
     internal class StructureEditor : MonoBehaviour {
         [SerializeField] GameObject _blankHexPrefab;

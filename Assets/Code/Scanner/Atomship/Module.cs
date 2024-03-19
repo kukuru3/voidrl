@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Core.H3;
+using UnityEngine;
 
 namespace Scanner.Atomship {
     public class Node : IHasH3Coords {
@@ -11,7 +12,7 @@ namespace Scanner.Atomship {
         public int       IndexInStructure { get; private set; }
 
         public H3Pose Pose { get; }
-        public H3 Coords => Pose.position;
+        public H3 WorldPosition => Pose.position;
 
         public Node(Ship ship, H3Pose pose) {
             Ship = ship;
@@ -25,21 +26,22 @@ namespace Scanner.Atomship {
     }
 
     public class Structure {
+
+        public string name;
+
         List<Node> nodes = new();
         public StructureDeclaration Declaration { get; }
         public H3Pose Pose { get; }
-        public int VariantID { get; }
-
+        
         public Ship Ship { get; }
         public IReadOnlyList<Node> Nodes => nodes;
 
 
         public void AssignNodes(IEnumerable<Node> nodes) => this.nodes = new(nodes);
 
-        public Structure(Ship ship, StructureDeclaration decl, int variant, H3Pose pose) {
+        public Structure(Ship ship, StructureDeclaration decl, H3Pose pose) {
             Ship = ship;
             Declaration = decl;
-            VariantID = variant;
             Pose = pose;
         }
     }
@@ -57,8 +59,8 @@ namespace Scanner.Atomship {
             this.decl = declaration;
         }
 
-        public H3 CrdsFrom => moduleFrom.Coords;
-        public H3 CrdsTo => moduleTo.Coords;
+        public H3 CrdsFrom => moduleFrom.WorldPosition;
+        public H3 CrdsTo => moduleTo.WorldPosition;
         public Ship Ship { get; }
     }
 
@@ -78,26 +80,27 @@ namespace Scanner.Atomship {
 
         public Node GetNode(H3 hex) => nodeLookup.At(hex);
 
+        string FindStructureName(Ship ship, StructureDeclaration decl) {
+            var numExisting = ship.ListStructures().Where(s => s.Declaration == decl).Count();
+            return $"{decl.ID} {numExisting}";
+        }
+
         // does not check for adjacenty or fit concerns. Just plops the hexes there.
         public void BuildStructure(StructureDeclaration decl, H3 pivot, int rotation) {
-            throw new System.NotImplementedException("Reimplement this");
-            //var pose = new H3Pose(pivot, rotation);
+            var pose = new H3Pose(pivot, rotation);
+            var structure = new Structure(this, decl, pose);
 
-            //var structure = new Structure(this, decl, variantIndex, new H3Pose(pivot, rotation));
-            
-            //var l = new List<Node>();
-            //foreach (var feature in decl.nodeModel.features) {
-            //    if (feature.type == FeatureTypes.Part) {
-            //        var finalPose = pose * new H3Pose(feature.localCoords, 0);
-            //        l.Add(new Node(this, finalPose));
-            //    }
-            //}
+            var l = new List<Node>();
+            foreach (var node in decl.hexModel.nodes) {
+                var finalPose = pose * new H3Pose(node.hex, 0);
+                l.Add(new Node(this, finalPose));
+            }
 
-            //for (var i = 0; i < l.Count; i++) { var node = l[i]; node.AssignStructure(structure, i); }
+            for (var i = 0; i < l.Count; i++) { var node = l[i]; node.AssignStructure( structure ); }
+            structure.AssignNodes(l);
+            foreach (var node in l) nodeLookup.TryInsert(node);
 
-            //structure.AssignNodes(l);
-
-            //foreach (var node in l) nodeLookup.TryInsert(node);
+            structure.name = FindStructureName(this, decl);
         }
 
         Tube BuildTube(Node from, Node to, string declaration) {

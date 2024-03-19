@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Core.H3 {
 
     public interface IHasH3Coords {
-        H3 Coords { get; }
+        H3 WorldPosition { get; }
     }
     public class H3SparseGrid<T> where T : class, IHasH3Coords  {
         Dictionary<H3, T> _grid = new Dictionary<H3, T>();
@@ -22,8 +22,8 @@ namespace Core.H3 {
         public bool HasValueAt(H3 item) => _grid.ContainsKey(item);
 
         public bool TryInsert(T item) {
-            if (HasValueAt(item.Coords)) return false;
-            _grid[item.Coords] = item;
+            if (HasValueAt(item.WorldPosition)) return false;
+            _grid[item.WorldPosition] = item;
             return true;
         }
 
@@ -32,8 +32,8 @@ namespace Core.H3 {
         }
 
         public bool TryRemove(T item) {
-            var c = item.Coords;
-            if (_grid.TryGetValue(item.Coords, out var r) && r == item) return _grid.Remove(c);
+            var c = item.WorldPosition;
+            if (_grid.TryGetValue(item.WorldPosition, out var r) && r == item) return _grid.Remove(c);
             return false;
         }
 

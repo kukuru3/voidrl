@@ -86,6 +86,13 @@ namespace Core.H3 {
             return new H3(radial.Offset(), longitudinal);
         }
 
+        public override string ToString() => (longitudinal == 0, radial == HexDir.None) switch {
+            (false, false) => "None",
+            (false, true) => $"{(longitudinal > 0 ? "Forward" : "Backward")}",
+            (true, false) => $"{radial}",
+            (true, true) => $"Complex diagonal {longitudinal}/{radial}"
+        };
+
         public PrismaticHexDirection Inverse() => new PrismaticHexDirection(radial.Inverse(), -longitudinal);
 
         public PrismaticHexDirection RotatedRadially(int steps) {
