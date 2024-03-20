@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Core.H3;
 using UnityEngine;
 
 namespace Scanner.Atomship {
     using HNode = HexModelDefinition.HexNode;
     using HConnector = HexModelDefinition.HexConnector;
+    using static IronPython.Modules._ast;
+
     class ShipbuilderView : MonoBehaviour  {
         [SerializeField] Transform root;
         [SerializeField] Transform phantomRoot;
@@ -38,23 +39,53 @@ namespace Scanner.Atomship {
             HandleShipModelChanged();
         }
 
+        H3 lastHitHex;
+        PrismaticHexDirection lastHitPose;
+        Fit lastGoodFit;
+        bool previewPhantom;
+
         private void Update() {
+            var m = Input.GetKeyDown(KeyCode.Mouse0);
+            Debug.Log($"Mouse pressed: {m}");
             // raycast
             var ray = editorCamera.ScreenPointToRay(Input.mousePosition);
+
+            previewPhantom = false;
+            
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, 1 << 20, QueryTriggerInteraction.Collide)) {
                 var hitObject = hit.collider.gameObject;
                 var node = hitObject.GetComponentInParent<NodeView>().Node;
                 var normal = hit.normal;
                 var dir = GetDirectionFromCartesianFacing(normal);
-                Debug.Log($"{node.Structure.name} [node {node.IndexInStructure}] : {dir}");
 
-                var fit = fitter.TryGetFit(currentBlueprint, node.Pose.position, dir);
-                if (fit.success)
-                    PositionPhantom(fit.poseOfPhantom);
-                else 
-                    PositionPhantom(new H3Pose((0,0,5)));
+                var doCheckForNewFit = node.Pose.position != lastHitHex || dir != lastHitPose;
+
+                lastHitHex = node.Pose.position; lastHitPose = dir;
+
+                previewPhantom = lastGoodFit != null;
                 
-                Debug.Log(fit.remarks);
+                if (doCheckForNewFit) { 
+                    lastGoodFit = fitter.TryGetFit(currentBlueprint, node.Pose.position, dir);
+                    if (lastGoodFit.success) { 
+                        PositionPhantom(lastGoodFit.poseOfPhantom);
+                    } 
+                }
+
+            } else {
+                lastGoodFit = null;
+                lastHitHex = default; lastHitPose = default;
+            }
+
+            phantomRoot.gameObject.SetActive(previewPhantom);
+            
+            if (Input.GetMouseButtonDown(0)) {
+                if (lastGoodFit != null) { 
+                    ship.BuildStructure(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
+                    foreach (var conn in lastGoodFit.connections) {
+                        ship.BuildTube(conn.from, conn.to, "default");
+                    }
+                    HandleShipModelChanged();
+                }
             }
         }
 
@@ -132,6 +163,8 @@ namespace Scanner.Atomship {
         }
 
         private void RegenerateShipVisuals() {
+            foreach (Transform t in root) Destroy(t.gameObject);
+
             foreach (var node in ship.Nodes) {
                 var p = node.Pose.CartesianPose();
                 var instance = Instantiate(nodePrefab, root);
@@ -196,6 +229,7 @@ namespace Scanner.Atomship {
         void PositionPhantom(H3Pose pose) {
             var parentPose = pose.CartesianPose();
             phantomRoot.transform.SetLocalPositionAndRotation(parentPose.position, parentPose.rotation);
+
         }
 
     }

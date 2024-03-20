@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.H3;
 using K3.Hex;
+using Void.Data;
 
 namespace Scanner.Atomship {
     using Connector = HexModelDefinition.HexConnector;
@@ -27,18 +28,16 @@ namespace Scanner.Atomship {
 
             var aligner = compatibleConnectorsInPhantom.FirstOrDefault(c => (c.flags & 1) > 0);
 
-            
-
             var stageOne = new List<Connector>(); if (aligner != null) stageOne.Add(aligner);
             var stageTwo = compatibleConnectorsInPhantom.Except(stageOne).ToList();
 
             foreach (var item in stageOne) {
-                var initialFit = TryExecuteFit(item, att);
+                var initialFit = TryExecuteFit(declaration, item, att);
                 if (initialFit.success) return initialFit;
             }
 
             foreach (var item in stageTwo) {
-                var initialFit = TryExecuteFit(item, att);
+                var initialFit = TryExecuteFit(declaration,item, att);
                 if (initialFit.success) return initialFit;
             }
             
@@ -49,25 +48,66 @@ namespace Scanner.Atomship {
             // try fit with other nodes now
         }
 
-        private Fit TryExecuteFit(Connector aligner, Attachment att) {
+        private Fit TryExecuteFit(StructureDeclaration decl, Connector primaryConnector, Attachment primaryAttachment) {
             // the million dollar question: orient the phantom in order for aligner to be the OPPOSITE of attachment.
-            var alignerWorldspacePos = att.connectorWorldspaceOriginHex + att.connectorWorldspaceDirection;
-            var alignerWorldspaceDir = att.connectorWorldspaceDirection.Inverse();
+            var alignerWorldspacePos = primaryAttachment.connectorWorldspaceOriginHex + primaryAttachment.connectorWorldspaceDirection;
+            var alignerWorldspaceDir = primaryAttachment.connectorWorldspaceDirection.Inverse();
 
             var rotationSteps = 0;
 
             if (alignerWorldspaceDir.longitudinal == 0) {
-                rotationSteps = 6-HexUtils.GetRotationSteps(aligner.direction.radial, alignerWorldspaceDir.radial);
+                rotationSteps = HexUtils.GetRotationSteps(primaryConnector.direction.radial, alignerWorldspaceDir.radial);
             }
 
-            var rotatedSourceHex = new H3(aligner.sourceHex.hex.RotateAroundZero(rotationSteps), aligner.sourceHex.zed);
+            var rotatedSourceHex = new H3(primaryConnector.sourceHex.hex.RotateAroundZero(rotationSteps), primaryConnector.sourceHex.zed);
             var originPos = alignerWorldspacePos - rotatedSourceHex;
 
+            var pose = new H3Pose(originPos, rotationSteps);
+            (var fit, var remark) = ValidateFit(decl, pose);
+
+            List<Fit.Connection> connections = new();
+            if (fit) connections.AddRange(FindConnections(decl, pose, primaryAttachment));
+            
             return new Fit {
                 poseOfPhantom = new H3Pose(originPos, rotationSteps),
-                remarks = "Fit successful",
-                success = true,
+                success = fit,
+                remarks = remark,
+                connections = connections,
             };
+        }
+
+        private IEnumerable<Fit.Connection> FindConnections(StructureDeclaration decl, H3Pose pose, Attachment primaryAttach) { 
+            foreach (var conn in decl.hexModel.connections) {
+                var worldCrds = TransformLocalToWorld(pose, conn.sourceHex, conn.direction);
+                var attachment = GetAttachment(worldCrds.hex + worldCrds.direction, worldCrds.direction.Inverse());
+                if (primaryAttach == attachment || ((conn.flags & 2) > 0)) {
+                    yield return new Fit.Connection {
+                        from = attachment.connectorWorldspaceOriginHex,
+                        to = worldCrds.hex,
+                    };
+                }
+            }
+        }
+
+        private (bool fits, string remarks) ValidateFit(StructureDeclaration declaration, H3Pose pose) {
+            // validate no nodes overlap with ship
+            foreach (var node in declaration.hexModel.nodes) {                
+                var worldPos = TransformLocalToWorld(pose, node.hex, new PrismaticHexDirection(HexDir.Top, 0)).hex;
+                if (ship.GetNode(worldPos) != null) return (false, "some nodes overlap");
+            }
+
+            // validate all mandatory nodes have compatibles
+            foreach (var c in declaration.hexModel.connections) {
+                if ((c.flags & 2) == 0) continue; // not mandatory
+                var worldCrds = TransformLocalToWorld(pose, c.sourceHex, c.direction);
+                var attachment = GetAttachment(worldCrds.hex + worldCrds.direction, worldCrds.direction.Inverse());
+                
+                if (attachment == null || !SpatiallyCompatible(attachment, c)) {
+                    return (false, "no or incompatible attachment for a mandatory connector");
+                }
+            }
+
+            return (true, "oll korrekt");
         }
 
         bool SpatiallyCompatible(Attachment a, Connector phantomConnector) {
@@ -103,9 +143,11 @@ namespace Scanner.Atomship {
             return (new H3(hex, zed), new PrismaticHexDirection(resultDirRadial, resultDirLongit));
         }
 
+        Ship ship;
         internal List<Attachment> attachments = new();
 
         internal void PrecomputeAttachpoints(Ship ship) {
+            this.ship = ship;
             attachments = new();
 
             foreach (var structure in ship.ListStructures()) {
@@ -139,5 +181,14 @@ namespace Scanner.Atomship {
         internal bool success;
         internal string remarks;
         internal H3Pose poseOfPhantom;
+
+        internal List<Connection> connections = new();
+    
+        internal class Connection {
+            internal H3 from;
+            internal H3 to;
+        }
     }
+
+    
 }

@@ -61,7 +61,7 @@ namespace Core.H3 {
         public Pose CartesianPose() {
             var hexPos = position.hex.HexToPixel(GridTypes.FlatTop, 1f);
             var zedPos = position.zed * HexUtils.CartesianZMultiplier;
-            return new Pose(new Vector3(hexPos.x, hexPos.y, zedPos), Quaternion.Euler(0, 0, 60 * rotation));
+            return new Pose(new Vector3(hexPos.x, hexPos.y, zedPos), Quaternion.Euler(0, 0, -60 * rotation));
         }
     }
 
