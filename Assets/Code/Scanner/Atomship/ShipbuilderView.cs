@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Core.H3;
 using UnityEngine;
+using Void.Model;
 
 namespace Scanner.Atomship {
-    //using HNode = HexModelDefinition.HexNode;
-    //using HConnector = HexModelDefinition.HexConnector;
 
     class ShipbuilderView : MonoBehaviour  {
         [SerializeField] Transform root;

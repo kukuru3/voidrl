@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Core.H3;
-using UnityEngine;
+using Void.Model;
 
 namespace Scanner.Atomship {
     public class Node : IHasH3Coords {

@@ -3,6 +3,7 @@ using YamlDotNet.Serialization;
 using System.Collections.Generic;
 using System.IO;
 using Core.H3;
+using Void.Model;
 
 namespace Scanner.Atomship {
     public class ModelIO {

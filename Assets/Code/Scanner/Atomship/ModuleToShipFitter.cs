@@ -4,6 +4,7 @@ using System.Linq;
 using Core.H3;
 using K3.Hex;
 using Void.Data;
+using Void.Model;
 
 namespace Scanner.Atomship {
     using Connector = HexModelDefinition.HexConnector;
@@ -173,7 +174,7 @@ namespace Scanner.Atomship {
 
     public class Attachment {
         public Structure structure;
-        public HexModelDefinition.HexConnector connector;
+        public Connector connector;
         public H3 connectorWorldspaceOriginHex;
         public PrismaticHexDirection connectorWorldspaceDirection;
     }
