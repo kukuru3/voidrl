@@ -1,7 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Void.Data;
 
 namespace Void {
+
+    public static class ResourceManager {
+        static List<string> list = new();
+        static Dictionary<string, int> lookup = new();
+
+        public static int HandleOf(string name) {
+            name = name.ToLowerInvariant();
+            if (lookup.TryGetValue(name, out var idx)) {
+                idx = list.Count;
+                list.Add(name);
+            }
+            return idx;
+        }
+        public static IEnumerable<(int id, string name)> Values => lookup.Select(lookup => (lookup.Value, lookup.Key));
+    }
+
+
     public class ResourcePool {
         public Dictionary<string, long> resources;
 

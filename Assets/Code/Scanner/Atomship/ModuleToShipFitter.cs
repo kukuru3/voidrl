@@ -80,10 +80,11 @@ namespace Scanner.Atomship {
             foreach (var conn in decl.hexModel.connections) {
                 var worldCrds = TransformLocalToWorld(pose, conn.sourceHex, conn.direction);
                 var attachment = GetAttachment(worldCrds.hex + worldCrds.direction, worldCrds.direction.Inverse());
-                if (primaryAttach == attachment || ((conn.flags & 2) > 0)) {
+                if (attachment != null) {
                     yield return new Fit.Connection {
                         from = attachment.connectorWorldspaceOriginHex,
                         to = worldCrds.hex,
+                        critical = primaryAttach == attachment || ((conn.flags & 2) > 0)
                     };
                 }
             }
@@ -187,6 +188,7 @@ namespace Scanner.Atomship {
         internal class Connection {
             internal H3 from;
             internal H3 to;
+            internal bool critical;
         }
     }
 

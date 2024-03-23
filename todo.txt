@@ -1,3 +1,24 @@
+CITY BUILDER: 
+
+order of operations: 
+
+
+Basic reachability system
+
+
+
+
+
+
+
+
+
+====================
+
+
+
+
+
 COMPONENT CONSTRAINTS:
   - must be axial (e.g. engines)
   - requires supercooling connection, life support, etc.

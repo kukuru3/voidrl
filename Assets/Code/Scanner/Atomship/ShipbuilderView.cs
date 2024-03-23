@@ -3,9 +3,8 @@ using Core.H3;
 using UnityEngine;
 
 namespace Scanner.Atomship {
-    using HNode = HexModelDefinition.HexNode;
-    using HConnector = HexModelDefinition.HexConnector;
-    using static IronPython.Modules._ast;
+    //using HNode = HexModelDefinition.HexNode;
+    //using HConnector = HexModelDefinition.HexConnector;
 
     class ShipbuilderView : MonoBehaviour  {
         [SerializeField] Transform root;
@@ -45,11 +44,7 @@ namespace Scanner.Atomship {
         bool previewPhantom;
 
         private void Update() {
-            var m = Input.GetKeyDown(KeyCode.Mouse0);
-            Debug.Log($"Mouse pressed: {m}");
-            // raycast
             var ray = editorCamera.ScreenPointToRay(Input.mousePosition);
-
             previewPhantom = false;
             
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, 1 << 20, QueryTriggerInteraction.Collide)) {
@@ -81,10 +76,11 @@ namespace Scanner.Atomship {
             if (Input.GetMouseButtonDown(0)) {
                 if (lastGoodFit != null) { 
                     ship.BuildStructure(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
-                    foreach (var conn in lastGoodFit.connections) {
+                    foreach (var conn in lastGoodFit.connections)
                         ship.BuildTube(conn.from, conn.to, "default");
-                    }
+                    
                     HandleShipModelChanged();
+                    lastGoodFit = null;
                 }
             }
         }
@@ -145,7 +141,7 @@ namespace Scanner.Atomship {
         void HandleShipModelChanged() {
             RegenerateShipVisuals();
             fitter.PrecomputeAttachpoints(ship);
-            RegenerateShipAttachPoints();
+            // RegenerateShipAttachPoints();
         }
 
         private void RegenerateShipAttachPoints() {

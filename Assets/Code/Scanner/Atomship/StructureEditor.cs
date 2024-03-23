@@ -402,7 +402,6 @@ namespace Scanner.Atomship {
         // - connections that originate from a blank node are called ORPHAN and are deleted on validation.
     }
 
-
     [System.Serializable]
     public class StructureDeclaration {
         public HexModelDefinition hexModel;
