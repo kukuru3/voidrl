@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Void.ColonyModel {
+namespace Void.ColonySim.Model {
 
     static class Extensions {
         public static ModuleDeclaration With(this ModuleDeclaration decl, ILogicExt logic) {

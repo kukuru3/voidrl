@@ -1,29 +1,11 @@
-﻿using YamlDotNet.Serialization.NamingConventions;
-using YamlDotNet.Serialization;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Core.H3;
-using Void.Model;
+using Void.ColonySim.Model;
 
 namespace Scanner.Atomship {
     public class ModelIO {
         public const string BasePath = "Data\\Structures";
-        private ISerializer serializer;
-        private IDeserializer deserializer;
-
-        public ModelIO() {
-            PrepareSerializers();
-        }
-
-        void PrepareSerializers() {
-            serializer = new SerializerBuilder()
-                .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                .Build();
-
-            deserializer = new DeserializerBuilder()
-                .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                .Build();
-        }
 
         public HexModelDefinition LoadModel(string id) {
             var path = Path.Combine(BasePath, id + ".structure");

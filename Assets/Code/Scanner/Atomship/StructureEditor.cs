@@ -5,7 +5,7 @@ using System.Linq;
 using Core.H3;
 using K3.Hex;
 using UnityEngine;
-using Void.Model;
+using Void.ColonySim.Model;
 
 
 namespace Scanner.Atomship {

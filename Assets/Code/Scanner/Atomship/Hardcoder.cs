@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using Void.ColonySim.BuildingBlocks;
 
 namespace Scanner.Atomship {
     public static class Hardcoder {

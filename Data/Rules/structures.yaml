@@ -1,0 +1,62 @@
+structures:
+  spine-segment:
+    model: spine
+    cost: { resources: 50 }
+    structural:
+      weight: 30
+      integrity: 300
+      tensile: 100
+
+  hab-module:    
+    model: omni
+    cost: { resources: 100 }
+    # structural:
+    #   integrity: 100
+    #   tensile: 10 
+    logic:
+      habitat: 
+        max-pop: 5000
+
+    structural: { weight: 30 }
+
+  reactor-core:
+    model: omni # for now
+    cost: { resources: 300 }
+    structural: { weight: 30 }
+    logic: 
+      reactor:
+        type: fusion # indicates that production depends on fuel level, with cutoff
+        burn: { deuterium: 1 } 
+        heat: 1000
+      rad-source:
+        source: nodes
+        radius: 0
+        amount: 100
+  
+  radiator-basic: 
+    description: Li-Mo molten metal pipe system
+    model: radiator3
+    cost: { resources: 150 }
+    structural: { weight: 30 }
+    logic: 
+      heat-radiator:
+        radiated: 1000
+
+  heat-turbine:
+    description: Rankine cycle turbines
+    model: omni
+    cost: { resources: 50 }
+    structural: { weight: 30 }
+    logic:
+      heat-turbine:
+        conversion-factor: 1.0
+        
+    
+
+
+    
+
+
+
+
+  

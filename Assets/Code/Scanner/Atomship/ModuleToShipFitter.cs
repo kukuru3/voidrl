@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Core.H3;
 using K3.Hex;
-using Void.Data;
-using Void.Model;
+using Void.ColonySim.Model;
+using Void.ColonySim.BuildingBlocks;
+
 
 namespace Scanner.Atomship {
     using Connector = HexModelDefinition.HexConnector;

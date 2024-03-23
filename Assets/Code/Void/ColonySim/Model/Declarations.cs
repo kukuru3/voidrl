@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace Void.ColonyModel {
+namespace Void.ColonySim.Model {
+    public interface ILogicExt { }
 
     public struct ModuleDeclaration {
         public string id;
@@ -74,8 +75,6 @@ namespace Void.ColonyModel {
             return extensions;
         } }
     }
-
-    public interface ILogicExt { }
 
     public struct Habitat : ILogicExt {
         public int capacity;

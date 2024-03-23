@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Core.H3;
 using UnityEngine;
-using Void.Model;
+using Void.ColonySim.Model;
+using Void.ColonySim.BuildingBlocks;
 
 namespace Scanner.Atomship {
 

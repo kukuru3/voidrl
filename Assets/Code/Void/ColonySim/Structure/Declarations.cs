@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Core.H3;
-using Void.Model;
+using Void.ColonySim.Model;
 
-namespace Scanner.Atomship {
+namespace Void.ColonySim.BuildingBlocks {
     public class Node : IHasH3Coords {
         public Ship Ship { get; }
 
@@ -32,7 +32,6 @@ namespace Scanner.Atomship {
         List<Node> nodes = new();
         public StructureDeclaration Declaration { get; }
         public H3Pose Pose { get; }
-        
         public Ship Ship { get; }
         public IReadOnlyList<Node> Nodes => nodes;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Core.H3;
 
-namespace Void.Model {
+namespace Void.ColonySim.Model {
     using HNode = HexModelDefinition.HexNode;
     using HConnector = HexModelDefinition.HexConnector;
 
