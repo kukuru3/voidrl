@@ -10,22 +10,36 @@ using System.IO;
 
 namespace Scanner.Atomship {
 
-    class ShipbuilderView : MonoBehaviour  {
-        [SerializeField] Transform root;
+    enum Tools {
+        Inspect,
+        Construct,
+        Destroy,
+    }
+
+    abstract class ShipScreen : MonoBehaviour {
+        [SerializeField] protected Transform root;
+        [SerializeField] protected Camera editorCamera;
+        [SerializeField] protected Transform uiRoot;
+        [SerializeField] protected GameObject buttonPrefab;
+        [SerializeField] protected TMPro.TMP_Text tooltip;
+
+        protected void SetTooltip(string text) {
+            tooltip.text = text;
+        }
+
+    }
+
+    class ShipbuilderView : ShipScreen {
+        
         [SerializeField] Transform phantomRoot;
 
         [SerializeField] GameObject nodePrefab;
-        [SerializeField] GameObject tubePrefab;
+        [SerializeField] GameObject tubePrefab;        
+        
+        [SerializeField] bool autopersistChanges;
 
-        [Header("UI")]
-        [SerializeField] Camera editorCamera;
-        [SerializeField] Transform uiRoot;
-        [SerializeField] GameObject buttonPrefab;
-
-        [SerializeField] Material hologram;
-
-        [SerializeField] bool autopersistedShip;
-
+        [SerializeField] Material hologramMaterial;
+        
 
         ModuleDeclaration currentBlueprint;
         ModuleToShipFitter fitter;
@@ -36,17 +50,13 @@ namespace Scanner.Atomship {
             GenerateUI();
             fitter = new ModuleToShipFitter();
 
-            if (autopersistedShip) {
+            if (autopersistChanges) {
                 LoadShip();
             }
 
             Game.Colony.AddSystem(new TemperatureGrid());
 
             HandleShipModelChanged();
-        }
-
-        private void OnDestroy() {
-            // if (autopersistedShip) SaveShip();
         }
 
         const string shipname = "_currentShip.ship";
@@ -71,7 +81,7 @@ namespace Scanner.Atomship {
             } catch (Exception e) {
                 Debug.LogError("Could not load ship. Autopersist set to FALSE in case you want to repro. Exception as follows:"); 
                 Debug.LogException(e);
-                autopersistedShip = false;
+                autopersistChanges = false;
             }
         }
 
@@ -86,12 +96,15 @@ namespace Scanner.Atomship {
 
             var ray = editorCamera.ScreenPointToRay(Input.mousePosition);
             previewPhantom = false;
+            SetTooltip("");
             
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, 1 << 20, QueryTriggerInteraction.Collide)) {
                 var hitObject = hit.collider.gameObject;
                 var node = hitObject.GetComponentInParent<NodeView>().Node;
                 var normal = hit.normal;
                 var dir = GetDirectionFromCartesianFacing(normal);
+
+                SetTooltip($"{node.Structure.name}");
 
                 var doCheckForNewFit = node.Pose.position != lastHitHex || dir != lastHitPose;
 
@@ -103,7 +116,7 @@ namespace Scanner.Atomship {
                     lastGoodFit = fitter.TryGetFit(currentBlueprint, node.Pose.position, dir);
                     if (lastGoodFit.success) { 
                         PositionPhantom(lastGoodFit.poseOfPhantom);
-                    } 
+                    }
                 }
 
             } else {
@@ -135,7 +148,6 @@ namespace Scanner.Atomship {
             return new PrismaticHexDirection(HexUtils.FromClockwiseRotationSteps(rotations), 0);
         }
 
-
         private void GenerateUI() {
             var y = 0;
             foreach (var decl in Void.Game.Rules.Modules) {
@@ -162,11 +174,11 @@ namespace Scanner.Atomship {
             RegenerateShipVisuals();
             fitter.PrecomputeAttachpoints(CurrentShipStructure);
             Game.Colony.GetSystem<TemperatureGrid>().RegenerateGraph(Game.Colony);
-            if (autopersistedShip) SaveShip();
+            if (autopersistChanges) SaveShip();
             // RegenerateShipAttachPoints();
         }
 
-        private void RegenerateShipAttachPoints() {
+        private void RegenerateShipAttachPointVisuals() {
             foreach (var att in fitter.attachments) {
                 var p1 = att.connectorWorldspaceOriginHex.CartesianPosition();
                 var p2 = (att.connectorWorldspaceOriginHex + att.connectorWorldspaceDirection).CartesianPosition();
@@ -175,7 +187,7 @@ namespace Scanner.Atomship {
 
                 var holoInstance = Instantiate(tubePrefab, root);
                 holoInstance.transform.SetLocalPositionAndRotation(p, dir);
-                foreach (var cmp in holoInstance.GetComponentsInChildren<MeshRenderer>()) cmp.sharedMaterial = hologram;
+                foreach (var cmp in holoInstance.GetComponentsInChildren<MeshRenderer>()) cmp.sharedMaterial = hologramMaterial;
                 holoInstance.name = $"Attachment {att.structure.name}/{att.connector.index}/";
             }
         }
@@ -226,7 +238,7 @@ namespace Scanner.Atomship {
                 nodeInstance.name = $"Blueprint {declaration.id} node {index++}";
 
                 foreach (var t in nodeInstance.GetComponentsInChildren<Transform>()) t.gameObject.layer = 0;
-                foreach (var mr in nodeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologram;
+                foreach (var mr in nodeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologramMaterial;
             }
 
             index = 0;
@@ -242,7 +254,7 @@ namespace Scanner.Atomship {
                 tubeInstance.name = $"Blueprint {declaration.id} tube {index++}";
 
                 foreach (var t in tubeInstance.GetComponentsInChildren<Transform>()) t.gameObject.layer = 0;
-                foreach (var mr in tubeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologram;
+                foreach (var mr in tubeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologramMaterial;
             }
         }
 

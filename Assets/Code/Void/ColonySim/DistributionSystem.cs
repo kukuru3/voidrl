@@ -1,91 +1,74 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Void.ColonySim.BuildingBlocks;
-using Void.ColonySim.Model;
 
 namespace Void.ColonySim {
-
-    public class Temperature {
-        public float output;
-    }
-
-    public class TemperatureGrid : DistributionSystem<Temperature>, ISimulatedSystem {
-        public override Temperature ProvideValue(ShipNode node) {
-            var t = new Temperature();
-            var decl = node.Structure.Declaration;
-            var heatRadiated = decl.logic.GetExtension<Radiator>().radiated;
-            var heatProduced = decl.logic.GetExtension<Reactor>().heat;
-            t.output = heatProduced - heatRadiated;
-            return t;
-        }
-
-        public void Tick() {
-            
-        }
-    }
-
-    public class DistroNode<T> {
-        public DistroNode(DistributionGraph<T> g, string name) {
+    public class DistroNode<TNode, TEdge> {
+        public DistroNode(DistributionGraph<TNode, TEdge> g, string name) {
             graph = g;
             this.name = name;
         }
         internal readonly string name;
-        internal readonly DistributionGraph<T> graph;
+        internal readonly DistributionGraph<TNode, TEdge> graph;
 
-        public T Value { get; set; }
+        public TNode Value { get; set; }
     }
 
-    public class DistroLine<T> {
-        public DistroLine(DistributionGraph<T> g, DistroNode<T> a, DistroNode<T> b) {
+    public class DistroLine<TNode, TEdge> {
+        public DistroLine(DistributionGraph<TNode, TEdge> g, DistroNode<TNode, TEdge> a, DistroNode<TNode, TEdge> b) {
             graph = g;
             this.a = a;
             this.b = b;
         }
 
-        internal readonly DistributionGraph<T> graph;
-        internal readonly DistroNode<T> a;
-        internal readonly DistroNode<T> b;
+        internal readonly DistributionGraph<TNode, TEdge> graph;
+        internal readonly DistroNode<TNode, TEdge> a;
+        internal readonly DistroNode<TNode, TEdge> b;
+
+        public TEdge Value { get; set; }
     }
 
-    public class DistributionGraph<T> {
+    public class DistributionGraph<TNode, TEdge> {
 
-        List<DistroNode<T>> nodes = new List<DistroNode<T>>();
-        public List<DistroLine<T>> lines = new List<DistroLine<T>>();
+        List<DistroNode<TNode, TEdge>> nodes = new();
+        public List<DistroLine<TNode, TEdge>> lines = new();
 
-        IReadOnlyList<DistroNode<T>> Nodes => nodes;
+        public IReadOnlyList<DistroNode<TNode, TEdge>> Nodes => nodes;
 
-        public DistroLine<T> GetLine(DistroNode<T> a, DistroNode<T> b, bool bidirectional = true) {
+        public DistroLine<TNode, TEdge> GetLine(DistroNode<TNode, TEdge> a, DistroNode<TNode, TEdge> b, bool bidirectional = true) {
             var found = lines.FirstOrDefault(l => l.a == a && l.b == b);
             if (bidirectional) found ??= lines.FirstOrDefault(l => l.a == b && l.b == a);
             return found;
         }
 
-        public DistroLine<T> CreateLine(DistroNode<T> a, DistroNode<T> b) {
+        public DistroLine<TNode, TEdge> CreateLine(DistroNode<TNode, TEdge> a, DistroNode<TNode, TEdge> b) {
             var existing = GetLine(a,b);
             if (existing != null) throw new System.ArgumentException("Line already exists");
-            var line = new DistroLine<T>(this, a, b);
+            var line = new DistroLine<TNode, TEdge>(this, a, b);
             lines.Add(line);
             return line;
         }
 
-        public DistroNode<T> CreateNode(string name) {
-            var n = new DistroNode<T>(this, name);
+        public DistroNode<TNode, TEdge> CreateNode(string name) {
+            var n = new DistroNode<TNode, TEdge>(this, name);
             nodes.Add(n);
             return n;
         }
     }
 
 
-    public class DistributionSystem<T> {
+    public class DistributionSystem<TNode, TEdge> {
 
-        public DistributionGraph<T> graph;
-        Dictionary<ShipNode, DistroNode<T>> dict = new();
+        public DistributionGraph<TNode, TEdge> graph;
+        Dictionary<ShipNode, DistroNode<TNode, TEdge>> dict = new();
 
-        public virtual T ProvideValue(ShipNode node) => default;
+        public virtual TNode ProvideValue(ShipNode node) => default;
+
+        public virtual TEdge ProvideEdgeValue(Tube tube) => default;
 
         public void RegenerateGraph(Colony colony) {
             // naively generates a graph wher all nodes and tubes are taken into account.
-            var graph = new DistributionGraph<T>();
+            var graph = new DistributionGraph<TNode, TEdge>();
 
             foreach (var node in colony.ShipStructure.Nodes) {
                 if (dict.ContainsKey(node)) continue;
@@ -106,7 +89,8 @@ namespace Void.ColonySim {
                 var nodeB = tube.moduleTo;
                 var a = dict[nodeA];
                 var b = dict[nodeB];
-                graph.CreateLine(a, b);
+                var line = graph.CreateLine(a, b);
+                line.Value = ProvideEdgeValue(tube);
             }
             this.graph = graph;
         }

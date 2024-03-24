@@ -43,6 +43,10 @@ namespace Void.ColonySim {
 
             yield return CreateDeclaration("heat-turbine", "omni") 
                 .With(new HeatTurbine { conversionFactor = 100 });
+
+            yield return CreateDeclaration("hydroponic", "omni");
+            yield return CreateDeclaration("engine", "engine1");
+                
         }
 
         ModuleDeclaration CreateDeclaration(string id, string blueprint) {
