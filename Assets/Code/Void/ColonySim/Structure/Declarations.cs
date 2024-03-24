@@ -4,6 +4,16 @@ using Core.H3;
 using Void.ColonySim.Model;
 
 namespace Void.ColonySim.BuildingBlocks {
+
+    /// <summary>A "frame of reference" for the ship. All nodes must be in at least one frame of reference.
+    /// Frames of reference form a tree, not a graph.</summary>
+    public class ShipFrame {
+        public ShipFrame parent;
+        public List<ShipNode> nodes = new();
+        public List<Tube> tubes = new();
+        public List<ShipFrame> childFrames = new();
+    }
+
     public class ShipNode : IHasH3Coords {
         public ColonyShipStructure Ship { get; }
 
@@ -23,7 +33,6 @@ namespace Void.ColonySim.BuildingBlocks {
     }
 
     public class NodularStructure {
-
         public string name;
 
         List<ShipNode> nodes = new();
@@ -31,7 +40,6 @@ namespace Void.ColonySim.BuildingBlocks {
         public H3Pose Pose { get; }
         public ColonyShipStructure Ship { get; }
         public IReadOnlyList<ShipNode> Nodes => nodes;
-
 
         public void AssignNodes(IEnumerable<ShipNode> nodes) => this.nodes = new(nodes);
 
@@ -67,14 +75,21 @@ namespace Void.ColonySim.BuildingBlocks {
 
     /// <summary>A structural representation of a large colony ship. Consists of nodes and tubes.</summary>
     public class ColonyShipStructure {
+
+        
         H3SparseGrid<ShipNode> nodeLookup = new();
         List<Tube> tubes = new();
+        List<ShipFrame> frames = new();
+
 
         public IEnumerable<ShipNode> Nodes { get {
             foreach (var item in nodeLookup.OccupiedHexes) yield return nodeLookup[item];
         } }
 
         public ICollection<Tube> Tubes => tubes;
+
+        public IReadOnlyList<ShipFrame> Frames => frames;
+
         public IEnumerable<NodularStructure> ListStructures() => Nodes.Select(n => n.Structure).Distinct();
 
         public ShipNode GetNode(H3 hex) => nodeLookup.At(hex);
