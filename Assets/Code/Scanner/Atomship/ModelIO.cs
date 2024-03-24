@@ -7,11 +7,27 @@ namespace Scanner.Atomship {
     public class ModelIO {
         public const string BasePath = "Data\\Structures";
 
-        public HexModelDefinition LoadModel(string id) {
+        public IEnumerable<HexBlueprint> LoadAllModels() {
+           var di = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), BasePath));
+            if (!di.Exists) throw new System.Exception($"No directory {di.FullName}");            
+            var ff = di.EnumerateFiles("*.structure");
+            foreach (var f in ff) {
+                var id = Path.GetFileNameWithoutExtension(f.Name);
+                HexBlueprint m = null;
+                try { 
+                    m = LoadModel(id);
+                } catch (System.Exception e) {
+                    UnityEngine.Debug.LogException(e);
+                }
+                if (m != null) yield return m;
+            }
+        }
+
+        public HexBlueprint LoadModel(string id) {
             var path = Path.Combine(BasePath, id + ".structure");
             var blob = File.ReadAllBytes(path);
 
-            var result = new HexModelDefinition();
+            var result = new HexBlueprint();
 
             using var ms = new MemoryStream(blob);
             using var reader = new BinaryReader(ms);
@@ -21,7 +37,7 @@ namespace Scanner.Atomship {
             for (var i = 0; i < n; i++) {
                 var p = reader.ReadInt32();
                 var h = HexPack.UnpackSmallH3(p);
-                result.nodes.Add(new HexModelDefinition.HexNode { index = result.nodes.Count, hex = h });
+                result.nodes.Add(new HexBlueprint.HexNode { index = result.nodes.Count, hex = h });
             }
 
             n = reader.ReadInt32();
@@ -30,13 +46,13 @@ namespace Scanner.Atomship {
                 var p = reader.ReadInt32();
                 (var h3, var prism) = HexPack.UnpackSmallH3AndDir(p); 
                 var flags = reader.ReadInt32();
-                var cd = new HexModelDefinition.HexConnector { index = result.connections.Count, sourceHex = h3, direction = prism, flags = flags };
+                var cd = new HexBlueprint.HexConnector { index = result.connections.Count, sourceHex = h3, direction = prism, flags = flags };
                 result.connections.Add(cd);
             }
             return result;
         }
 
-        public void SaveModel(HexModelDefinition hmd) {
+        public void SaveModel(HexBlueprint hmd) {
 
             using var ms = new MemoryStream();
             using var writer = new BinaryWriter(ms);

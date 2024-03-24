@@ -4,10 +4,11 @@ using Core.H3;
 using K3.Hex;
 using Void.ColonySim.Model;
 using Void.ColonySim.BuildingBlocks;
+using Void.ColonySim;
 
 
 namespace Scanner.Atomship {
-    using Connector = HexModelDefinition.HexConnector;
+    using Connector = HexBlueprint.HexConnector;
 
     class ModuleToShipFitter {
         /// <summary>
@@ -17,7 +18,7 @@ namespace Scanner.Atomship {
         /// <param name="fitShipHex"></param>
         /// <param name="fitDirection">Direction from the ship hex to thje blueprint</param>
         /// <returns></returns>
-        public Fit TryGetFit(StructureDeclaration declaration, H3 fitShipHex, PrismaticHexDirection fitDirection) {
+        public Fit TryGetFit(ModuleDeclaration declaration, H3 fitShipHex, PrismaticHexDirection fitDirection) {
             var att = GetAttachment(fitShipHex, fitDirection);
 
             if (att == null) return new Fit {
@@ -25,7 +26,7 @@ namespace Scanner.Atomship {
                 remarks = "No attachment under cursor",
             };
 
-            var compatibleConnectorsInPhantom = declaration.hexModel.connections.Where(c => SpatiallyCompatible(att, c)).ToList();
+            var compatibleConnectorsInPhantom = declaration.GetBlueprint().connections.Where(c => SpatiallyCompatible(att, c)).ToList();
 
             var aligner = compatibleConnectorsInPhantom.FirstOrDefault(c => (c.flags & 1) > 0);
 
@@ -49,7 +50,7 @@ namespace Scanner.Atomship {
             // try fit with other nodes now
         }
 
-        private Fit TryExecuteFit(StructureDeclaration decl, Connector primaryConnector, Attachment primaryAttachment) {
+        private Fit TryExecuteFit(ModuleDeclaration decl, Connector primaryConnector, Attachment primaryAttachment) {
             // the million dollar question: orient the phantom in order for aligner to be the OPPOSITE of attachment.
             var alignerWorldspacePos = primaryAttachment.connectorWorldspaceOriginHex + primaryAttachment.connectorWorldspaceDirection;
             var alignerWorldspaceDir = primaryAttachment.connectorWorldspaceDirection.Inverse();
@@ -77,8 +78,8 @@ namespace Scanner.Atomship {
             };
         }
 
-        private IEnumerable<Fit.Connection> FindConnections(StructureDeclaration decl, H3Pose pose, Attachment primaryAttach) { 
-            foreach (var conn in decl.hexModel.connections) {
+        private IEnumerable<Fit.Connection> FindConnections(ModuleDeclaration decl, H3Pose pose, Attachment primaryAttach) { 
+            foreach (var conn in decl.GetBlueprint().connections) {
                 var worldCrds = TransformLocalToWorld(pose, conn.sourceHex, conn.direction);
                 var attachment = GetAttachment(worldCrds.hex + worldCrds.direction, worldCrds.direction.Inverse());
                 if (attachment != null) {
@@ -91,15 +92,16 @@ namespace Scanner.Atomship {
             }
         }
 
-        private (bool fits, string remarks) ValidateFit(StructureDeclaration declaration, H3Pose pose) {
+        private (bool fits, string remarks) ValidateFit(ModuleDeclaration declaration, H3Pose pose) {
             // validate no nodes overlap with ship
-            foreach (var node in declaration.hexModel.nodes) {                
+            var blueprint = declaration.GetBlueprint();
+            foreach (var node in blueprint.nodes) {                
                 var worldPos = TransformLocalToWorld(pose, node.hex, new PrismaticHexDirection(HexDir.Top, 0)).hex;
                 if (ship.GetNode(worldPos) != null) return (false, "some nodes overlap");
             }
 
             // validate all mandatory nodes have compatibles
-            foreach (var c in declaration.hexModel.connections) {
+            foreach (var c in blueprint.connections) {
                 if ((c.flags & 2) == 0) continue; // not mandatory
                 var worldCrds = TransformLocalToWorld(pose, c.sourceHex, c.direction);
                 var attachment = GetAttachment(worldCrds.hex + worldCrds.direction, worldCrds.direction.Inverse());
@@ -153,7 +155,7 @@ namespace Scanner.Atomship {
             attachments = new();
 
             foreach (var structure in ship.ListStructures()) {
-                var connectors = structure.Declaration.hexModel.connections;
+                var connectors = structure.Declaration.GetBlueprint().connections;
                 foreach (var  conn in connectors) {
                     // so what is the worldspace position
                     (var worldHex, var worldDir) = TransformLocalToWorld(structure.Pose, conn.sourceHex, conn.direction);                    

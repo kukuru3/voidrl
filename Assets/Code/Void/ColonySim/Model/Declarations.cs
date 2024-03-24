@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Void.ColonySim.Model {
     public interface ILogicExt { }
@@ -9,6 +10,14 @@ namespace Void.ColonySim.Model {
         public Construction construction;
         public Structural structural;
         public Logic logic;
+
+        #region Equality operators, etc.
+        public override bool Equals(object obj) => obj is ModuleDeclaration declaration && id == declaration.id;
+        public override int GetHashCode() => HashCode.Combine(id);
+
+        public static bool operator ==(ModuleDeclaration a, ModuleDeclaration b) => a.id == b.id;
+        public static bool operator !=(ModuleDeclaration a, ModuleDeclaration b) => a.id != b.id; 
+        #endregion
     }
 
     public struct Construction {

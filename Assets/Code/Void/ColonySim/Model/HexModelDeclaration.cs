@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using Core.H3;
 
 namespace Void.ColonySim.Model {
-    using HNode = HexModelDefinition.HexNode;
-    using HConnector = HexModelDefinition.HexConnector;
+    using HNode = HexBlueprint.HexNode;
+    using HConnector = HexBlueprint.HexConnector;
 
-    public class StructureDeclaration {
-        public HexModelDefinition hexModel;
-        public string ID { get; set; }
-    }
-    
-    public class HexModelDefinition {
+    public class HexBlueprint {
         public string identity;
         public List<HNode> nodes = new();
         public List<HConnector> connections = new();

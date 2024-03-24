@@ -3,10 +3,14 @@ using Void.ColonySim.Model;
 
 namespace Void.ColonySim {
 
-    static class Extensions {
-        public static ModuleDeclaration With(this ModuleDeclaration decl, ILogicExt logic) {
+    public static class Extensions {
+        internal static ModuleDeclaration With(this ModuleDeclaration decl, ILogicExt logic) {
             decl.logic.AddExtension(logic);
             return decl;
+        }
+
+        public static HexBlueprint GetBlueprint(this ModuleDeclaration decl) {
+            return Game.Rules.HexBlueprints[decl.blueprint];
         }
     }
 

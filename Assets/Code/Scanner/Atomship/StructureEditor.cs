@@ -9,8 +9,8 @@ using Void.ColonySim.Model;
 
 
 namespace Scanner.Atomship {
-    using HNode = HexModelDefinition.HexNode;
-    using HConnector = HexModelDefinition.HexConnector;
+    using HNode = HexBlueprint.HexNode;
+    using HConnector = HexBlueprint.HexConnector;
 
     internal class StructureEditor : MonoBehaviour {
         [SerializeField] GameObject _blankHexPrefab;
@@ -35,7 +35,7 @@ namespace Scanner.Atomship {
 
 
 
-        HexModelDefinition model;
+        HexBlueprint model;
         ModelIO modelIO;
 
         H3 cursor3d = default;
@@ -47,7 +47,7 @@ namespace Scanner.Atomship {
         bool needsToUpdateModelGeometry;
         List<ModelValidator> validators = new();
         bool modelValid;
-        public delegate (bool valid, string fault) ModelValidator(HexModelDefinition model);
+        public delegate (bool valid, string fault) ModelValidator(HexBlueprint model);
 
         enum BtnState {
             Hide, 

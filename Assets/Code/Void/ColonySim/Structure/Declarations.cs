@@ -27,7 +27,7 @@ namespace Void.ColonySim.BuildingBlocks {
         public string name;
 
         List<ShipNode> nodes = new();
-        public StructureDeclaration Declaration { get; }
+        public ModuleDeclaration Declaration { get; }
         public H3Pose Pose { get; }
         public ColonyShipStructure Ship { get; }
         public IReadOnlyList<ShipNode> Nodes => nodes;
@@ -35,7 +35,7 @@ namespace Void.ColonySim.BuildingBlocks {
 
         public void AssignNodes(IEnumerable<ShipNode> nodes) => this.nodes = new(nodes);
 
-        public NodularStructure(ColonyShipStructure ship, StructureDeclaration decl, H3Pose pose) {
+        public NodularStructure(ColonyShipStructure ship, ModuleDeclaration decl, H3Pose pose) {
             Ship = ship;
             Declaration = decl;
             Pose = pose;
@@ -79,18 +79,23 @@ namespace Void.ColonySim.BuildingBlocks {
 
         public ShipNode GetNode(H3 hex) => nodeLookup.At(hex);
 
-        string GenerateDefaultStructureName(ColonyShipStructure ship, StructureDeclaration decl) {
+        string GenerateDefaultStructureName(ColonyShipStructure ship, ModuleDeclaration decl) {
             var numExisting = ship.ListStructures().Where(s => s.Declaration == decl).Count();
-            return $"{decl.ID} {numExisting}";
+            return $"{decl.id} {numExisting}";
         }
 
         // does not check for adjacenty or fit concerns. Just plops the hexes there.
-        public void BuildStructure(StructureDeclaration decl, H3 pivot, int rotation) {
+        public void BuildStructure(ModuleDeclaration decl, H3 pivot, int rotation) {
             var pose = new H3Pose(pivot, rotation);
             var structure = new NodularStructure(this, decl, pose);
 
             var l = new List<ShipNode>();
-            foreach (var node in decl.hexModel.nodes) {
+
+            var hexModel = Game.Rules.HexBlueprints[decl.blueprint];
+
+            if (hexModel == null) throw new System.InvalidOperationException($"No hex model found for {decl.blueprint}");
+
+            foreach (var node in hexModel.nodes) {
                 var finalPose = pose * new H3Pose(node.hex, 0);
                 var shipNode = new ShipNode(this, finalPose, structure, l.Count);
                 l.Add(shipNode);

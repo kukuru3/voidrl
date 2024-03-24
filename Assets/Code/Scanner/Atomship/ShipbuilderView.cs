@@ -3,6 +3,7 @@ using Core.H3;
 using UnityEngine;
 using Void.ColonySim.Model;
 using Void.ColonySim.BuildingBlocks;
+using Void.ColonySim;
 
 namespace Scanner.Atomship {
 
@@ -20,20 +21,14 @@ namespace Scanner.Atomship {
 
         [SerializeField] Material hologram;
 
-        ColonyShipStructure ship;
-
-        Dictionary<string, StructureDeclaration> declarations = new();
-
-        StructureDeclaration currentBlueprint;
+        ModuleDeclaration currentBlueprint;
         ModuleToShipFitter fitter;
 
+        ColonyShipStructure CurrentShip => Void.Game.Colony.ShipStructure;
+
         private void Start() {
-            // fill toolbar with blueprints
-            GenerateDeclarations();
             GenerateUI();
             fitter = new ModuleToShipFitter();
-
-            ship = GenerateShipStub();
 
             HandleShipModelChanged();
         }
@@ -75,9 +70,9 @@ namespace Scanner.Atomship {
             
             if (Input.GetMouseButtonDown(0)) {
                 if (lastGoodFit != null) { 
-                    ship.BuildStructure(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
+                    CurrentShip.BuildStructure(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
                     foreach (var conn in lastGoodFit.connections)
-                        ship.BuildTube(conn.from, conn.to, "default");
+                        CurrentShip.BuildTube(conn.from, conn.to, "default");
                     
                     HandleShipModelChanged();
                     lastGoodFit = null;
@@ -98,49 +93,29 @@ namespace Scanner.Atomship {
 
         private void GenerateUI() {
             var y = 0;
-            foreach (var decl in declarations.Values) {
+            foreach (var decl in Void.Game.Rules.Modules) {
                 var buttonGO = Instantiate(buttonPrefab, uiRoot);
                 buttonGO.transform.SetLocalPositionAndRotation(new Vector3(0,y,0), Quaternion.identity);
                 var btn = buttonGO.GetComponent<Button>();
                 btn.Clicked += () => SelectDeclaration(decl);
-                btn.Label = decl.ID;
+                btn.Label = decl.id;
                 y+=30;
             }
         }
 
-        private void SelectDeclaration(StructureDeclaration decl) {
+        private void SelectDeclaration(ModuleDeclaration decl) {
             currentBlueprint = decl;
             ConstructPhantom(decl);
             PositionPhantom(
                 new H3Pose((0,0,4), 0)
             );
+            lastGoodFit = null; // so the phantom is hidden?
+            
         }
 
-        private void GenerateDeclarations() {
-            DeclareStructure("Spine Segment", "spine");
-            DeclareStructure("Habitat module", "omni");
-            DeclareStructure("Radiator", "radiator3");
-        }
-
-        private void DeclareStructure(string structureID, string modelID) {
-            var m = new ModelIO();
-            var l = m.LoadModel(modelID);
-            var sd = new StructureDeclaration {
-                hexModel = l,
-                ID = structureID,
-            };
-            declarations.Add(structureID, sd);
-        }
-
-        private ColonyShipStructure GenerateShipStub() {
-            var s = new ColonyShipStructure();
-            s.BuildStructure(declarations["Spine Segment"], new H3(0,0,0), 0);
-            return s;
-        }
-        
         void HandleShipModelChanged() {
             RegenerateShipVisuals();
-            fitter.PrecomputeAttachpoints(ship);
+            fitter.PrecomputeAttachpoints(CurrentShip);
             // RegenerateShipAttachPoints();
         }
 
@@ -161,7 +136,7 @@ namespace Scanner.Atomship {
         private void RegenerateShipVisuals() {
             foreach (Transform t in root) Destroy(t.gameObject);
 
-            foreach (var node in ship.Nodes) {
+            foreach (var node in CurrentShip.Nodes) {
                 var p = node.Pose.CartesianPose();
                 var instance = Instantiate(nodePrefab, root);
                 instance.transform.SetLocalPositionAndRotation(p.position, p.rotation);
@@ -169,7 +144,7 @@ namespace Scanner.Atomship {
                 instance.name = $"{node.Structure.name}[{node.IndexInStructure}]";
             }
 
-            foreach (var tube in ship.Tubes) {
+            foreach (var tube in CurrentShip.Tubes) {
                 var instance = Instantiate(tubePrefab, root);
                 var from = tube.CrdsFrom.CartesianPosition();
                 var to = tube.CrdsTo.CartesianPosition();
@@ -189,7 +164,7 @@ namespace Scanner.Atomship {
         // if such a fit is possible, show the PHANTOM
         // phantom should be separate from the ship, should accept no raycasts, etc.
 
-        public void ConstructPhantom(StructureDeclaration declaration) {
+        public void ConstructPhantom(ModuleDeclaration declaration) {
             
             foreach (Transform child in phantomRoot.transform) { Destroy(child.gameObject); }
 
@@ -197,16 +172,18 @@ namespace Scanner.Atomship {
 
             var index = 0; 
 
-            foreach (var node in declaration.hexModel.nodes) {
+            var blueprint = declaration.GetBlueprint();
+
+            foreach (var node in blueprint.nodes) {
                 var nodeInstance = Instantiate(nodePrefab, node.hex.CartesianPosition(), Quaternion.identity, phantomRoot);
-                nodeInstance.name = $"Blueprint {declaration.ID} node {index++}";
+                nodeInstance.name = $"Blueprint {declaration.id} node {index++}";
 
                 foreach (var t in nodeInstance.GetComponentsInChildren<Transform>()) t.gameObject.layer = 0;
                 foreach (var mr in nodeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologram;
             }
 
             index = 0;
-            foreach (var tube in declaration.hexModel.connections) {
+            foreach (var tube in blueprint.connections) {
                 var hexA = tube.sourceHex;
                 var hexB = tube.sourceHex + tube.direction;
                 var a = hexA.CartesianPosition();
@@ -215,7 +192,7 @@ namespace Scanner.Atomship {
                 var rot = Quaternion.LookRotation(b-a, Vector3.up);
 
                 var tubeInstance = Instantiate(tubePrefab, coords, rot, phantomRoot);
-                tubeInstance.name = $"Blueprint {declaration.ID} tube {index++}";
+                tubeInstance.name = $"Blueprint {declaration.id} tube {index++}";
 
                 foreach (var t in tubeInstance.GetComponentsInChildren<Transform>()) t.gameObject.layer = 0;
                 foreach (var mr in tubeInstance.GetComponentsInChildren<MeshRenderer>()) mr.sharedMaterial = hologram;
@@ -225,7 +202,6 @@ namespace Scanner.Atomship {
         void PositionPhantom(H3Pose pose) {
             var parentPose = pose.CartesianPose();
             phantomRoot.transform.SetLocalPositionAndRotation(parentPose.position, parentPose.rotation);
-
         }
 
     }
