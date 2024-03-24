@@ -145,10 +145,10 @@ namespace Scanner.Atomship {
             return (new H3(hex, zed), new PrismaticHexDirection(resultDirRadial, resultDirLongit));
         }
 
-        Ship ship;
+        ColonyShipStructure ship;
         internal List<Attachment> attachments = new();
 
-        internal void PrecomputeAttachpoints(Ship ship) {
+        internal void PrecomputeAttachpoints(ColonyShipStructure ship) {
             this.ship = ship;
             attachments = new();
 
@@ -173,7 +173,7 @@ namespace Scanner.Atomship {
     }
 
     public class Attachment {
-        public Structure structure;
+        public NodularStructure structure;
         public Connector connector;
         public H3 connectorWorldspaceOriginHex;
         public PrismaticHexDirection connectorWorldspaceDirection;

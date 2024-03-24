@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Void.ColonySim.Model;
 
-namespace Void.ColonySim.Model {
+namespace Void.ColonySim {
 
     static class Extensions {
         public static ModuleDeclaration With(this ModuleDeclaration decl, ILogicExt logic) {
@@ -9,7 +10,7 @@ namespace Void.ColonySim.Model {
         }
     }
 
-    public class ModelHardcoder {
+    public class RulesHardcoder {
 
         Construction defaultConstruction = new Construction { cost = new Cost(new ResourceItem[] {  
             ("resources", 1000) 
@@ -21,7 +22,7 @@ namespace Void.ColonySim.Model {
             weight = 100,
         };
         
-        public IEnumerable<ModuleDeclaration> Hardcode() {
+        public IEnumerable<ModuleDeclaration> HardcodeModuleDeclarations() {
             var sp = CreateDeclaration("spine", "spine");
             sp.structural = new Structural { integrity = 300, tensile = 100, weight = 80 };
             yield return sp;
@@ -50,5 +51,4 @@ namespace Void.ColonySim.Model {
             };
         }
     }
-
 }

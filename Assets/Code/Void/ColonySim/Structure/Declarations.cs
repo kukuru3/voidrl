@@ -4,41 +4,38 @@ using Core.H3;
 using Void.ColonySim.Model;
 
 namespace Void.ColonySim.BuildingBlocks {
-    public class Node : IHasH3Coords {
-        public Ship Ship { get; }
+    public class ShipNode : IHasH3Coords {
+        public ColonyShipStructure Ship { get; }
 
-        public Structure Structure { get; private set; }
+        public NodularStructure Structure { get; }
 
-        public int       IndexInStructure { get; private set; }
+        public int       IndexInStructure { get; }
 
         public H3Pose Pose { get; }
         public H3 WorldPosition => Pose.position;
 
-        public Node(Ship ship, H3Pose pose) {
+        public ShipNode(ColonyShipStructure ship, H3Pose pose, NodularStructure structure, int indexInStructure) {
             Ship = ship;
             Pose = pose;
-        }
-
-        public void AssignStructure(Structure structure, int index = 0) {
-            this.Structure = structure;
-            this.IndexInStructure = index;
+            Structure = structure;
+            IndexInStructure = indexInStructure;
         }
     }
 
-    public class Structure {
+    public class NodularStructure {
 
         public string name;
 
-        List<Node> nodes = new();
+        List<ShipNode> nodes = new();
         public StructureDeclaration Declaration { get; }
         public H3Pose Pose { get; }
-        public Ship Ship { get; }
-        public IReadOnlyList<Node> Nodes => nodes;
+        public ColonyShipStructure Ship { get; }
+        public IReadOnlyList<ShipNode> Nodes => nodes;
 
 
-        public void AssignNodes(IEnumerable<Node> nodes) => this.nodes = new(nodes);
+        public void AssignNodes(IEnumerable<ShipNode> nodes) => this.nodes = new(nodes);
 
-        public Structure(Ship ship, StructureDeclaration decl, H3Pose pose) {
+        public NodularStructure(ColonyShipStructure ship, StructureDeclaration decl, H3Pose pose) {
             Ship = ship;
             Declaration = decl;
             Pose = pose;
@@ -47,11 +44,11 @@ namespace Void.ColonySim.BuildingBlocks {
 
     /// <summary>A tube always represents a connection between two ADJACENT hex coords.</summary>
     public class Tube {
-        internal readonly Node moduleFrom;
-        internal readonly Node moduleTo;
+        internal readonly ShipNode moduleFrom;
+        internal readonly ShipNode moduleTo;
         internal readonly string decl;
 
-        public Tube(Node from, Node to, string declaration) {
+        public Tube(ShipNode from, ShipNode to, string declaration) {
             this.Ship = from.Ship;
             this.moduleFrom = from;
             this.moduleTo = to;
@@ -60,26 +57,29 @@ namespace Void.ColonySim.BuildingBlocks {
 
         public H3 CrdsFrom => moduleFrom.WorldPosition;
         public H3 CrdsTo => moduleTo.WorldPosition;
-        public Ship Ship { get; }
+        public ColonyShipStructure Ship { get; }
     }
 
     // a ship consists of any number of modules and tubes
     // a "module" occupies a single hex. 
     // large structures consist of multiple modules positioned in some arrangement.
-    public class Ship {
-        H3SparseGrid<Node> nodeLookup = new();
+
+
+    /// <summary>A structural representation of a large colony ship. Consists of nodes and tubes.</summary>
+    public class ColonyShipStructure {
+        H3SparseGrid<ShipNode> nodeLookup = new();
         List<Tube> tubes = new();
 
-        public IEnumerable<Node> Nodes { get {
+        public IEnumerable<ShipNode> Nodes { get {
             foreach (var item in nodeLookup.OccupiedHexes) yield return nodeLookup[item];
         } }
 
         public ICollection<Tube> Tubes => tubes;
-        public IEnumerable<Structure> ListStructures() => Nodes.Select(n => n.Structure).Distinct();
+        public IEnumerable<NodularStructure> ListStructures() => Nodes.Select(n => n.Structure).Distinct();
 
-        public Node GetNode(H3 hex) => nodeLookup.At(hex);
+        public ShipNode GetNode(H3 hex) => nodeLookup.At(hex);
 
-        string FindStructureName(Ship ship, StructureDeclaration decl) {
+        string GenerateDefaultStructureName(ColonyShipStructure ship, StructureDeclaration decl) {
             var numExisting = ship.ListStructures().Where(s => s.Declaration == decl).Count();
             return $"{decl.ID} {numExisting}";
         }
@@ -87,22 +87,21 @@ namespace Void.ColonySim.BuildingBlocks {
         // does not check for adjacenty or fit concerns. Just plops the hexes there.
         public void BuildStructure(StructureDeclaration decl, H3 pivot, int rotation) {
             var pose = new H3Pose(pivot, rotation);
-            var structure = new Structure(this, decl, pose);
+            var structure = new NodularStructure(this, decl, pose);
 
-            var l = new List<Node>();
+            var l = new List<ShipNode>();
             foreach (var node in decl.hexModel.nodes) {
                 var finalPose = pose * new H3Pose(node.hex, 0);
-                l.Add(new Node(this, finalPose));
+                var shipNode = new ShipNode(this, finalPose, structure, l.Count);
+                l.Add(shipNode);
+                nodeLookup.TryInsert(shipNode);
             }
 
-            for (var i = 0; i < l.Count; i++) { var node = l[i]; node.AssignStructure( structure ); }
             structure.AssignNodes(l);
-            foreach (var node in l) nodeLookup.TryInsert(node);
-
-            structure.name = FindStructureName(this, decl);
+            structure.name = GenerateDefaultStructureName(this, decl);
         }
 
-        Tube BuildTube(Node from, Node to, string declaration) {
+        Tube BuildTube(ShipNode from, ShipNode to, string declaration) {
             var tube = new Tube(from, to, declaration);
             tubes.Add(tube);
             return tube;
@@ -114,6 +113,5 @@ namespace Void.ColonySim.BuildingBlocks {
             return BuildTube(fromNode, toNode, declaration);
         }
     }
-    
 }
 

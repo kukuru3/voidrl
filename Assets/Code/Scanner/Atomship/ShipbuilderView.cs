@@ -20,7 +20,7 @@ namespace Scanner.Atomship {
 
         [SerializeField] Material hologram;
 
-        Ship ship;
+        ColonyShipStructure ship;
 
         Dictionary<string, StructureDeclaration> declarations = new();
 
@@ -132,8 +132,8 @@ namespace Scanner.Atomship {
             declarations.Add(structureID, sd);
         }
 
-        private Ship GenerateShipStub() {
-            var s = new Ship();
+        private ColonyShipStructure GenerateShipStub() {
+            var s = new ColonyShipStructure();
             s.BuildStructure(declarations["Spine Segment"], new H3(0,0,0), 0);
             return s;
         }

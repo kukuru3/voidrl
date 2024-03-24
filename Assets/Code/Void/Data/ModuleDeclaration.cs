@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace Void.Data {
+﻿namespace Void.Data {
 
     public abstract class Declaration {
         public string id;

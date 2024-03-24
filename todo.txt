@@ -1,15 +1,24 @@
 CITY BUILDER: 
 
-order of operations: 
+order of operations:
+
+Basic reachability / node-edge pathfinding systems 
+
+power, heat, radiation, power grid, engineering, habitation, life support
+
+maintenance, disrepair, dysfunctional modules
+
+Frames of reference, rotators, gravity effects
 
 
-Basic reachability system
 
 
 
-
-
-
+DISTRIBUTION GRID SYSTEM
+- initially model on: heat (as it has very clear consumers and producers)
+- assume all nodes and tubes are part of the graph.
+- initially, assume only the reactor produces heat, and only the radiators consume heat
+- create a heat map visualiser mode for the spaceship.
 
 
 
