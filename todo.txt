@@ -1,6 +1,9 @@
 CITY BUILDER: 
 
+
 order of operations:
+
+ship persister (model only if need be). Autosave on start, autoload.
 
 Basic reachability / node-edge pathfinding systems 
 

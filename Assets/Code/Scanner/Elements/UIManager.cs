@@ -56,16 +56,16 @@ namespace Scanner {
         public static Vector3 GetDistortedCursorPos() {
             var p = Input.mousePosition;
             return p;
-            var distortion = 0.2f;
-            if (Instance.effects != null) distortion = Instance.effects.Distortion;
+            //var distortion = 0.2f;
+            //if (Instance.effects != null) distortion = Instance.effects.Distortion;
 
-            var uv = new Vector2(p.x / UnityEngine.Screen.width, p.y / UnityEngine.Screen.height);
-            var uv2 = Distort(uv, distortion);
+            //var uv = new Vector2(p.x / UnityEngine.Screen.width, p.y / UnityEngine.Screen.height);
+            //var uv2 = Distort(uv, distortion);
 
-            var sx = uv2.x * UnityEngine.Screen.width; 
-            var sy = uv2.y * UnityEngine.Screen.height;
+            //var sx = uv2.x * UnityEngine.Screen.width; 
+            //var sy = uv2.y * UnityEngine.Screen.height;
 
-            return new Vector3(sx, sy, 0);
+            //return new Vector3(sx, sy, 0);
         }
 
         static Vector2 Distort(Vector2 uv, float distortion) {

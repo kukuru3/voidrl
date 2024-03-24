@@ -4,6 +4,9 @@ using UnityEngine;
 using Void.ColonySim.Model;
 using Void.ColonySim.BuildingBlocks;
 using Void.ColonySim;
+using Void;
+using System;
+using System.IO;
 
 namespace Scanner.Atomship {
 
@@ -21,16 +24,55 @@ namespace Scanner.Atomship {
 
         [SerializeField] Material hologram;
 
+        [SerializeField] bool autopersistedShip;
+
+
         ModuleDeclaration currentBlueprint;
         ModuleToShipFitter fitter;
 
-        ColonyShipStructure CurrentShip => Void.Game.Colony.ShipStructure;
+        ColonyShipStructure CurrentShipStructure => Void.Game.Colony.ShipStructure;
 
         private void Start() {
             GenerateUI();
             fitter = new ModuleToShipFitter();
 
+            if (autopersistedShip) {
+                LoadShip();
+            }
+
+            Game.Colony.AddSystem(new TemperatureGrid());
+
             HandleShipModelChanged();
+        }
+
+        private void OnDestroy() {
+            // if (autopersistedShip) SaveShip();
+        }
+
+        const string shipname = "_currentShip.ship";
+        
+        private void SaveShip() {
+            var s = new Void.Serialization.ShipSerializer();
+            var blob = s.SerializeStructure(CurrentShipStructure);
+            var finalPath = Path.Combine(Application.persistentDataPath, shipname);
+            File.WriteAllBytes(finalPath, blob);
+        }
+
+        private void LoadShip() {
+            var s = new Void.Serialization.ShipSerializer();
+            var finalPath = Path.Combine(Application.persistentDataPath, shipname);
+            if (!File.Exists(finalPath)) { Debug.LogWarning("Ship save file does not exist, skipping"); return; }
+            try {
+                var blob = File.ReadAllBytes(finalPath);
+                var newStructure = s.DeserializeStructure(blob);
+                var c = new Colony(newStructure);
+                Game.ReplaceColony(c);
+
+            } catch (Exception e) {
+                Debug.LogError("Could not load ship. Autopersist set to FALSE in case you want to repro. Exception as follows:"); 
+                Debug.LogException(e);
+                autopersistedShip = false;
+            }
         }
 
         H3 lastHitHex;
@@ -39,6 +81,9 @@ namespace Scanner.Atomship {
         bool previewPhantom;
 
         private void Update() {
+
+            if (Input.GetKeyDown(KeyCode.T)) Game.Colony.SimTick();
+
             var ray = editorCamera.ScreenPointToRay(Input.mousePosition);
             previewPhantom = false;
             
@@ -70,9 +115,9 @@ namespace Scanner.Atomship {
             
             if (Input.GetMouseButtonDown(0)) {
                 if (lastGoodFit != null) { 
-                    CurrentShip.BuildStructure(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
+                    CurrentShipStructure.BuildModule(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
                     foreach (var conn in lastGoodFit.connections)
-                        CurrentShip.BuildTube(conn.from, conn.to, "default");
+                        CurrentShipStructure.BuildTube(conn.from, conn.to, "default");
                     
                     HandleShipModelChanged();
                     lastGoodFit = null;
@@ -115,7 +160,9 @@ namespace Scanner.Atomship {
 
         void HandleShipModelChanged() {
             RegenerateShipVisuals();
-            fitter.PrecomputeAttachpoints(CurrentShip);
+            fitter.PrecomputeAttachpoints(CurrentShipStructure);
+            Game.Colony.GetSystem<TemperatureGrid>().RegenerateGraph(Game.Colony);
+            if (autopersistedShip) SaveShip();
             // RegenerateShipAttachPoints();
         }
 
@@ -136,7 +183,7 @@ namespace Scanner.Atomship {
         private void RegenerateShipVisuals() {
             foreach (Transform t in root) Destroy(t.gameObject);
 
-            foreach (var node in CurrentShip.Nodes) {
+            foreach (var node in CurrentShipStructure.Nodes) {
                 var p = node.Pose.CartesianPose();
                 var instance = Instantiate(nodePrefab, root);
                 instance.transform.SetLocalPositionAndRotation(p.position, p.rotation);
@@ -144,7 +191,7 @@ namespace Scanner.Atomship {
                 instance.name = $"{node.Structure.name}[{node.IndexInStructure}]";
             }
 
-            foreach (var tube in CurrentShip.Tubes) {
+            foreach (var tube in CurrentShipStructure.Tubes) {
                 var instance = Instantiate(tubePrefab, root);
                 var from = tube.CrdsFrom.CartesianPosition();
                 var to = tube.CrdsTo.CartesianPosition();

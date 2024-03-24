@@ -4,7 +4,7 @@ using Void;
 using Void.ColonySim;
 using Void.ColonySim.BuildingBlocks;
 
-namespace Scanner.Game {
+namespace Scanner.GameUtils {
 
     [DefaultExecutionOrder(-1000)]
     class HardcodedLoadGameOnInit : MonoBehaviour {
@@ -29,7 +29,7 @@ namespace Scanner.Game {
             var colony = new Colony(colonyS);
 
             Void.Game.CreateContext(ruleRepo, colony);
-            colonyS.BuildStructure(ruleRepo.Modules["spine"], default, default);
+            colonyS.BuildModule(ruleRepo.Modules["spine"], default, default);
         }
     }
 }

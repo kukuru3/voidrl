@@ -5,7 +5,7 @@ using Void.ColonySim.Model;
 namespace Void {
     public class GameRun {
         public RulesRepository Rules { get; }
-        public Void.ColonySim.Colony Colony { get; }
+        public ColonySim.Colony Colony { get; }
         internal GameRun(RulesRepository rules, Void.ColonySim.Colony colony) {
             Rules = rules;
             Colony = colony;
@@ -14,12 +14,16 @@ namespace Void {
 
     public static class Game {
         static GameRun currentRun;
-        public static void CreateContext(RulesRepository repo, Void.ColonySim.Colony colony) {
+        public static void CreateContext(RulesRepository repo, ColonySim.Colony colony) {
             currentRun = new GameRun(repo, colony);
         }
 
+        public static void ReplaceColony(ColonySim.Colony colony) {
+            currentRun = new GameRun(currentRun.Rules, colony);
+        }
+
         public static RulesRepository Rules => currentRun.Rules;
-        public static Void.ColonySim.Colony Colony => currentRun.Colony;
+        public static ColonySim.Colony Colony => currentRun.Colony;
     }
 
     // rules need to contain stuff like: structure declarations.

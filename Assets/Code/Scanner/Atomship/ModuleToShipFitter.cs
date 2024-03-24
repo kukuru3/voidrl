@@ -154,7 +154,7 @@ namespace Scanner.Atomship {
             this.ship = ship;
             attachments = new();
 
-            foreach (var structure in ship.ListStructures()) {
+            foreach (var structure in ship.ListModules()) {
                 var connectors = structure.Declaration.GetBlueprint().connections;
                 foreach (var  conn in connectors) {
                     // so what is the worldspace position
@@ -175,7 +175,7 @@ namespace Scanner.Atomship {
     }
 
     public class Attachment {
-        public NodularStructure structure;
+        public Module structure;
         public Connector connector;
         public H3 connectorWorldspaceOriginHex;
         public PrismaticHexDirection connectorWorldspaceDirection;
