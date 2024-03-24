@@ -8,14 +8,13 @@ namespace Scanner.GridVisualiser {
         internal List<FlowNode> nodes = new();
         internal List<FlowPipe> pipes = new();
 
-        public event System.Action GraphUpdated;
+        public event Action GraphUpdated;
 
         FlowNode supersource;
         FlowNode supersink;
 
-        public FlowNetwork() {
-
-        }
+        bool needsRecalc;
+        Pathfinder pf = new Pathfinder();
 
         void UpdateSuperSourceAndSuperSink() {
             foreach (var pipe in pipes.ToList()) {
@@ -27,17 +26,38 @@ namespace Scanner.GridVisualiser {
 
             supersource = new FlowNode { isSuperSourceOrSuperSink = true };
             supersink = new FlowNode { isSuperSourceOrSuperSink = true };
+
+            nodes.Add(supersource);
+            nodes.Add(supersink);
+
+            foreach (var node in nodes) {
+                if (node.productionOrConsumption > float.Epsilon) { // source
+                    var pipe = TryConnect(supersource, node);
+                    pipe.totalCapacity = node.productionOrConsumption;
+                } else if (node.productionOrConsumption < -float.Epsilon) { // sink
+                    var pipe = TryConnect(node, supersink);
+                    pipe.totalCapacity = -node.productionOrConsumption;
+                }
+            }
+
+            supersource.productionOrConsumption = Mathf.Infinity;
+            supersink.productionOrConsumption = Mathf.NegativeInfinity;
         }
 
         public void CreateNode(Vector2 pos) {
             var n = new FlowNode {  position = pos };
             nodes.Add(n);
+            needsRecalc = true;
             GraphUpdated?.Invoke();
+        }
+
+        public void Reset() {
+            needsRecalc = true;
         }
 
         public bool RemoveNode(FlowNode node) {
             var result = nodes.Remove(node);
-            if (result) GraphUpdated?.Invoke();
+            if (result) { GraphUpdated?.Invoke(); needsRecalc = true; }
             return result;
         }
 
@@ -47,6 +67,7 @@ namespace Scanner.GridVisualiser {
                 pipe.totalCapacity = capacity;
                 pipes.Add(pipe);
                 GraphUpdated?.Invoke();
+                needsRecalc = true;
                 return pipe;
             } 
             return null;
@@ -54,7 +75,7 @@ namespace Scanner.GridVisualiser {
 
         public bool RemovePipe(FlowPipe e) {
             var result = pipes.Remove(e);
-            if (result) GraphUpdated?.Invoke();
+            if (result) { GraphUpdated?.Invoke(); needsRecalc = true; }
             return result;
         }
 
@@ -64,64 +85,95 @@ namespace Scanner.GridVisualiser {
             return foundEdge;
         }
 
-        public void ResetCalculation() {
-            UpdateSuperSourceAndSuperSink();
-            ConnectSuperSourceAndSupersink();
-            // for each source: 
-        }
+        public void NextIteration() {
 
-        private void ConnectSuperSourceAndSupersink() {
-            foreach (var node in nodes) {
-                if (node.productionOrConsumption > float.Epsilon) { // source
-                    var pipe = TryConnect(supersource, node);
-                    pipe.totalCapacity = supersource.productionOrConsumption;
-                } else if (node.productionOrConsumption < -float.Epsilon) { // sink
-                    var pipe = TryConnect(node, supersink);
-                    pipe.totalCapacity = -supersink.productionOrConsumption;
+            if (needsRecalc) { 
+                foreach (var pipe in pipes) { pipe.currentFlow = 0; }
+                UpdateSuperSourceAndSuperSink();
+                needsRecalc = false;
+            }
+
+            foreach (var item in nodes) { item.ClearPathingInfo(); }
+
+            for (var i = 0 ; i < 20; i++) { 
+                // find augmenting path:
+                // var path = pf.FindPathDFS(this, supersource, supersink);
+                var path = pf.BreadthFirstSearch(this, supersource, supersink);
+                
+                if (path?.Valid ?? false) {
+                    var bottleneckResidualCapacity = path.pipes.Min(p => p.ResidualCapacity);
+                    foreach (var pipe in path.pipes) {
+                        pipe.currentFlow += bottleneckResidualCapacity;
+                        var reversePipe = GetPipe(pipe.to, pipe.from, false);
+                        if (reversePipe != null)
+                            reversePipe.currentFlow -= bottleneckResidualCapacity;
+                    }
+                } else {
+                    break;
                 }
             }
-        }
-
-        Pathfinder pf = new Pathfinder();
-
-        public void UpdateIteration() {
-            // find augmenting path:
-            var path = pf.FindPathDFS(this, supersource, supersink);
-
-            if (path?.Valid ?? false) { 
-                var bottleneckResidualCapacity = path.pipes.Min(p => p.ResidualCapacity);
-                foreach (var pipe in path.pipes) {
-                    pipe.currentFlow += bottleneckResidualCapacity;
-                }
-            } else {
-                Debug.Log("No path found - flow saturated?");
-            }
-            
         }
     }
 
     class Pathfinder {
 
+        public Path BreadthFirstSearch(FlowNetwork network, FlowNode from, FlowNode to) {
+            neighbourhoodCache.Clear();
+            PrepareDijkstraCache(network);
+            foreach (var node in network.nodes) node.ClearPathingInfo();
+
+            var queue = new Queue<FlowNode>();
+            queue.Enqueue(from);
+
+            while (queue.Count > 0) {
+                var node = queue.Dequeue();
+                node.closedList = true;
+                foreach (var pipe in neighbourhoodCache[node].outPipes) {
+                    if (pipe.ResidualCapacity > float.Epsilon) {
+                        if (!pipe.to.closedList) {
+                            pipe.to.pathing_backflowingPipe = pipe;
+                            if (pipe.to == to) {
+                                var path = new Path();
+                                var n = to;
+                                while (n.pathing_backflowingPipe != null) {
+                                    path.pipes.Add(n.pathing_backflowingPipe);
+                                    n = n.pathing_backflowingPipe.from;
+                                }
+                                return path;
+                            } else {
+                                queue.Enqueue(pipe.to);
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }   
+
         public Path FindPathDFS(FlowNetwork network, FlowNode from, FlowNode to) {
+            neighbourhoodCache.Clear();
             PrepareDijkstraCache(network);
             foreach (var node in network.nodes) node.ClearPathingInfo();
             return DFS(from, to, false);
         }
 
         Path DFS(FlowNode node, FlowNode target, bool pathFound) {
-            node.visited = true;
+            if (node == null) {
+                Debug.Log("lolwut");
+            }
+            node.closedList = true;
 
             foreach (var pipe in neighbourhoodCache[node].outPipes) {
 
                 if  (pipe.ResidualCapacity > float.Epsilon) {
 
-                    if (!pipe.to.visited) {
+                    if (!pipe.to.closedList) {
                         pipe.to.pathing_backflowingPipe = pipe;
                         if (pipe.to == target) {
                             pathFound = true;
                             var path = new Path();
                             var n = target;
-                            while (n != null) {
+                            while (n.pathing_backflowingPipe != null) {
                                 path.pipes.Add(n.pathing_backflowingPipe);
                                 n = n.pathing_backflowingPipe.from;
                             }
@@ -169,26 +221,39 @@ namespace Scanner.GridVisualiser {
     }
 
     class FlowNode {
+        static int indexCounter;
+
+        public override string ToString() {
+            if (isSuperSourceOrSuperSink) {
+                if (productionOrConsumption > float.Epsilon) return $"SuperSource";
+                if (productionOrConsumption < -float.Epsilon) return $"SuperSink";
+                return "SuperNode???";
+            }
+            return $"Node {_index}";
+        }
         // consts
         public Vector2 position;
+
+        internal int _index = ++indexCounter;
 
         public bool isSuperSourceOrSuperSink;
 
         public float productionOrConsumption;
 
-
         internal FlowPipe pathing_backflowingPipe;
-        internal bool visited;
+        internal bool closedList;
 
         internal void ClearPathingInfo() {
             pathing_backflowingPipe = null;
-            visited = false;
+            closedList = false;
         }
     }
 
     class FlowPipe {
         public readonly FlowNode from;
         public readonly FlowNode to;
+
+        public override string ToString() => $"{from._index} => {to._index}";
 
         public FlowPipe(FlowNode from, FlowNode to) {
             this.from = from;
@@ -198,6 +263,8 @@ namespace Scanner.GridVisualiser {
         public float totalCapacity;
 
         public float currentFlow;
+
+        public float EffectiveFlow => Mathf.Max(0f, currentFlow);
 
         public float ResidualCapacity => totalCapacity - currentFlow;
 

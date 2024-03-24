@@ -31,8 +31,17 @@ namespace Scanner.GridVisualiser {
             line.Start = fixedA.Deflatten() * FlowNodeView.SCALE;
             line.End = fixedB.Deflatten() * FlowNodeView.SCALE;
 
+            line.Thickness = Pipe.totalCapacity / 20_000f; // 0.05;
+            var ef = Pipe.EffectiveFlow;
+            line.Color = Color.Lerp(Color.grey, Color.red, ef / Pipe.totalCapacity);
+            // line.Color = Color.Lerp(Color.green, Color.red, Pipe.currentFlow / Pipe.totalCapacity);
+
             tip.transform.localPosition = line.End;
 
+            line.Dashed = ef > float.Epsilon;
+            if (line.Dashed) { 
+                line.DashOffset += (ef / Pipe.totalCapacity) * Time.deltaTime * 5f;
+            }
         }
     }
 }
