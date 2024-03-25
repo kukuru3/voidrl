@@ -6738,7 +6738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 7464423810583112220, guid: 17eb239b5d463a740a98273eab85c0ac, type: 3}
-  linePrefab: {fileID: 2721791505296704261, guid: 24c1fee0ebec75948b1e0e52df34d34b, type: 3}
+  linePrefab: {fileID: 3654700796454312127, guid: 24c1fee0ebec75948b1e0e52df34d34b, type: 3}
   editorCamera: {fileID: 1862367227}
   root: {fileID: 2123771740}
   tooltip: {fileID: 1874702465}
@@ -7380,7 +7380,7 @@ Camera:
   far clip plane: 500
   field of view: 60
   orthographic: 1
-  orthographic size: 312
+  orthographic size: 313
   m_Depth: 2
   m_CullingMask:
     serializedVersion: 2

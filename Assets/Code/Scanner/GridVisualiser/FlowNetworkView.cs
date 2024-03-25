@@ -52,13 +52,17 @@ namespace Scanner.GridVisualiser {
                 }
             }
 
-            network.TickNetwork();
+            // network.UpdateNetworkDiscreteIfNeeded();
 
             if (Input.GetKeyDown(KeyCode.R)) {
                 network.ResetNetwork();
                 network.UpdateNetwork();
                 _needRegenerateGraph = true;
             }
+        }
+
+        private void FixedUpdate() {
+            network.UpdateNetworkContinuous();
         }
 
         private void OnEdgeHover(FlowPipe pipe) {            
@@ -90,12 +94,33 @@ namespace Scanner.GridVisualiser {
 
         private void OnNodeHover(FlowNode node) {
             tooltip.text =  $"{node}";
-            if (node.productionOrConsumption > float.Epsilon) tooltip.text += $"\r\nSource: {node.productionOrConsumption:F0}";
-            else if (node.productionOrConsumption < float.Epsilon) tooltip.text += $"\r\nSink: {node.productionOrConsumption:F0}";
+            tooltip.text += $"\r\nTemp: {node.calcTemp:F0}K";
+            if (node.thermalGenerationPower > 0) tooltip.text += $"\r\nHeat source: {node.thermalGenerationPower:F0}";
+            if (node.dissipationSurface > 5f) tooltip.text += $"\r\nDissipation surface: {node.dissipationSurface:F0}";
+            //if (node.productionOrConsumption > float.Epsilon) tooltip.text += $"\r\nSource: {node.productionOrConsumption:F0}";
+            //else if (node.productionOrConsumption < float.Epsilon) tooltip.text += $"\r\nSink: {node.productionOrConsumption:F0}";
+
+            if (Input.GetKeyDown(KeyCode.E)) {
+                node.dissipationSurface += 10f;
+            } 
+            if (Input.GetKeyDown(KeyCode.Q)) {
+                node.dissipationSurface -= 10f;
+                if (node.dissipationSurface < 0f) node.dissipationSurface = 0f;
+            } 
+
+            if (Input.GetKey(KeyCode.S)) {
+                node.thermalGenerationPower += Time.deltaTime * 1000f;
+            } 
+
+            if (Input.GetKey(KeyCode.A)) {
+                node.thermalGenerationPower -= Time.deltaTime * 1000f;
+                node.thermalGenerationPower = Mathf.Max(0f, node.thermalGenerationPower);
+            } 
 
             if (Input.GetKeyDown(KeyCode.Mouse0)) { 
                 preselectedNode = node;
             }
+
             if (Input.GetKeyUp(KeyCode.Mouse0)) {
                 if (preselectedNode != null) { 
                     network.TryConnect(preselectedNode, node);

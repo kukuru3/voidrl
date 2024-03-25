@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using K3;
+using System.Security.Policy;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Void.ColonySim.BuildingBlocks;
 
 namespace Scanner.GridVisualiser {
     class FlowNetwork {
@@ -13,23 +12,23 @@ namespace Scanner.GridVisualiser {
 
         public event Action GraphUpdated;
 
-        bool networkNeedsUpdated;
+        bool networkPropertiesChanged;
         Pathfinder pf = new Pathfinder();
 
         public void CreateNode(Vector2 pos) {
             var n = new FlowNode {  position = pos };
             nodes.Add(n);
-            networkNeedsUpdated = true;
+            networkPropertiesChanged = true;
             GraphUpdated?.Invoke();
         }
 
         public void UpdateNetwork() {
-            networkNeedsUpdated = true;
+            networkPropertiesChanged = true;
         }
 
         public bool RemoveNode(FlowNode node) {
             var result = nodes.Remove(node);
-            if (result) { GraphUpdated?.Invoke(); networkNeedsUpdated = true; }
+            if (result) { GraphUpdated?.Invoke(); networkPropertiesChanged = true; }
             return result;
         }
 
@@ -41,7 +40,7 @@ namespace Scanner.GridVisualiser {
                 // pipe.totalCapacity = capacity;
                 pipes.Add(pipe);
                 GraphUpdated?.Invoke();
-                networkNeedsUpdated = true;
+                networkPropertiesChanged = true;
                 return pipe;
             } 
             return null;
@@ -49,7 +48,7 @@ namespace Scanner.GridVisualiser {
 
         public bool RemovePipe(FlowPipe e) {
             var result = pipes.Remove(e);
-            if (result) { GraphUpdated?.Invoke(); networkNeedsUpdated = true; }
+            if (result) { GraphUpdated?.Invoke(); networkPropertiesChanged = true; }
             return result;
         }
 
@@ -66,30 +65,71 @@ namespace Scanner.GridVisualiser {
 
         const float DIFFUSION_FACTOR = 0.25f;
 
-        enum Stages {
-            None,
-            TieredUpdate,
-            Fixup,
-        }
-        Stages stage;
+        const float ENERGY_TRANSFERRENCE = 0.001f;
 
-        public void TickNetwork() {
-            if (networkNeedsUpdated) {                
-                ResetNetwork();
-                stage = Stages.TieredUpdate;
+        const float STEFFAN_BOlTZMANN = 5.670373e-8f;
 
-                networkNeedsUpdated = false;
+        public void UpdateNetworkContinuous() {
+            if (networkPropertiesChanged) {
                 pf.RegenerateAdjacencyCache(this);
-            
+                
 
-                float biggestDelta = 0f;
+                foreach (var node in nodes) {
+                    var generated = node.thermalGenerationPower;
+                    var temperature = node.calcThermalEnergy / node.thermalCapacity;
+                    var dissipation = Mathf.Pow(temperature, 4f) * STEFFAN_BOlTZMANN * node.dissipationSurface;
+                    if (generated > 0f) {
+                        Debug.Log($"[{node._index}]: Generated: {generated}, dissipated {dissipation}");
+                    }
+                    
+                    node.calcThermalEnergy += (generated - dissipation) / 50;
+                    if (node.calcThermalEnergy < 0f) node.calcThermalEnergy = 0f;
+                }
+
+                foreach (var node in nodes) { 
+                    node.calcThermalEnergy0 = node.calcThermalEnergy;
+                    node.calcT0 = node.calcThermalEnergy0 / node.thermalCapacity;
+                }
+                
+                // diffusion step:
+                foreach (var node in nodes) {
+                    foreach (var pipe in pf.GetNeighbourhood(node).connectedPipes) {
+                        if (node == pipe.to) { continue; } // every pipe only once!
+
+                        var isReverse = pipe.to == node;
+                        var other = isReverse ? pipe.from : pipe.to;
+
+                        var temperatureDifferential = (node.calcT0 - other.calcT0);
+                        if (temperatureDifferential > 0f) {
+                            var transferredEnergy = temperatureDifferential * node.thermalCapacity * ENERGY_TRANSFERRENCE;
+                            node.calcThermalEnergy -= transferredEnergy;
+                            other.calcThermalEnergy += transferredEnergy;
+                        } else {
+                            var transferredEnergy = temperatureDifferential * other.thermalCapacity * ENERGY_TRANSFERRENCE;
+                            node.calcThermalEnergy += transferredEnergy;
+                            other.calcThermalEnergy -= transferredEnergy;
+                        }
+                    }
+                }
+
+                foreach (var node in nodes) node.calcTemp = node.calcThermalEnergy / node.thermalCapacity;
+            }
+        }
+
+        public void UpdateNetworkDiscreteIfNeeded() {
+            if (networkPropertiesChanged) {
+                ResetNetwork();
+
+                networkPropertiesChanged = false;
+                pf.RegenerateAdjacencyCache(this);
 
                 for (var i = 0; i < 100; i++) {
+                    var biggestDelta = 0f;
+
                     // diffusion:
                     foreach (var node in nodes) {
                         node.calcT0 = node.calcTemp;
                     }
-                
                     foreach (var node in nodes) {
                         foreach (var pipe in pf.GetNeighbourhood(node).connectedPipes) {
                             if (node == pipe.to) { continue; } // every pipe only once!
@@ -112,22 +152,17 @@ namespace Scanner.GridVisualiser {
                         }
                     }
 
-                    if (biggestDelta < 0.1f) { 
+                    if (biggestDelta < 0.1f) {
                         Debug.Log($"After {i} iterations, biggest delta is {0.1f}");
                         break;
                     }
                 }
             }
 
-            // correction: reactors that are too hot do not emit.
-
-
-            //foreach (var pipe in pipes) {
-            //    pipe.correction = 0f;
-            //    var negative = Mathf.Min(pipe.from.calcTemp, pipe.to.calcTemp); 
-            //    if (negative < 0f) pipe.correction = negative;
-            //}
-
+            var delta = 0f;
+            foreach (var node in nodes) {
+                delta += node.calcTemp;
+            }
         }
     }
 
@@ -141,13 +176,6 @@ namespace Scanner.GridVisualiser {
             //    var dissipation = (pipe.from == node) ? pipe.currentFlow : -pipe.currentFlow;
             //    if (dissipation > 0f) {
             //        sumDissipation += dissipation;
-            //    }
-            //}
-
-            //foreach (var pipe in pipes) {
-            //    var dissipation = (pipe.from == node) ? pipe.currentFlow : -pipe.currentFlow;
-            //    if (dissipation > 0f) {
-            //        var dissipationFraction = dissipation / sumDissipation;
             //    }
             //}
         }
@@ -195,11 +223,6 @@ namespace Scanner.GridVisualiser {
         static int indexCounter;
 
         public override string ToString() {
-            //if (isSuperSourceOrSuperSink) {
-            //    if (productionOrConsumption > float.Epsilon) return $"SuperSource";
-            //    if (productionOrConsumption < -float.Epsilon) return $"SuperSink";
-            //    return "SuperNode???";
-            //}
             return $"Node {_index}";
         }
         // consts
@@ -210,12 +233,15 @@ namespace Scanner.GridVisualiser {
         public float productionOrConsumption;
 
         public float calcT0;
-        public float maxCapacityOfSurroundingTubes;
         public float calcTemp;
 
+        public float calcThermalEnergy0;
+        public float calcThermalEnergy;
 
-        internal void ClearPathingInfo() {
-        }
+        public float thermalGenerationPower = 0f;
+        public float thermalCapacity = 100f;
+        public float dissipationSurface = 2f;
+
     }
 
     class FlowPipe {
