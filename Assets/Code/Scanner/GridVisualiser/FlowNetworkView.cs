@@ -24,9 +24,11 @@ namespace Scanner.GridVisualiser {
             network.CreateNode(new Vector2(1,1));
 
             network.TryConnect(network.nodes[0], network.nodes[1]);
-            network.TryConnect(network.nodes[1], network.nodes[0]);
-            network.TryConnect(network.nodes[2], network.nodes[1]);
             network.TryConnect(network.nodes[1], network.nodes[2]);
+            if (FlowNetwork.BILATERAL_PIPING) {
+                network.TryConnect(network.nodes[1], network.nodes[0]);
+                network.TryConnect(network.nodes[2], network.nodes[1]);
+            }
         }
 
         private void LateUpdate() {
@@ -50,19 +52,19 @@ namespace Scanner.GridVisualiser {
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.T)) {
-                network.NextIteration();
-            }
+            network.TickNetwork();
 
             if (Input.GetKeyDown(KeyCode.R)) {
-                network.Reset();
-                network.NextIteration();
+                network.ResetNetwork();
+                network.UpdateNetwork();
                 _needRegenerateGraph = true;
             }
         }
 
         private void OnEdgeHover(FlowPipe pipe) {            
-            tooltip.text = $"Pipe {pipe}\r\n:Flow {pipe.currentFlow:F0}/{pipe.totalCapacity:F0}   {pipe.currentFlow/pipe.totalCapacity:P0}";
+            tooltip.text = $"Pipe {pipe}";
+            tooltip.text += $"\r\nFlow:{Mathf.Abs(pipe.currentFlow + pipe.correction):F0}\r\n Capacity:{pipe.capacity:F0} ({Mathf.Abs(pipe.currentFlow/pipe.capacity):P0})";
+            // tooltip.text += $"\r\n:Flow {pipe.currentFlow:F0}/{pipe.totalCapacity:F0}   {pipe.currentFlow/pipe.totalCapacity:P0}";
             if (Input.GetKeyDown(KeyCode.Mouse1)) {
                 network.RemovePipe(pipe);
                 var rp = ReversePipe(pipe);
@@ -74,8 +76,9 @@ namespace Scanner.GridVisualiser {
             if (Input.GetKeyDown(KeyCode.RightBracket)) delta += 100;
 
             if (delta != 0) {
-                pipe.totalCapacity += delta;
-                if (pipe.totalCapacity < 0) pipe.totalCapacity = 0;
+                pipe.capacity += delta;
+                if (pipe.capacity < 0) pipe.capacity = 0;
+                network.UpdateNetwork();
             }
         }
 
@@ -87,8 +90,8 @@ namespace Scanner.GridVisualiser {
 
         private void OnNodeHover(FlowNode node) {
             tooltip.text =  $"{node}";
-            if (node.productionOrConsumption > float.Epsilon) tooltip.text += $"\r\nSource{node.productionOrConsumption:F0}";
-            else if (node.productionOrConsumption < float.Epsilon) tooltip.text += $"\r\nSink{node.productionOrConsumption:F0}";
+            if (node.productionOrConsumption > float.Epsilon) tooltip.text += $"\r\nSource: {node.productionOrConsumption:F0}";
+            else if (node.productionOrConsumption < float.Epsilon) tooltip.text += $"\r\nSink: {node.productionOrConsumption:F0}";
 
             if (Input.GetKeyDown(KeyCode.Mouse0)) { 
                 preselectedNode = node;
@@ -96,7 +99,8 @@ namespace Scanner.GridVisualiser {
             if (Input.GetKeyUp(KeyCode.Mouse0)) {
                 if (preselectedNode != null) { 
                     network.TryConnect(preselectedNode, node);
-                    network.TryConnect(node, preselectedNode);
+                    if (!FlowNetwork.BILATERAL_PIPING)
+                        network.TryConnect(node, preselectedNode);
                 }
                 preselectedNode = null;
             }
@@ -114,6 +118,7 @@ namespace Scanner.GridVisualiser {
 
             if (delta !=  0) {
                 node.productionOrConsumption += delta;
+                network.UpdateNetwork();
             }
         }
 
@@ -132,14 +137,14 @@ namespace Scanner.GridVisualiser {
             foreach (Transform t in root) Destroy(t.gameObject);
 
             foreach (var edge in network.pipes) {
-                if (edge.from.isSuperSourceOrSuperSink || edge.to.isSuperSourceOrSuperSink) continue;
+                // if (edge.from.isSuperSourceOrSuperSink || edge.to.isSuperSourceOrSuperSink) continue;
                 var lineView = Instantiate(linePrefab, root);
                 lineView.Bind(edge);
                 lineView.name = $"Pipe [{edge}]";
             }
 
             foreach (var node in network.nodes) {
-                if (node.isSuperSourceOrSuperSink) continue;
+                // if (node.isSuperSourceOrSuperSink) continue;
                 var nodeView = Instantiate(nodePrefab, root);
                 nodeView.Bind(node);
                 nodeView.name = $"{node}";

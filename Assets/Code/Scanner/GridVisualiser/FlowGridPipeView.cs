@@ -25,23 +25,29 @@ namespace Scanner.GridVisualiser {
 
             var dist = Vector3.Distance(a,b);
             var lerpFactor = AdjustLerp / dist;
-            var fixedA = Vector2.Lerp(a,b, lerpFactor) + ortho * PullApart;
-            var fixedB = Vector2.Lerp(a,b, 1f - lerpFactor)+ ortho * PullApart;
+            var fixedA = Vector2.Lerp(a,b, lerpFactor); // + ortho * PullApart;
+            var fixedB = Vector2.Lerp(a,b, 1f - lerpFactor); // + ortho * PullApart;
 
             line.Start = fixedA.Deflatten() * FlowNodeView.SCALE;
             line.End = fixedB.Deflatten() * FlowNodeView.SCALE;
 
-            line.Thickness = Pipe.totalCapacity / 20_000f; // 0.05;
-            var ef = Pipe.EffectiveFlow;
-            line.Color = Color.Lerp(Color.grey, Color.red, ef / Pipe.totalCapacity);
-            // line.Color = Color.Lerp(Color.green, Color.red, Pipe.currentFlow / Pipe.totalCapacity);
+            line.Thickness = Pipe.capacity.Map(0f, 1000f, 0.01f, 0.1f);
+
+            if (Mathf.Abs(Pipe.currentFlow) > 1f) {
+                line.Dashed = true;
+                if (line.Dashed) { 
+                    line.DashOffset += Pipe.currentFlow * Time.deltaTime * 0.01f;
+                }
+                if (Pipe.capacity > 0) { 
+                    line.Color = Color.Lerp(Color.gray / 3, Color.red, Mathf.Abs(Pipe.currentFlow) / Pipe.capacity) * 3f;
+                }
+            } else {
+                line.Color = Color.gray;
+                line.Dashed = false;
+            }
 
             tip.transform.localPosition = line.End;
-
-            line.Dashed = ef > float.Epsilon;
-            if (line.Dashed) { 
-                line.DashOffset += (ef / Pipe.totalCapacity) * Time.deltaTime * 5f;
-            }
+            tip.gameObject.SetActive(false);
         }
     }
 }

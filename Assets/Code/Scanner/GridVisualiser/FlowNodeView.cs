@@ -17,6 +17,8 @@ namespace Scanner.GridVisualiser {
             if (Node.productionOrConsumption > float.Epsilon) color = Color.Lerp(color, Color.red, Mathf.Pow(Mathf.Clamp01(Node.productionOrConsumption / 2000), 0.1f));
             else if (Node.productionOrConsumption < float.Epsilon) color = Color.Lerp(color, Color.blue, Mathf.Pow(Mathf.Clamp01(Node.productionOrConsumption / -2000), 0.1f));
             GetComponent<ShapeRenderer>().Color = color;
+
+            label.text = $"{Node}\r\n{Node.calcTemp:F0} [{Node.productionOrConsumption:F0}]";
         }
     }
 }
