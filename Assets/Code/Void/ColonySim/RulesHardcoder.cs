@@ -46,6 +46,9 @@ namespace Void.ColonySim {
 
             yield return CreateDeclaration("hydroponic", "omni");
             yield return CreateDeclaration("engine", "engine1");
+
+            yield return CreateDeclaration("life-support", "omni")
+                .With(new LifeSupport { maxDistance = 6, totalCapacity = 100 });
                 
         }
 

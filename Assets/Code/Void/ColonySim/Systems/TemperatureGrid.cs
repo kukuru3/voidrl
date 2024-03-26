@@ -14,6 +14,7 @@ namespace Void.ColonySim {
         internal float _potentialHeatFlowAtoB;
         
     }
+
     public class TemperatureGrid : DistributionSystem<TemperatureNode, TemperatureConduit>, ISimulatedSystem {
         public override TemperatureNode ProvideValue(ShipNode node) {
             var t = new TemperatureNode();
@@ -39,7 +40,7 @@ namespace Void.ColonySim {
             // for each node, sum the incoming and outgoing heat flows
             foreach (var node in graph.Nodes) { node.Value._heatFlowSum = 0f; node.Value._heatDelta = node.Value.constantHeatDelta; }
 
-            foreach (var edge in graph.lines) {
+            foreach (var edge in graph.pipes) {
                 var v = edge.Value;
                 var valA = edge.a.Value;
                 var valB = edge.b.Value;

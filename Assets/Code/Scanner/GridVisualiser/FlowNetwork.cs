@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using K3;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Void.ColonySim.BuildingBlocks;
 
 namespace Scanner.GridVisualiser {
     class FlowNetwork {
@@ -13,35 +10,36 @@ namespace Scanner.GridVisualiser {
 
         public event Action GraphUpdated;
 
-        bool networkNeedsUpdated;
-        Pathfinder pf = new Pathfinder();
+        bool networkPropertiesChanged;
+        Pathfinder pathFinder;
+
+        public FlowNetwork() {
+            pathFinder = new Pathfinder(this);
+        }
 
         public void CreateNode(Vector2 pos) {
             var n = new FlowNode {  position = pos };
             nodes.Add(n);
-            networkNeedsUpdated = true;
+            networkPropertiesChanged = true;
             GraphUpdated?.Invoke();
         }
 
         public void UpdateNetwork() {
-            networkNeedsUpdated = true;
+            networkPropertiesChanged = true;
         }
 
         public bool RemoveNode(FlowNode node) {
             var result = nodes.Remove(node);
-            if (result) { GraphUpdated?.Invoke(); networkNeedsUpdated = true; }
+            if (result) { GraphUpdated?.Invoke(); networkPropertiesChanged = true; }
             return result;
         }
 
-        public const bool BILATERAL_PIPING = true;
-
         public FlowPipe TryConnect(FlowNode from, FlowNode to) {
-            if (GetPipe(from,to,BILATERAL_PIPING) == null) {
+            if (GetPipe(from,to,true) == null) {
                 var pipe = new FlowPipe(from, to);
-                // pipe.totalCapacity = capacity;
                 pipes.Add(pipe);
                 GraphUpdated?.Invoke();
-                networkNeedsUpdated = true;
+                networkPropertiesChanged = true;
                 return pipe;
             } 
             return null;
@@ -49,7 +47,7 @@ namespace Scanner.GridVisualiser {
 
         public bool RemovePipe(FlowPipe e) {
             var result = pipes.Remove(e);
-            if (result) { GraphUpdated?.Invoke(); networkNeedsUpdated = true; }
+            if (result) { GraphUpdated?.Invoke(); networkPropertiesChanged = true; }
             return result;
         }
 
@@ -61,37 +59,29 @@ namespace Scanner.GridVisualiser {
         
         public void ResetNetwork() {
             foreach (var node in nodes) { node.calcTemp = node.productionOrConsumption; }
-            foreach (var pipe in pipes) { pipe.currentFlow = 0f; pipe.correction = 0f; }
+            foreach (var pipe in pipes) { pipe.currentFlow = 0f; }
         }
 
-        const float DIFFUSION_FACTOR = 0.25f;
-
-        enum Stages {
-            None,
-            TieredUpdate,
-            Fixup,
-        }
-        Stages stage;
-
-        public void TickNetwork() {
-            if (networkNeedsUpdated) {                
+        const float DIFFUSION_FACTOR = 0.1f;
+        const float TOLERANCE_THRESHOLD = 0.1f;
+        const int MAX_ITERS = 10;
+        
+        public void UpdateNetworkDiscreteIfNeeded() {
+            if (networkPropertiesChanged) {
                 ResetNetwork();
-                stage = Stages.TieredUpdate;
 
-                networkNeedsUpdated = false;
-                pf.RegenerateAdjacencyCache(this);
-            
+                networkPropertiesChanged = false;
+                pathFinder.RegenerateAdjacencyCache();
 
-                float biggestDelta = 0f;
+                for (var i = 0; i < MAX_ITERS; i++) {
+                    var biggestDelta = 0f;
 
-                for (var i = 0; i < 100; i++) {
                     // diffusion:
                     foreach (var node in nodes) {
                         node.calcT0 = node.calcTemp;
                     }
-                
                     foreach (var node in nodes) {
-                        foreach (var pipe in pf.GetNeighbourhood(node).connectedPipes) {
+                        foreach (var pipe in pathFinder.GetNeighbourhood(node).connectedPipes) {
                             if (node == pipe.to) { continue; } // every pipe only once!
 
                             var isReverse = pipe.to == node;
@@ -99,11 +89,6 @@ namespace Scanner.GridVisualiser {
                             var transferAtoB = (node.calcT0 - other.calcT0) * DIFFUSION_FACTOR;
 
                             var nextFlow = pipe.currentFlow + transferAtoB;
-                            var excess = Mathf.Abs(nextFlow) - pipe.capacity;
-
-                            if (excess > 0) {
-                                transferAtoB -= Mathf.Sign(transferAtoB) * excess;
-                            }
 
                             node.calcTemp -= transferAtoB;
                             other.calcTemp += transferAtoB;
@@ -112,77 +97,15 @@ namespace Scanner.GridVisualiser {
                         }
                     }
 
-                    if (biggestDelta < 0.1f) { 
-                        Debug.Log($"After {i} iterations, biggest delta is {0.1f}");
-                        break;
-                    }
+                    if (biggestDelta < TOLERANCE_THRESHOLD) break;
                 }
             }
 
-            // correction: reactors that are too hot do not emit.
-
-
-            //foreach (var pipe in pipes) {
-            //    pipe.correction = 0f;
-            //    var negative = Mathf.Min(pipe.from.calcTemp, pipe.to.calcTemp); 
-            //    if (negative < 0f) pipe.correction = negative;
-            //}
-
-        }
-    }
-
-    class Pathfinder {
-
-        internal void GetDissipatingTubes(FlowNode node) {
-            //if (node.calcTemp > 0f) return;
-            //var pipes = GetNeighbourhood(node).connectedPipes;
-            //float sumDissipation = 0f;
-            //foreach (var pipe in pipes) {
-            //    var dissipation = (pipe.from == node) ? pipe.currentFlow : -pipe.currentFlow;
-            //    if (dissipation > 0f) {
-            //        sumDissipation += dissipation;
-            //    }
-            //}
-
-            //foreach (var pipe in pipes) {
-            //    var dissipation = (pipe.from == node) ? pipe.currentFlow : -pipe.currentFlow;
-            //    if (dissipation > 0f) {
-            //        var dissipationFraction = dissipation / sumDissipation;
-            //    }
-            //}
-        }
-
-        internal void RegenerateAdjacencyCache(FlowNetwork network) {
-            adjacency.Clear();
-            foreach (var pipe in network.pipes) {
-                GetOrCreateNeighbourhoodObject(pipe.from).connectedPipes.Add(pipe);
-                GetOrCreateNeighbourhoodObject(pipe.to).connectedPipes.Add(pipe);
+            var delta = 0f;
+            foreach (var node in nodes) {
+                delta += node.calcTemp;
             }
         }
-
-        internal class Neighbourhood {
-            public FlowNode node;
-            public List<FlowPipe> connectedPipes = new();
-
-            public IEnumerable<FlowNode> ListNeighbours() {
-                foreach (var pipe in connectedPipes) {
-                    if (pipe.from == node) yield return pipe.to;
-                    if (pipe.to == node) yield return pipe.from;
-                }
-            }
-        }
-
-        Neighbourhood GetOrCreateNeighbourhoodObject(FlowNode n) {
-            if (!adjacency.TryGetValue(n, out var result)) {                
-                adjacency[n] = result = new Neighbourhood() { node = n };
-            };
-            
-            return result;            
-        }
-
-        public Neighbourhood GetNeighbourhood(FlowNode n) => adjacency[n];
-
-        Dictionary<FlowNode, Neighbourhood> adjacency = new();
     }
 
     class Path {
@@ -195,11 +118,6 @@ namespace Scanner.GridVisualiser {
         static int indexCounter;
 
         public override string ToString() {
-            //if (isSuperSourceOrSuperSink) {
-            //    if (productionOrConsumption > float.Epsilon) return $"SuperSource";
-            //    if (productionOrConsumption < -float.Epsilon) return $"SuperSink";
-            //    return "SuperNode???";
-            //}
             return $"Node {_index}";
         }
         // consts
@@ -210,12 +128,9 @@ namespace Scanner.GridVisualiser {
         public float productionOrConsumption;
 
         public float calcT0;
-        public float maxCapacityOfSurroundingTubes;
         public float calcTemp;
-
-
-        internal void ClearPathingInfo() {
-        }
+        internal int dijkstance;
+        internal object dijkparent;
     }
 
     class FlowPipe {
@@ -229,16 +144,8 @@ namespace Scanner.GridVisualiser {
             this.to = to;
         }
 
-        //public float totalCapacity;
-
         public float currentFlow;
 
-        public float correction;
-
-        public float capacity = 300;
-        //public float EffectiveFlow => Mathf.Max(0f, currentFlow);
-
-        //public float ResidualCapacity => totalCapacity - currentFlow;
-
+        public float capacity = float.MaxValue;
     }
 }

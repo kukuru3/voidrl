@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using K3;
 using UnityEngine;
 
@@ -25,10 +24,7 @@ namespace Scanner.GridVisualiser {
 
             network.TryConnect(network.nodes[0], network.nodes[1]);
             network.TryConnect(network.nodes[1], network.nodes[2]);
-            if (FlowNetwork.BILATERAL_PIPING) {
-                network.TryConnect(network.nodes[1], network.nodes[0]);
-                network.TryConnect(network.nodes[2], network.nodes[1]);
-            }
+
         }
 
         private void LateUpdate() {
@@ -52,7 +48,7 @@ namespace Scanner.GridVisualiser {
                 }
             }
 
-            network.TickNetwork();
+            network.UpdateNetworkDiscreteIfNeeded();
 
             if (Input.GetKeyDown(KeyCode.R)) {
                 network.ResetNetwork();
@@ -63,7 +59,7 @@ namespace Scanner.GridVisualiser {
 
         private void OnEdgeHover(FlowPipe pipe) {            
             tooltip.text = $"Pipe {pipe}";
-            tooltip.text += $"\r\nFlow:{Mathf.Abs(pipe.currentFlow + pipe.correction):F0}\r\n Capacity:{pipe.capacity:F0} ({Mathf.Abs(pipe.currentFlow/pipe.capacity):P0})";
+            tooltip.text += $"\r\nFlow:{Mathf.Abs(pipe.currentFlow):F0}\r\n";
             // tooltip.text += $"\r\n:Flow {pipe.currentFlow:F0}/{pipe.totalCapacity:F0}   {pipe.currentFlow/pipe.totalCapacity:P0}";
             if (Input.GetKeyDown(KeyCode.Mouse1)) {
                 network.RemovePipe(pipe);
@@ -99,8 +95,6 @@ namespace Scanner.GridVisualiser {
             if (Input.GetKeyUp(KeyCode.Mouse0)) {
                 if (preselectedNode != null) { 
                     network.TryConnect(preselectedNode, node);
-                    if (!FlowNetwork.BILATERAL_PIPING)
-                        network.TryConnect(node, preselectedNode);
                 }
                 preselectedNode = null;
             }

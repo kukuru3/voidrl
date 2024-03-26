@@ -55,6 +55,7 @@ namespace Scanner.Atomship {
             }
 
             Game.Colony.AddSystem(new TemperatureGrid());
+            Game.Colony.AddSystem(new LifeSupportGrid());
 
             HandleShipModelChanged();
         }
@@ -174,6 +175,7 @@ namespace Scanner.Atomship {
             RegenerateShipVisuals();
             fitter.PrecomputeAttachpoints(CurrentShipStructure);
             Game.Colony.GetSystem<TemperatureGrid>().RegenerateGraph(Game.Colony);
+            Game.Colony.GetSystem<LifeSupportGrid>().RegenerateGraph(Game.Colony);
             if (autopersistChanges) SaveShip();
             // RegenerateShipAttachPoints();
         }

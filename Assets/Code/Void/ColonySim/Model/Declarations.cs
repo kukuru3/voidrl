@@ -107,4 +107,8 @@ namespace Void.ColonySim.Model {
         public int conversionFactor; // out of 100
     }
 
+    public struct LifeSupport : ILogicExt {
+        public int maxDistance;
+        public int totalCapacity;
+    }
 }
