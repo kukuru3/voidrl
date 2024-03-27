@@ -44,7 +44,7 @@ namespace Scanner.Atomship {
         ModuleDeclaration currentBlueprint;
         ModuleToShipFitter fitter;
 
-        ColonyShipStructure CurrentShipStructure => Void.Game.Colony.ShipStructure;
+        internal ColonyShipStructure ShipStructure => Game.Colony.ShipStructure;
 
         private void Start() {
             GenerateUI();
@@ -64,7 +64,7 @@ namespace Scanner.Atomship {
         
         private void SaveShip() {
             var s = new Void.Serialization.ShipSerializer();
-            var blob = s.SerializeStructure(CurrentShipStructure);
+            var blob = s.SerializeStructure(ShipStructure);
             var finalPath = Path.Combine(Application.persistentDataPath, shipname);
             File.WriteAllBytes(finalPath, blob);
         }
@@ -86,10 +86,20 @@ namespace Scanner.Atomship {
             }
         }
 
-        H3 lastHitHex;
-        PrismaticHexDirection lastHitPose;
+        internal H3 lastHitHex;
+        internal PrismaticHexDirection lastHitDir;
+
+
         Fit lastGoodFit;
         bool previewPhantom;
+
+        public enum Tools {
+            None,
+            Build,
+            Inspect,
+        }
+
+        public Tools tool;
 
         private void Update() {
 
@@ -107,36 +117,37 @@ namespace Scanner.Atomship {
 
                 SetTooltip($"{node.Structure.name}");
 
-                var doCheckForNewFit = node.Pose.position != lastHitHex || dir != lastHitPose;
-
-                lastHitHex = node.Pose.position; lastHitPose = dir;
-
-                previewPhantom = lastGoodFit != null;
-                
-                if (doCheckForNewFit) { 
-                    lastGoodFit = fitter.TryGetFit(currentBlueprint, node.Pose.position, dir);
-                    if (lastGoodFit.success) { 
-                        PositionPhantom(lastGoodFit.poseOfPhantom);
+                if (tool == Tools.Build) {
+                    var doCheckForNewFit = node.Pose.position != lastHitHex || dir != lastHitDir;
+                    lastHitHex = node.Pose.position; lastHitDir = dir;
+                    previewPhantom = lastGoodFit != null;                
+                    if (doCheckForNewFit) { 
+                        lastGoodFit = fitter.TryGetFit(currentBlueprint, node.Pose.position, dir);
+                        if (lastGoodFit.success) { 
+                            PositionPhantom(lastGoodFit.poseOfPhantom);
+                        }
                     }
                 }
-
             } else {
                 lastGoodFit = null;
-                lastHitHex = default; lastHitPose = default;
+                lastHitHex = default; lastHitDir = default;
             }
 
-            phantomRoot.gameObject.SetActive(previewPhantom);
+            if (tool == Tools.Build) { 
+                phantomRoot.gameObject.SetActive(previewPhantom);
             
-            if (Input.GetMouseButtonDown(0)) {
-                if (lastGoodFit != null) { 
-                    CurrentShipStructure.BuildModule(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
-                    foreach (var conn in lastGoodFit.connections)
-                        CurrentShipStructure.BuildTube(conn.from, conn.to, "default");
+                if (Input.GetMouseButtonDown(0)) {
+                    if (lastGoodFit != null) { 
+                        ShipStructure.BuildModule(currentBlueprint, lastGoodFit.poseOfPhantom.position, lastGoodFit.poseOfPhantom.rotation);
+                        foreach (var conn in lastGoodFit.connections)
+                            ShipStructure.BuildTube(conn.from, conn.to, "default");
                     
-                    HandleShipModelChanged();
-                    lastGoodFit = null;
+                        HandleShipModelChanged();
+                        lastGoodFit = null;
+                    }
                 }
             }
+           
         }
 
         PrismaticHexDirection GetDirectionFromCartesianFacing(Vector3 cartesianFacing) {
@@ -173,7 +184,7 @@ namespace Scanner.Atomship {
 
         void HandleShipModelChanged() {
             RegenerateShipVisuals();
-            fitter.PrecomputeAttachpoints(CurrentShipStructure);
+            fitter.PrecomputeAttachpoints(ShipStructure);
             Game.Colony.GetSystem<TemperatureGrid>().RegenerateGraph(Game.Colony);
             Game.Colony.GetSystem<LifeSupportGrid>().RegenerateGraph(Game.Colony);
             if (autopersistChanges) SaveShip();
@@ -197,7 +208,7 @@ namespace Scanner.Atomship {
         private void RegenerateShipVisuals() {
             foreach (Transform t in root) Destroy(t.gameObject);
 
-            foreach (var node in CurrentShipStructure.Nodes) {
+            foreach (var node in ShipStructure.Nodes) {
                 var p = node.Pose.CartesianPose();
                 var instance = Instantiate(nodePrefab, root);
                 instance.transform.SetLocalPositionAndRotation(p.position, p.rotation);
@@ -205,7 +216,7 @@ namespace Scanner.Atomship {
                 instance.name = $"{node.Structure.name}[{node.IndexInStructure}]";
             }
 
-            foreach (var tube in CurrentShipStructure.Tubes) {
+            foreach (var tube in ShipStructure.Tubes) {
                 var instance = Instantiate(tubePrefab, root);
                 var from = tube.CrdsFrom.CartesianPosition();
                 var to = tube.CrdsTo.CartesianPosition();

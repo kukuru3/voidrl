@@ -26,6 +26,10 @@ namespace Scanner.Atomship {
                 remarks = "No attachment under cursor",
             };
 
+            if (declaration.id == default) return new Fit {
+                success = false,
+                remarks = "No blueprint selected",
+            };
             var compatibleConnectorsInPhantom = declaration.GetBlueprint().connections.Where(c => SpatiallyCompatible(att, c)).ToList();
 
             var aligner = compatibleConnectorsInPhantom.FirstOrDefault(c => (c.flags & 1) > 0);

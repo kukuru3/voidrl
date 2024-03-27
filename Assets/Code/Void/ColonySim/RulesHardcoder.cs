@@ -48,7 +48,7 @@ namespace Void.ColonySim {
             yield return CreateDeclaration("engine", "engine1");
 
             yield return CreateDeclaration("life-support", "omni")
-                .With(new LifeSupport { maxDistance = 6, totalCapacity = 100 });
+                .With(new LifeSupport { maxDistance = 4, totalCapacity = 2500 });
                 
         }
 

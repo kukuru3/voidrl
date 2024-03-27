@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Core.H3;
 using Void.ColonySim.BuildingBlocks;
 
 namespace Void.ColonySim {
     public class DistroNode<TNode, TEdge> {
-        public DistroNode(DistributionGraph<TNode, TEdge> g, string name) {
+        public DistroNode(ShipNode from, DistributionGraph<TNode, TEdge> g, string name) {
             graph = g;
+            ShipNode = from;
             this.name = name;
         }
         internal readonly string name;
         internal readonly DistributionGraph<TNode, TEdge> graph;
 
         internal List<DistroPipe<TNode, TEdge>> connectedPipes = new();
-        internal object dijkstraparent;
+        internal DistroNode<TNode, TEdge> dijkstraparent;
+        internal DistroPipe<TNode, TEdge> pipeLeadingToParent;
         internal int dijkstance;
+
+        public ShipNode ShipNode { get; }
 
         public TNode Value { get; set; }
     }
@@ -26,10 +33,16 @@ namespace Void.ColonySim {
         }
 
         internal readonly DistributionGraph<TNode, TEdge> graph;
-        internal readonly DistroNode<TNode, TEdge> a;
-        internal readonly DistroNode<TNode, TEdge> b;
+        public readonly DistroNode<TNode, TEdge> a;
+        public readonly DistroNode<TNode, TEdge> b;
 
         public TEdge Value { get; set; }
+
+        internal DistroNode<TNode, TEdge> Other(DistroNode<TNode, TEdge> n) {
+            if (n == a) return b;
+            if (n == b) return a;
+            throw new System.ArgumentException("Not other!");
+        }
     }
 
     public class DistributionGraph<TNode, TEdge> {
@@ -59,8 +72,8 @@ namespace Void.ColonySim {
             return line;
         }
 
-        public DistroNode<TNode, TEdge> CreateNode(string name) {
-            var n = new DistroNode<TNode, TEdge>(this, name);
+        public DistroNode<TNode, TEdge> CreateNode(ShipNode sn, string name) {
+            var n = new DistroNode<TNode, TEdge>(sn, this, name);
             nodes.Add(n);
             return n;
         }
@@ -101,12 +114,16 @@ namespace Void.ColonySim {
             Prepare();
             foreach (var node in graph.Nodes) {
                 node.dijkstraparent = null;
+                node.pipeLeadingToParent = null;
                 node.dijkstance = -1;
             }
 
             var closedSet = new HashSet<DistroNode<TNode, TEdge>> { seed };
             var q = new Queue<DistroNode<TNode, TEdge>>();
 
+            q.Enqueue(seed);
+
+            
             while (q.Count > 0) {
                 var item = q.Dequeue();
                 foreach (var pipe in item.connectedPipes) {
@@ -116,11 +133,21 @@ namespace Void.ColonySim {
                     if (closedSet.Add(neighbour)) {
                         neighbour.dijkstance = item.dijkstance + 1;
                         neighbour.dijkstraparent = item;
+                        neighbour.pipeLeadingToParent = pipe;
                         if (neighbour.dijkstance <= maxRange) q.Enqueue(neighbour);
                     }
                 }   
             }
             return closedSet;
+        }
+
+        internal List<DistroPipe<TNode, TEdge>> DijkstraPath(DistroNode<TNode, TEdge> destination) {
+            var result = new List<DistroPipe<TNode, TEdge>>();
+            for (var n = destination; n.pipeLeadingToParent != null; n = n.pipeLeadingToParent.Other(n)) {
+                result.Add(n.pipeLeadingToParent);
+            }
+            result.Reverse();
+            return result;
         }
     }
 
@@ -137,6 +164,11 @@ namespace Void.ColonySim {
         public virtual bool HasNode(ShipNode node) => true;
         public virtual bool HasConduit(Tube tube) => true;
 
+        public DistroNode<TNode, TEdge> GetShipNode(ShipNode sourceNode) {
+            dict.TryGetValue(sourceNode, out var result);
+            return result;
+        }
+
         public void RegenerateGraph(Colony colony) {
             // naively generates a graph wher all nodes and tubes are taken into account.
             var graph = new DistributionGraph<TNode, TEdge>();
@@ -147,7 +179,7 @@ namespace Void.ColonySim {
 
                 var name = node.Structure.name;
                 if (node.Structure.Nodes.Count > 1) name += $"({node.IndexInStructure})";                
-                var nn = graph.CreateNode(name);
+                var nn = graph.CreateNode(node, name);
                 nn.Value = ProvideValue(node);
 
                 if (nn.Value is IGraphNodeAware<TNode, TEdge> nodeAware) {

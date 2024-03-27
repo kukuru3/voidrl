@@ -17,6 +17,8 @@ namespace Scanner.Atomship {
 
         [SerializeField] GameObject root;
 
+        [SerializeField] Gradient gradient;
+
         private void Start() {
             
         }
@@ -34,7 +36,7 @@ namespace Scanner.Atomship {
             if (lsNode == null) {
                 tooltip.text = "Does not participate in life support";
             } else if (lsNode.Value is LifeSupportProvider provider) {
-                tooltip.text = $"PROVIDER; demand = {provider.SumDemands()} / {provider.ls.totalCapacity}";
+                tooltip.text = $"PROVIDER; demand = {provider.SumOfDemands} / {provider.ls.totalCapacity}";
             } else if (lsNode.Value is LifeSupportConsumer consumer) {
                 var pct = 100 * consumer.totalReceived / consumer.drawRequirements;
                 if (consumer.drawRequirements == 0) pct = 0;
@@ -59,6 +61,16 @@ namespace Scanner.Atomship {
                     var consumerGO = Instantiate(consumerPrefab, root.transform);
                     consumerGO.transform.AssumePose(node.ShipNode.Pose.CartesianPose());
                     consumerGO.name = "Consumer";
+
+
+                    var pct = 0f;
+                    if (consumer.drawRequirements > 1f) {
+                        pct = (float)(consumer.totalReceived) / consumer.drawRequirements;
+
+                    }
+                    var color = gradient.Evaluate(pct);
+                    color.a = 0.3f;
+                    consumerGO.GetComponentInChildren<MeshRenderer>().material.color = color; // ("_Color", color);
                 }
             }
 
